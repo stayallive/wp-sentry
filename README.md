@@ -1,14 +1,14 @@
-## wp-sentry
+# WordPress [Sentry](https://sentry.io) integration (wp-sentry)
 
-A WordPress plugin to report PHP errors and JavaScript errors to [Sentry](https://sentry.io).
+A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to [Sentry](https://sentry.io).
 
-### Usage
+## Usage
 
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Activate the plugin through the WordPress admin interface
 3. Configure your DSN as explained below, this plugin does not report anything by default
 
-### Configuration
+## Configuration
 
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `DSN` with your actual DSN that you find in Sentry:
 
