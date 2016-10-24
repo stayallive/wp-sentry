@@ -33,3 +33,7 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 = 1.0 =
 
 * Initital release
+
+== Contributors ==
+
+stayallive (https://github.com/stayallive)
