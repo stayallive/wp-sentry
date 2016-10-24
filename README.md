@@ -1,4 +1,4 @@
-# WordPress [Sentry](https://sentry.io) integration (wp-sentry)
+# WordPress [Sentry](https://sentry.io) (wp-sentry)
 
 A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to [Sentry](https://sentry.io).
 

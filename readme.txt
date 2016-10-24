@@ -1,4 +1,4 @@
-=== wp-sentry ===
+=== WordPress Sentry ===
 Contributors: stayallive
 Tags: sentry,errors,tracking
 Requires at least: 4.4

@@ -1,12 +1,12 @@
 <?php
 
 /*
-	Plugin Name: WP Sentry
-	Plugin URI: http://git.alboweb.nl/devalex/wp-sentry
-	Description: Send all exceptions & errors to an external tracker, tracks on the PHP and JavaScript side.
+	Plugin Name: WordPress Sentry
+	Plugin URI: https://github.com/stayallive/wp-sentry
+	Description: A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
 	Version: 1.0
 	Author: Alex Bouma
-	Author URI: https://alexbouma.me
+	Author URI: https://alex.bouma.me
 	License: MIT
 */
 
