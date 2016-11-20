@@ -30,7 +30,11 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 `define( 'WP_SENTRY_VERSION', 'v1.0.0' );`
 
 == Changelog ==
-= 1.0 =
+= 1.0.1 =
+
+* Fix WP_SENTRY_VERSION already defined error (@ikappas)
+
+= 1.0.0 =
 
 * Initital release
 
