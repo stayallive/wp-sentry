@@ -14,7 +14,9 @@
 define( 'WP_SENTRY_DIR', __DIR__ );
 
 // Define the application version
-define( 'WP_SENTRY_VERSION', ( defined( 'WP_SENTRY_VERSION' ) ) ? WP_SENTRY_VERION : wp_get_theme()->get( 'Version' ) );
+if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
+	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
+}
 
 // Load the PHP tracker if we have a private DSN
 if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
