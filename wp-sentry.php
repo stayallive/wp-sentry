@@ -1,29 +1,48 @@
 <?php
+/**
+ *	Plugin Name: WordPress Sentry
+ *	Plugin URI: https://github.com/stayallive/wp-sentry
+ *	Description: A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
+ *	Version: 1.0.1
+ *	Author: Alex Bouma
+ *	Author URI: https://alex.bouma.me
+ *	License: MIT
+ */
 
-/*
-	Plugin Name: WordPress Sentry
-	Plugin URI: https://github.com/stayallive/wp-sentry
-	Description: A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
-	Version: 1.0.1
-	Author: Alex Bouma
-	Author URI: https://alex.bouma.me
-	License: MIT
-*/
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
-// Define the base directory for easy access to any libs
-define( 'WP_SENTRY_DIR', __DIR__ );
+// Resolve the sentry plugin file.
+define( 'WP_SENTRY_PLUGIN_FILE', call_user_func(function () {
+	global $wp_plugin_paths;
+	$plugin_file = __FILE__;
+	if ( ! empty( $wp_plugin_paths ) ) {
+		$wp_plugin_real_paths = array_flip( $wp_plugin_paths );
+		$plugin_path = wp_normalize_path( dirname( $plugin_file ) );
+		if ( isset( $wp_plugin_real_paths[ $plugin_path ] ) ) {
+			$plugin_file = str_replace(
+				$plugin_path,
+				$wp_plugin_real_paths[ $plugin_path ],
+				$plugin_file
+			);
+		}
+	}
+	return $plugin_file;
+}));
 
-// Define the application version
+// Define the sentry version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
 }
 
 // Load the PHP tracker if we have a private DSN
 if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
-	require_once __DIR__ . '/trackers/php/tracker.php';
+	require_once __DIR__ . '/trackers/class-wp-sentry-php-tracker.php';
+	WP_Sentry_Php_Tracker::get_instance();
 }
 
-// Load the JS tracker if we have a public DSN
-if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) || ! empty( WP_SENTRY_PUBLIC_DSN ) ) {
-	require_once __DIR__ . '/trackers/js/tracker.php';
+// Load the Javascript tracker if we have a public DSN
+if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! empty( WP_SENTRY_PUBLIC_DSN ) ) {
+	require_once __DIR__ . '/trackers/class-wp-sentry-js-tracker.php';
+	WP_Sentry_Js_Tracker::get_instance();
 }
