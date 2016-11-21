@@ -31,3 +31,9 @@ define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
 ```php
 define( 'WP_SENTRY_VERSION', 'v1.0.0' );
 ```
+
+(Optionally) define an environment of your site. Defaults to `unspecified`.
+
+```php
+define( 'WP_SENTRY_ENV', 'production' );
+```

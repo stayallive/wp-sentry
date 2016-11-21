@@ -29,6 +29,10 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 `define( 'WP_SENTRY_VERSION', 'v1.0.0' );`
 
+(Optionally) define an environment of your site. Defaults to `unspecified`.
+
+`define( 'WP_SENTRY_ENV', 'production' );`
+
 == Changelog ==
 = 1.0.1 =
 
