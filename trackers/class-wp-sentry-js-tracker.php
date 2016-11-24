@@ -108,10 +108,11 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			'wp-sentry-raven',
 			'wp_sentry',
 			[
-				'dsn' => $this->get_dsn(),
+				'dsn'     => $this->get_dsn(),
 				'options' => $this->get_options(),
 				'context' => $context,
 			]
 		);
 	}
+
 }

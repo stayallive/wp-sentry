@@ -59,7 +59,7 @@ abstract class WP_Sentry_Tracker_Base {
 
 		// Default user context to anonymous.
 		$user_context = [
-			'id' => 0,
+			'id'   => 0,
 			'name' => 'anonymous',
 		];
 
@@ -193,4 +193,5 @@ abstract class WP_Sentry_Tracker_Base {
 	public function get_extra_context() {
 		return $this->context['extra'];
 	}
+
 }
