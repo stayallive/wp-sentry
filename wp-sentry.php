@@ -38,11 +38,33 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 // Load the PHP tracker if we have a private DSN
 if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
 	require_once __DIR__ . '/trackers/class-wp-sentry-php-tracker.php';
+
+	add_filter( 'wp_sentry_dsn', function() { return WP_SENTRY_DSN; }, 1, 0 );
+
 	WP_Sentry_Php_Tracker::get_instance();
 }
 
 // Load the Javascript tracker if we have a public DSN
 if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! empty( WP_SENTRY_PUBLIC_DSN ) ) {
 	require_once __DIR__ . '/trackers/class-wp-sentry-js-tracker.php';
+
+	add_filter( 'wp_sentry_public_dsn', function() { return WP_SENTRY_PUBLIC_DSN; }, 1, 0 );
+
 	WP_Sentry_Js_Tracker::get_instance();
 }
+
+/**
+ * Customize sentry options.
+ *
+ * @param array $options The current sentry options.
+ *
+ * @return array
+ */
+function customize_sentry_options( array $options ) {
+	return array_merge( $options, array(
+		'tags' => array(
+			'my-custom-tag' => 'custom value',
+		),
+	));
+}
+add_filter( 'wp_sentry_options', 'my_sentry_options' );

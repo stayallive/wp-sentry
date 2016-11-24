@@ -10,7 +10,7 @@ abstract class WP_Sentry_Tracker_Base {
 	 *
 	 * @var string
 	 */
-	private $dsn;
+	private $dsn = '';
 
 	/**
 	 * Holds the sentry options.
@@ -32,22 +32,18 @@ abstract class WP_Sentry_Tracker_Base {
 
 	/**
 	 * Class constructor.
-	 *
-	 * @param string $dsn    The sentry server dsn.
-	 * @param array $options Optional. The sentry client options to use.
 	 */
-	protected function __construct( $dsn, array $options = [] ) {
-		$this->dsn = $dsn;
-		$this->options = wp_parse_args( $options, $this->get_default_options() );
-
-		// Register WordPress hooks.
-		$this->register_hooks();
+	protected function __construct() {
+		$this->bootstrap();
 	}
 
 	/**
-	 * Register WordPress hooks.
+	 * Bootstrap the tracker.
 	 */
-	protected function register_hooks() {
+	protected function bootstrap() {
+		// Set the default options.
+		$this->set_options( $this->get_default_options() );
+
 		// Set the current user when available.
 		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
 	}
@@ -88,12 +84,32 @@ abstract class WP_Sentry_Tracker_Base {
 	}
 
 	/**
+	 * Set the sentry dsn.
+	 *
+	 * @param string $dsn The sentry dsn to use.
+	 */
+	public function set_dsn( $dsn ) {
+		if ( is_string( $dsn ) ) {
+			$this->dsn = $dsn;
+		}
+	}
+
+	/**
 	 * Get sentry dsn.
 	 *
 	 * @return string
 	 */
 	public function get_dsn() {
 		return $this->dsn;
+	}
+
+	/**
+	 * Set sentry options.
+	 *
+	 * @param array $options The sentry options to use.
+	 */
+	public function set_options( array $options ) {
+		$this->options = $options;
 	}
 
 	/**

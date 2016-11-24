@@ -20,14 +20,14 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return WP_Sentry_Js_Tracker
 	 */
 	public static function get_instance() {
-		return self::$instance ?: self::$instance = new self( WP_SENTRY_PUBLIC_DSN );
+		return self::$instance ?: self::$instance = new self();
 	}
 
 	/**
-	 * Register WordPress hooks.
+	 * {@inheritDoc}
 	 */
-	protected function register_hooks() {
-		parent::register_hooks();
+	protected function bootstrap() {
+		parent::bootstrap();
 
 		// Register on front-end using the highest priority.
 		add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );

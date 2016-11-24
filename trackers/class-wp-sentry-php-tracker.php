@@ -8,13 +8,6 @@ require_once __DIR__ . '/class-wp-sentry-tracker-base.php';
 final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 
 	/**
-	 * Holds the class instance.
-	 *
-	 * @var WP_Sentry_Php_Tracker
-	 */
-	static $instance = null;
-
-	/**
 	 * Holds an instance to the sentry client.
 	 *
 	 * @var Raven_Client
@@ -22,22 +15,26 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	protected $client;
 
 	/**
+	 * Holds the class instance.
+	 *
+	 * @var WP_Sentry_Php_Tracker
+	 */
+	static $instance = null;
+
+	/**
 	 * Get the sentry tracker instance.
 	 *
 	 * @return WP_Sentry_Php_Tracker
 	 */
 	public static function get_instance() {
-		return self::$instance ?: self::$instance = new self( WP_SENTRY_DSN );
+		return self::$instance ?: self::$instance = new self();
 	}
 
 	/**
-	 * Class constructor.
-	 *
-	 * @param string $dsn    The sentry server dsn.
-	 * @param array $options Optional. The sentry client options to use.
+	 * {@inheritDoc}
 	 */
-	protected function __construct( $dsn, array $options = [] ) {
-		parent::__construct( $dsn, $options );
+	protected function bootstrap() {
+		parent::bootstrap();
 
 		// Require the Raven PHP autoloader
 		require_once plugin_dir_path( WP_SENTRY_PLUGIN_FILE ) . 'raven/php/Raven/Autoloader.php';
@@ -46,7 +43,44 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 		Raven_Autoloader::register();
 
 		// Instantiate the client and install.
-		$this->get_client()->install();
+		$this->get_client()->install()->setSendCallback( [ $this, 'on_send_data' ] );
+	}
+
+	/**
+	 * Execute login on client send data.
+	 *
+	 * @access private
+	 *
+	 * @param array $data A reference to the data being sent.
+	 *
+	 * @return bool True to send data; Otherwise false.
+	 */
+	public function on_send_data( array &$data ) {
+		if ( has_filter( 'wp_sentry_send_data' ) ) {
+			$filtered = apply_filters( 'wp_sentry_send_data', $data );
+			if ( is_array( $filtered ) ) {
+				$data = array_merge( $data, $filtered );
+			} else {
+				return (bool) $filtered;
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public function set_dsn( $dsn ) {
+		if ( is_string( $dsn ) ) {
+			parent::set_dsn( $dsn );
+
+			// Update client
+			$options = Raven_Client::parseDSN( $dsn );
+			$client = $this->get_client();
+			foreach ( $options as $key => $value ) {
+				$client->$key = $value;
+			}
+		}
 	}
 
 	/**
