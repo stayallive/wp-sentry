@@ -1,5 +1,5 @@
 === WordPress Sentry ===
-Contributors: stayallive
+Contributors: stayallive, ikappas
 Tags: sentry,errors,tracking
 Requires at least: 4.4
 Tested up to: 4.6.1
