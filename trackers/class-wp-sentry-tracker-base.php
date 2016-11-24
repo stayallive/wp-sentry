@@ -34,19 +34,20 @@ abstract class WP_Sentry_Tracker_Base {
 	 * Class constructor.
 	 */
 	protected function __construct() {
+		// Set the default options.
+		$this->set_options( $this->get_default_options() );
+
+		// Set the current user when available.
+		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+
+		// Bootstrap the tracker
 		$this->bootstrap();
 	}
 
 	/**
 	 * Bootstrap the tracker.
 	 */
-	protected function bootstrap() {
-		// Set the default options.
-		$this->set_options( $this->get_default_options() );
-
-		// Set the current user when available.
-		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
-	}
+	protected abstract function bootstrap();
 
 	/**
 	 * Target of set_current_user action.

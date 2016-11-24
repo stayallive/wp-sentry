@@ -27,8 +27,6 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	protected function bootstrap() {
-		parent::bootstrap();
-
 		// Register on front-end using the highest priority.
 		add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );
 
