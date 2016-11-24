@@ -33,6 +33,23 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
+== Filters ==
+This plugin provides the following filters to plugin/theme developers. For more information have a look at the README.md
+
+Common to both trackers:
+- `wp_sentry_user_context`
+
+Specific to Php tracker:
+
+- `wp_sentry_dsn`
+- `wp_sentry_options`
+- `wp_sentry_send_data`
+
+Specific to JS tracker:
+
+- `wp_sentry_public_dsn`
+- `wp_sentry_public_options`
+
 == Changelog ==
 = 1.0.1 =
 
