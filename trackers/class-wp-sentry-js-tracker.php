@@ -12,7 +12,7 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 *
 	 * @var WP_Sentry_Js_Tracker
 	 */
-	static $instance = null;
+	private static $instance = null;
 
 	/**
 	 * Get the sentry tracker instance.
