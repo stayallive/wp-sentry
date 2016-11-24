@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress-Sentry">
+    <exclude-pattern>*/raven/*</exclude-pattern>
+    <description>Coding standards used for WordPress Sentry development.</description>
+    <rule ref="WordPress-VIP" />
+</ruleset>
