@@ -37,11 +37,7 @@ abstract class WP_Sentry_Tracker_Base {
 	 * @param array $options Optional. The sentry client options to use.
 	 */
 	protected function __construct( $dsn, array $options = [] ) {
-
-		// Set sentry dsn.
 		$this->dsn = $dsn;
-
-		// Set sentry options.
 		$this->options = wp_parse_args( $options, $this->get_default_options() );
 
 		// Register WordPress hooks.
@@ -52,7 +48,6 @@ abstract class WP_Sentry_Tracker_Base {
 	 * Register WordPress hooks.
 	 */
 	protected function register_hooks() {
-
 		// Set the current user when available.
 		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
 	}
@@ -63,8 +58,6 @@ abstract class WP_Sentry_Tracker_Base {
 	 * @access private
 	 */
 	public function on_set_current_user() {
-
-		// Get current user
 		$current_user = wp_get_current_user();
 
 		// Default user context to anonymous.
@@ -144,8 +137,7 @@ abstract class WP_Sentry_Tracker_Base {
 	 *
 	 * @return array|null
 	 */
-	public function get_user_context()
-	{
+	public function get_user_context() {
 		return $this->context['user'];
 	}
 
@@ -163,8 +155,7 @@ abstract class WP_Sentry_Tracker_Base {
 	 *
 	 * @return array
 	 */
-	public function get_tags_context()
-	{
+	public function get_tags_context() {
 		return $this->context['tags'];
 	}
 

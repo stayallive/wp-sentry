@@ -8,6 +8,13 @@ require_once __DIR__ . '/class-wp-sentry-tracker-base.php';
 final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 
 	/**
+	 * Holds the class instance.
+	 *
+	 * @var WP_Sentry_Php_Tracker
+	 */
+	static $instance = null;
+
+	/**
 	 * Holds an instance to the sentry client.
 	 *
 	 * @var Raven_Client
@@ -20,8 +27,7 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return WP_Sentry_Php_Tracker
 	 */
 	public static function get_instance() {
-		static $instance = null;
-		return $instance ?: $instance = new self( WP_SENTRY_DSN );
+		return self::$instance ?: self::$instance = new self( WP_SENTRY_DSN );
 	}
 
 	/**
@@ -47,7 +53,6 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_dsn() {
-
 		$dsn = parent::get_dsn();
 
 		if ( has_filter( 'wp_sentry_dsn' ) ) {
@@ -61,7 +66,6 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_options() {
-
 		$options = parent::get_options();
 
 		if ( has_filter( 'wp_sentry_options' ) ) {

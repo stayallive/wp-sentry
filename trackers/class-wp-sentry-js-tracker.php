@@ -8,21 +8,25 @@ require_once __DIR__ . '/class-wp-sentry-tracker-base.php';
 final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 
 	/**
+	 * Holds the class instance.
+	 *
+	 * @var WP_Sentry_Js_Tracker
+	 */
+	static $instance = null;
+
+	/**
 	 * Get the sentry tracker instance.
 	 *
 	 * @return WP_Sentry_Js_Tracker
 	 */
 	public static function get_instance() {
-		static $instance = null;
-		return $instance ?: $instance = new self( WP_SENTRY_PUBLIC_DSN );
+		return self::$instance ?: self::$instance = new self( WP_SENTRY_PUBLIC_DSN );
 	}
 
 	/**
 	 * Register WordPress hooks.
 	 */
 	protected function register_hooks() {
-
-		// Call parent method.
 		parent::register_hooks();
 
 		// Register on front-end using the highest priority.
@@ -41,7 +45,6 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return string
 	 */
 	public function get_dsn() {
-
 		$dsn = parent::get_dsn();
 
 		if ( has_filter( 'wp_sentry_public_dsn' ) ) {
@@ -57,7 +60,6 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return array
 	 */
 	public function get_options() {
-
 		$options = parent::get_options();
 
 		if ( has_filter( 'wp_sentry_public_options' ) ) {
@@ -88,7 +90,6 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @access private
 	 */
 	public function on_enqueue_scripts() {
-
 		wp_enqueue_script(
 			'wp-sentry-raven',
 			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'raven/js/raven-3.8.0.min.js',
