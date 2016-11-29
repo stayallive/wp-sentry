@@ -19,7 +19,7 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 *
 	 * @var WP_Sentry_Php_Tracker
 	 */
-	static $instance = null;
+	private static $instance = null;
 
 	/**
 	 * Get the sentry tracker instance.
@@ -34,8 +34,6 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	protected function bootstrap() {
-		parent::bootstrap();
-
 		// Require the Raven PHP autoloader
 		require_once plugin_dir_path( WP_SENTRY_PLUGIN_FILE ) . 'raven/php/Raven/Autoloader.php';
 
@@ -58,12 +56,14 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	public function on_send_data( array &$data ) {
 		if ( has_filter( 'wp_sentry_send_data' ) ) {
 			$filtered = apply_filters( 'wp_sentry_send_data', $data );
+
 			if ( is_array( $filtered ) ) {
 				$data = array_merge( $data, $filtered );
 			} else {
 				return (bool) $filtered;
 			}
 		}
+
 		return true;
 	}
 
@@ -71,12 +71,13 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function set_dsn( $dsn ) {
-		if ( is_string( $dsn ) ) {
-			parent::set_dsn( $dsn );
+		parent::set_dsn( $dsn );
 
-			// Update client
+		if ( is_string( $dsn ) ) {
+			// Update Raven client
 			$options = Raven_Client::parseDSN( $dsn );
-			$client = $this->get_client();
+			$client  = $this->get_client();
+
 			foreach ( $options as $key => $value ) {
 				$client->$key = $value;
 			}
@@ -117,9 +118,9 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 			'release'     => WP_SENTRY_VERSION,
 			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
 			'tags'        => [
-				'wordpress'   => get_bloginfo( 'version' ),
-				'language'    => get_bloginfo( 'language' ),
-				'php'         => phpversion(),
+				'wordpress' => get_bloginfo( 'version' ),
+				'language'  => get_bloginfo( 'language' ),
+				'php'       => phpversion(),
 			],
 		];
 	}
@@ -184,4 +185,5 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	public function get_extra_context() {
 		return $this->get_context()['extra'];
 	}
+
 }

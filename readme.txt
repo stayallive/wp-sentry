@@ -13,21 +13,27 @@ A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Se
 This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with it\'s release tracking.
 
 == Installation ==
-1. Install this plugin by cloning or copying this repository to your wp-contents/plugins folder
+1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
+2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
-3. Configure your DSN as explained below, this plugin does not report anything by default
+
+**Note:** this plugin does not do anything by default and has no admin interface, a DSN must be configured.
 
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `DSN` with your actual DSN that you find in Sentry:
 
 `define( 'WP_SENTRY_DSN', 'DSN' );`
 
+**Note:** Do not set this constant to disable the PHP tracker.
+
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
 `define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );`
 
+**Note:** Do not set this constant to disable the JS tracker.
+
 (Optionally) define a version of your site, by default the theme version will be used. This is used for tracking on which version of your site the error occurred, combined with release tracking this is a very powerfull feature.
 
-`define( 'WP_SENTRY_VERSION', 'v1.0.0' );`
+`define( 'WP_SENTRY_VERSION', 'v2.0.0’ );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -51,6 +57,11 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
+= 2.0.0 =
+
+* Complete rewrite of the plugin for better integration (@ikappas)
+* Updated Raven JS tracker to version 3.8.0 (@ikappas)
+
 = 1.0.1 =
 
 * Fix WP_SENTRY_VERSION already defined error (@ikappas)
@@ -62,3 +73,4 @@ Specific to JS tracker:
 == Contributors ==
 
 stayallive (https://github.com/stayallive)
+ikappas (https://github.com/ikappas)

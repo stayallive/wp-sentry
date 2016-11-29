@@ -1,34 +1,35 @@
 <?php
+
 /**
- *	Plugin Name: WordPress Sentry
- *	Plugin URI: https://github.com/stayallive/wp-sentry
- *	Description: A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
- *	Version: 1.0.1
- *	Author: Alex Bouma
- *	Author URI: https://alex.bouma.me
- *	License: MIT
+ *    Plugin Name: WordPress Sentry
+ *    Plugin URI: https://github.com/stayallive/wp-sentry
+ *    Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
+ *    Version: 2.0.0
+ *    Author: Alex Bouma
+ *    Author URI: https://alex.bouma.me
+ *    License: MIT
  */
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 // Resolve the sentry plugin file.
-define( 'WP_SENTRY_PLUGIN_FILE', call_user_func(function () {
+define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( function () {
 	global $wp_plugin_paths;
+
 	$plugin_file = __FILE__;
+
 	if ( ! empty( $wp_plugin_paths ) ) {
 		$wp_plugin_real_paths = array_flip( $wp_plugin_paths );
-		$plugin_path = wp_normalize_path( dirname( $plugin_file ) );
+		$plugin_path          = wp_normalize_path( dirname( $plugin_file ) );
+
 		if ( isset( $wp_plugin_real_paths[ $plugin_path ] ) ) {
-			$plugin_file = str_replace(
-				$plugin_path,
-				$wp_plugin_real_paths[ $plugin_path ],
-				$plugin_file
-			);
+			$plugin_file = str_replace( $plugin_path, $wp_plugin_real_paths[ $plugin_path ], $plugin_file );
 		}
 	}
+
 	return $plugin_file;
-}));
+} ) );
 
 // Define the sentry version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
@@ -39,7 +40,9 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
 	require_once __DIR__ . '/trackers/class-wp-sentry-php-tracker.php';
 
-	add_filter( 'wp_sentry_dsn', function() { return WP_SENTRY_DSN; }, 1, 0 );
+	add_filter( 'wp_sentry_dsn', function () {
+		return WP_SENTRY_DSN;
+	}, 1, 0 );
 
 	WP_Sentry_Php_Tracker::get_instance();
 }
@@ -48,23 +51,9 @@ if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
 if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! empty( WP_SENTRY_PUBLIC_DSN ) ) {
 	require_once __DIR__ . '/trackers/class-wp-sentry-js-tracker.php';
 
-	add_filter( 'wp_sentry_public_dsn', function() { return WP_SENTRY_PUBLIC_DSN; }, 1, 0 );
+	add_filter( 'wp_sentry_public_dsn', function () {
+		return WP_SENTRY_PUBLIC_DSN;
+	}, 1, 0 );
 
 	WP_Sentry_Js_Tracker::get_instance();
 }
-
-/**
- * Customize sentry options.
- *
- * @param array $options The current sentry options.
- *
- * @return array
- */
-function customize_sentry_options( array $options ) {
-	return array_merge( $options, array(
-		'tags' => array(
-			'my-custom-tag' => 'custom value',
-		),
-	));
-}
-add_filter( 'wp_sentry_options', 'my_sentry_options' );

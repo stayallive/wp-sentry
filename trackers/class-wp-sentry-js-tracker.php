@@ -12,7 +12,7 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 *
 	 * @var WP_Sentry_Js_Tracker
 	 */
-	static $instance = null;
+	private static $instance = null;
 
 	/**
 	 * Get the sentry tracker instance.
@@ -27,8 +27,6 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	protected function bootstrap() {
-		parent::bootstrap();
-
 		// Register on front-end using the highest priority.
 		add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );
 
@@ -110,10 +108,11 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			'wp-sentry-raven',
 			'wp_sentry',
 			[
-				'dsn' => $this->get_dsn(),
+				'dsn'     => $this->get_dsn(),
 				'options' => $this->get_options(),
 				'context' => $context,
 			]
 		);
 	}
+
 }
