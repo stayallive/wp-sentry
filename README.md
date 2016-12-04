@@ -2,6 +2,11 @@
 
 A (unofficial) WordPress plugin to report PHP and JavaScript errors to [Sentry](https://sentry.io).
 
+## What?
+
+This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to [Sentry](https://sentry.io) and integrates with it's release tracking.
+
+It will auto detect authenticated users and add context where possible, alle context/tags can be adjusted using filters mentioned below.
 
 ## Usage
 

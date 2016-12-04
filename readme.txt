@@ -10,7 +10,9 @@ License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
 A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
 
 == Description ==
-This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with it\'s release tracking.
+This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with it's release tracking.
+
+It will auto detect authenticated users and add context where possible, alle context/tags can be adjusted using filters mentioned below.
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
@@ -40,7 +42,7 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 `define( 'WP_SENTRY_ENV', 'production' );`
 
 == Filters ==
-This plugin provides the following filters to plugin/theme developers. For more information have a look at the README.md
+This plugin provides the following filters to plugin/theme developers. For more information have a look at the README.md file.
 
 Common to both trackers:
 - `wp_sentry_user_context`
