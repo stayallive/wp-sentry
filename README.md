@@ -207,3 +207,12 @@ function customize_public_sentry_options( array $options ) {
 add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 ```
 
+
+## Security Vulnerabilities
+
+If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at me@alexbouma.me. All security vulnerabilities will be promptly addressed.
+
+
+## License
+
+The WordPress Sentry (wp-sentry) plugin is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
