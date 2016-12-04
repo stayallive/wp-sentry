@@ -29,7 +29,7 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 `define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );`
 
-**Note:** Do not set this constant to disable the JS tracker.
+**Note:** Do not set this constant to disable the JavaScript tracker.
 
 (Optionally) define a version of your site, by default the theme version will be used. This is used for tracking on which version of your site the error occurred, combined with release tracking this is a very powerfull feature.
 

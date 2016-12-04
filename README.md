@@ -30,7 +30,7 @@ define( 'WP_SENTRY_DSN', 'DSN' );
 define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
 ```
 
-**Note:** Do not set this constant to disable the PHP tracker.
+**Note:** Do not set this constant to disable the JavaScript tracker.
 
 ---
 
@@ -143,7 +143,7 @@ Example usage:
  */
 function filter_sentry_send_data( array $data ) {
     $data['tags']['my_custom_key'] = 'my_custom_value';
-    
+
     return $data;
 }
 add_filter( 'wp_sentry_send_data', 'filter_sentry_send_data' );
