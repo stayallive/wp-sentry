@@ -4,9 +4,9 @@ A (unofficial) WordPress plugin to report PHP and JavaScript errors to [Sentry](
 
 ## What?
 
-This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to [Sentry](https://sentry.io) and integrates with it's release tracking.
+This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to [Sentry](https://sentry.io) and integrates with its release tracking.
 
-It will auto detect authenticated users and add context where possible, alle context/tags can be adjusted using filters mentioned below.
+It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
 
 ## Usage
 
@@ -14,7 +14,7 @@ It will auto detect authenticated users and add context where possible, alle con
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-**Note:** this plugin does not do anything by default and has no admin interface, a DSN must be configured first.
+**Note:** this plugin does not do anything by default and has no admin interface. A DSN must be configured first.
 
 
 ## Configuration
@@ -39,7 +39,7 @@ define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
 
 ---
 
-(Optionally) define a version of your site, by default the theme version will be used. This is used for tracking on which version of your site the error occurred, combined with release tracking this is a very powerfull feature.
+(Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
 define( 'WP_SENTRY_VERSION', 'v2.0.0' );
@@ -59,9 +59,9 @@ This plugin provides the following filters to plugin/theme developers.
 
 #### `wp_sentry_user_context` (array)
 
-You can use this filter to extend the sentry user context for both php and js trackers.
+You can use this filter to extend the Sentry user context for both php and js trackers.
 
-> **WARNING:** These values are exposed to the public so make sure you do not expose anything private !
+> **WARNING:** These values are exposed to the public, so make sure you do not expose anything private!
 
 Example usage:
 
@@ -86,7 +86,7 @@ add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 
 #### `wp_sentry_dsn` (string)
 
-You can use this filter to override the sentry dsn used for the php tracker.
+You can use this filter to override the Sentry DSN used for the php tracker.
 
 Example usage:
 
@@ -108,7 +108,7 @@ add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the sentry options used to initialize the php tracker.
+You can use this filter to customize the Sentry options used to initialize the php tracker.
 
 Example usage:
 
@@ -134,7 +134,7 @@ add_filter( 'wp_sentry_options', 'customize_sentry_options' );
 
 #### `wp_sentry_send_data` (array|bool)
 
-You can provide a function which will be called before sentry php tracker sends any data, allowing you both to mutate that data, as well as prevent it from being sent to the server.
+Provide a function which will be called before Sentry php tracker sends any data, allowing you both to mutate that data, as well as prevent it from being sent to the server.
 
 Example usage:
 
@@ -159,9 +159,9 @@ add_filter( 'wp_sentry_send_data', 'filter_sentry_send_data' );
 
 #### `wp_sentry_public_dsn` (string)
 
-You can use this filter to override the sentry dsn used for the php tracker.
+You can use this filter to override the Sentry DSN used for the php tracker.
 
-> **WARNING:** This value is exposed to the public so make sure you do not use your private dsn !
+> **WARNING:** This value is exposed to the public, so make sure you do not use your private DSN!
 
 Example usage:
 
@@ -185,7 +185,7 @@ add_filter( 'wp_sentry_public_dsn', 'customize_public_sentry_dsn' );
 
 You can use this filter to customize/override the sentry options used to initialize the php tracker.
 
-> **WARNING:** These values are exposed to the public so make sure you do not expose anything private !
+> **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
 
 Example usage:
 
@@ -210,7 +210,7 @@ add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at me@alexbouma.me. All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at me@alexbouma.me. All security vulnerabilities will be swiftly addressed.
 
 
 ## License
