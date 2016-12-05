@@ -35,7 +35,7 @@ It will auto detect authenticated users and add context where possible, alle con
 
 (Optionally) define a version of your site, by default the theme version will be used. This is used for tracking on which version of your site the error occurred, combined with release tracking this is a very powerfull feature.
 
-`define( 'WP_SENTRY_VERSION', 'v2.0.2’ );`
+`define( 'WP_SENTRY_VERSION', 'v2.0.4’ );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -59,7 +59,7 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
-= 2.0.2 =
+= 2.0.4 =
 
 * Re-release to fix SVN issues
 
