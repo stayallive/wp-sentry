@@ -47,7 +47,7 @@ This plugin provides the following filters to plugin/theme developers. For more 
 Common to both trackers:
 - `wp_sentry_user_context`
 
-Specific to php tracker:
+Specific to PHP tracker:
 
 - `wp_sentry_dsn`
 - `wp_sentry_options`

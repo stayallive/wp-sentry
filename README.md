@@ -59,7 +59,7 @@ This plugin provides the following filters to plugin/theme developers.
 
 #### `wp_sentry_user_context` (array)
 
-You can use this filter to extend the Sentry user context for both php and js trackers.
+You can use this filter to extend the Sentry user context for both PHP and JS trackers.
 
 > **WARNING:** These values are exposed to the public, so make sure you do not expose anything private!
 
@@ -86,7 +86,7 @@ add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 
 #### `wp_sentry_dsn` (string)
 
-You can use this filter to override the Sentry DSN used for the php tracker.
+You can use this filter to override the Sentry DSN used for the PHP tracker.
 
 Example usage:
 
@@ -108,7 +108,7 @@ add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the Sentry options used to initialize the php tracker.
+You can use this filter to customize the Sentry options used to initialize the PHP tracker.
 
 Example usage:
 
@@ -134,7 +134,7 @@ add_filter( 'wp_sentry_options', 'customize_sentry_options' );
 
 #### `wp_sentry_send_data` (array|bool)
 
-Provide a function which will be called before Sentry php tracker sends any data, allowing you both to mutate that data, as well as prevent it from being sent to the server.
+Provide a function which will be called before Sentry PHP tracker sends any data, allowing you both to mutate that data, as well as prevent it from being sent to the server.
 
 Example usage:
 
@@ -159,7 +159,7 @@ add_filter( 'wp_sentry_send_data', 'filter_sentry_send_data' );
 
 #### `wp_sentry_public_dsn` (string)
 
-You can use this filter to override the Sentry DSN used for the php tracker.
+You can use this filter to override the Sentry DSN used for the JS tracker.
 
 > **WARNING:** This value is exposed to the public, so make sure you do not use your private DSN!
 
@@ -183,7 +183,7 @@ add_filter( 'wp_sentry_public_dsn', 'customize_public_sentry_dsn' );
 
 #### `wp_sentry_public_options` (array)
 
-You can use this filter to customize/override the sentry options used to initialize the php tracker.
+You can use this filter to customize/override the sentry options used to initialize the JS tracker.
 
 > **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
 
