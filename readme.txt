@@ -10,30 +10,30 @@ License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
 A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
 
 == Description ==
-This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with it's release tracking.
+This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with its release tracking.
 
-It will auto detect authenticated users and add context where possible, alle context/tags can be adjusted using filters mentioned below.
+It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-**Note:** this plugin does not do anything by default and has no admin interface, a DSN must be configured.
+**Note:** this plugin does not do anything by default and has no admin interface. A Sentry DSN must be configured.
 
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `DSN` with your actual DSN that you find in Sentry:
 
 `define( 'WP_SENTRY_DSN', 'DSN' );`
 
-**Note:** Do not set this constant to disable the PHP tracker.
+**Note:** Remove or comment this constant to disable the PHP tracker.
 
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
 `define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );`
 
-**Note:** Do not set this constant to disable the JavaScript tracker.
+**Note:** Remove or comment this constant to disable the JavaScript tracker.
 
-(Optionally) define a version of your site, by default the theme version will be used. This is used for tracking on which version of your site the error occurred, combined with release tracking this is a very powerfull feature.
+(Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 `define( 'WP_SENTRY_VERSION', 'v2.0.4’ );`
 
@@ -47,7 +47,7 @@ This plugin provides the following filters to plugin/theme developers. For more 
 Common to both trackers:
 - `wp_sentry_user_context`
 
-Specific to Php tracker:
+Specific to php tracker:
 
 - `wp_sentry_dsn`
 - `wp_sentry_options`
