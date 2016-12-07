@@ -35,7 +35,7 @@ It will auto detect authenticated users and add context where possible. All cont
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v2.0.4’ );`
+`define( 'WP_SENTRY_VERSION', 'v2.0.5’ );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -59,6 +59,10 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
+= 2.0.5 =
+
+* Update Raven JS to version 3.9.0
+
 = 2.0.4 =
 
 * Re-release to fix SVN issues
