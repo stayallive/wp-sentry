@@ -60,6 +60,17 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	public function get_options() {
 		$options = parent::get_options();
 
+		// Cleanup context for JS.
+		$context = $this->get_context();
+
+		foreach ( $context as $key => $value ) {
+			if ( empty( $context[ $key ] ) ) {
+				unset( $context[ $key ] );
+			}
+		}
+
+		$options = array_merge( $options, $context );
+
 		if ( has_filter( 'wp_sentry_public_options' ) ) {
 			$options = (array) apply_filters( 'wp_sentry_public_options', $options );
 		}
@@ -92,17 +103,9 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			'wp-sentry-raven',
 			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'raven/js/raven-3.9.1.min.js',
 			[ 'jquery' ],
-			'3.9.1',
+			'3.9.1-1',
 			false
 		);
-
-		// Cleanup context for JS.
-		$context = $this->get_context();
-		foreach ( $context as $key => $value ) {
-			if ( empty( $context[ $key ] ) ) {
-				unset( $context[ $key ] );
-			}
-		}
 
 		wp_localize_script(
 			'wp-sentry-raven',
@@ -110,7 +113,6 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			[
 				'dsn'     => $this->get_dsn(),
 				'options' => $this->get_options(),
-				'context' => $context,
 			]
 		);
 	}
