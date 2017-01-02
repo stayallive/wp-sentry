@@ -2,7 +2,7 @@
 Contributors: stayallive, ikappas
 Tags: sentry,errors,tracking
 Requires at least: 4.4
-Tested up to: 4.6.1
+Tested up to: 4.7
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
