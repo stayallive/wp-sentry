@@ -31,6 +31,8 @@ class Raven_ErrorHandler
     private $old_error_handler;
     private $call_existing_error_handler = false;
     private $reservedMemory;
+    /** @var Raven_Client */
+    private $client;
     private $send_errors_last = false;
     private $fatal_error_types = array(
         E_ERROR,
@@ -59,10 +61,16 @@ class Raven_ErrorHandler
 
         $this->client = $client;
         $this->error_types = $error_types;
+        $this->fatal_error_types = array_reduce($this->fatal_error_types, array($this, 'bitwiseOr'));
         if ($send_errors_last) {
             $this->send_errors_last = true;
             $this->client->store_errors_for_bulk_send = true;
         }
+    }
+
+    public function bitwiseOr($a, $b)
+    {
+        return $a | $b;
     }
 
     public function handleException($e, $isError = false, $vars = null)
@@ -81,14 +89,13 @@ class Raven_ErrorHandler
         // E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING, and
         // most of E_STRICT raised in the file where set_error_handler() is called.
 
-        $e = new ErrorException($message, 0, $type, $file, $line);
-
         if (error_reporting() !== 0) {
             $error_types = $this->error_types;
             if ($error_types === null) {
                 $error_types = error_reporting();
             }
             if ($error_types & $type) {
+                $e = new ErrorException($message, 0, $type, $file, $line);
                 $this->handleException($e, true, $context);
             }
         }
@@ -107,6 +114,7 @@ class Raven_ErrorHandler
                 return false;
             }
         }
+        return true;
     }
 
     public function handleFatalError()
@@ -117,13 +125,18 @@ class Raven_ErrorHandler
             return;
         }
 
-        if ($error['type'] & $this->fatal_error_types) {
+        if ($this->shouldCaptureFatalError($error['type'])) {
             $e = new ErrorException(
                 @$error['message'], 0, @$error['type'],
                 @$error['file'], @$error['line']
             );
             $this->handleException($e, true);
         }
+    }
+
+    public function shouldCaptureFatalError($type)
+    {
+        return $type & $this->fatal_error_types;
     }
 
     /**
@@ -147,7 +160,8 @@ class Raven_ErrorHandler
      *
      * @param bool $call_existing Call any existing errors handlers after processing
      *                            this instance.
-     * @return array
+     * @param array $error_types All error types that should be sent.
+     * @return $this
      */
     public function registerErrorHandler($call_existing = true, $error_types = null)
     {
