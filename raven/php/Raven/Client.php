@@ -16,7 +16,7 @@
 
 class Raven_Client
 {
-    const VERSION = '1.5.0';
+    const VERSION = '1.6.2';
 
     const PROTOCOL = '6';
 
@@ -35,10 +35,11 @@ class Raven_Client
     public $severity_map;
     public $store_errors_for_bulk_send = false;
 
-    private $error_handler;
+    protected $error_handler;
+    protected $error_types;
 
-    private $serializer;
-    private $reprSerializer;
+    protected $serializer;
+    protected $reprSerializer;
 
     public function __construct($options_or_dsn=null, $options=array())
     {
@@ -88,6 +89,7 @@ class Raven_Client
         $this->trust_x_forwarded_proto = Raven_Util::get($options, 'trust_x_forwarded_proto');
         $this->transport = Raven_Util::get($options, 'transport', null);
         $this->mb_detect_order = Raven_Util::get($options, 'mb_detect_order', null);
+        $this->error_types = Raven_Util::get($options, 'error_types', null);
 
         // app path is used to determine if code is part of your application
         $this->setAppPath(Raven_Util::get($options, 'app_path', null));
@@ -134,7 +136,7 @@ class Raven_Client
         if ($this->error_handler) {
             throw new Raven_Exception(sprintf('%s->install() must only be called once', get_class($this)));
         }
-        $this->error_handler = new Raven_ErrorHandler($this);
+        $this->error_handler = new Raven_ErrorHandler($this, false, $this->error_types);
         $this->error_handler->registerExceptionHandler();
         $this->error_handler->registerErrorHandler();
         $this->error_handler->registerShutdownFunction();
@@ -571,7 +573,7 @@ class Raven_Client
     {
         $user = $this->context->user;
         if ($user === null) {
-            if (!session_id()) {
+            if (!function_exists('session_id') || !session_id()) {
                 return array();
             }
             $user = array(
@@ -881,6 +883,24 @@ class Raven_Client
         }
     }
 
+    protected function buildCurlCommand($url, $data, $headers)
+    {
+        // TODO(dcramer): support ca_cert
+        $cmd = $this->curl_path.' -X POST ';
+        foreach ($headers as $key => $value) {
+            $cmd .= '-H ' . escapeshellarg($key.': '.$value). ' ';
+        }
+        $cmd .= '-d ' . escapeshellarg($data) . ' ';
+        $cmd .= escapeshellarg($url) . ' ';
+        $cmd .= '-m 5 ';  // 5 second timeout for the whole process (connect + send)
+        if (!$this->verify_ssl) {
+            $cmd .= '-k ';
+        }
+        $cmd .= '> /dev/null 2>&1 &'; // ensure exec returns immediately while curl runs in the background
+
+        return $cmd;
+    }
+
     /**
      * Send the cURL to Sentry asynchronously. No errors will be returned from cURL
      *
@@ -891,21 +911,7 @@ class Raven_Client
      */
     private function send_http_asynchronous_curl_exec($url, $data, $headers)
     {
-        // TODO(dcramer): support ca_cert
-        $cmd = $this->curl_path.' -X POST ';
-        foreach ($headers as $key => $value) {
-            $cmd .= '-H \''. $key. ': '. $value. '\' ';
-        }
-        $cmd .= '-d \''. $data .'\' ';
-        $cmd .= '\''. $url .'\' ';
-        $cmd .= '-m 5 ';  // 5 second timeout for the whole process (connect + send)
-        if (!$this->verify_ssl) {
-            $cmd .= '-k ';
-        }
-        $cmd .= '> /dev/null 2>&1 &'; // ensure exec returns immediately while curl runs in the background
-
-        exec($cmd);
-
+        exec($this->buildCurlCommand($url, $data, $headers));
         return true; // The exec method is just fire and forget, so just assume it always works
     }
 
@@ -1162,10 +1168,19 @@ class Raven_Client
      * Sets user context.
      *
      * @param array $data   Associative array of user data
+     * @param bool $merge   Merge existing context with new context
      */
-    public function user_context($data)
+    public function user_context($data, $merge=true)
     {
-        $this->context->user = $data;
+        if ($merge && $this->context->user !== null) {
+            // bail if data is null
+            if (!$data) {
+                return;
+            }
+            $this->context->user = array_merge($this->context->user, $data);
+        } else {
+            $this->context->user = $data;
+        }
     }
 
     /**
