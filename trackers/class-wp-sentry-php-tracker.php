@@ -42,6 +42,13 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 
 		// Instantiate the client and install.
 		$this->get_client()->install()->setSendCallback( [ $this, 'on_send_data' ] );
+
+		// After the theme was setup reset the options
+		add_action( 'after_setup_theme', function () {
+			if ( has_filter( 'wp_sentry_options' ) ) {
+				$this->set_dsn( $this->get_dsn() );
+			}
+		} );
 	}
 
 	/**
@@ -75,7 +82,7 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 
 		if ( is_string( $dsn ) ) {
 			// Update Raven client
-			$options = Raven_Client::parseDSN( $dsn );
+			$options = array_merge( $this->get_options(), Raven_Client::parseDSN( $dsn ) );
 			$client  = $this->get_client();
 
 			foreach ( $options as $key => $value ) {
