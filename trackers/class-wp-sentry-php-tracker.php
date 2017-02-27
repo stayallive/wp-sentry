@@ -114,7 +114,7 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_default_options() {
-		return [
+		$options = [
 			'release'     => WP_SENTRY_VERSION,
 			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
 			'tags'        => [
@@ -123,6 +123,12 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 				'php'       => phpversion(),
 			],
 		];
+
+		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
+			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
+		}
+
+		return $options;
 	}
 
 	/**
