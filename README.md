@@ -29,6 +29,14 @@ define( 'WP_SENTRY_DSN', 'DSN' );
 
 ---
 
+(Optionally) set the error types the PHP tracker will track:
+
+```php
+define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );
+```
+
+---
+
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
 ```php
@@ -42,7 +50,7 @@ define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
-define( 'WP_SENTRY_VERSION', 'v2.0.11' );
+define( 'WP_SENTRY_VERSION', 'v2.0.12' );
 ```
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
@@ -55,13 +63,15 @@ define( 'WP_SENTRY_ENV', 'production' );
 
 This plugin provides the following filters to plugin/theme developers.
 
+Please note that some filters are fired when the Sentry trackers are initialized so they won't fire if you define them in you theme or in a plugin that loads after WP Sentry does.
+
 ### Common to PHP & JavaScript trackers
 
 #### `wp_sentry_user_context` (array)
 
 You can use this filter to extend the Sentry user context for both PHP and JS trackers.
 
-> **WARNING:** These values are exposed to the public, so make sure you do not expose anything private!
+> **WARNING:** These values are exposed to the public in the JS tracker, so make sure you do not expose anything private!
 
 Example usage:
 
@@ -80,6 +90,8 @@ function customize_sentry_user_context( array $user ) {
 }
 add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 ```
+
+**Note:** _This filter fires on the WordPress `set_current_user` action._
 
 
 ### Specific to PHP tracker:
@@ -103,6 +115,8 @@ function customize_sentry_dsn( $dsn ) {
 }
 add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 ```
+
+**Note:** _This filter fires on when WP Sentry initializes and after the WP `after_setup_theme`._
 
 ---
 
@@ -130,6 +144,8 @@ function customize_sentry_options( array $options ) {
 add_filter( 'wp_sentry_options', 'customize_sentry_options' );
 ```
 
+**Note:** _This filter fires on when WP Sentry initializes and after the WP `after_setup_theme`._
+
 ---
 
 #### `wp_sentry_send_data` (array|bool)
@@ -154,6 +170,7 @@ function filter_sentry_send_data( array $data ) {
 add_filter( 'wp_sentry_send_data', 'filter_sentry_send_data' );
 ```
 
+**Note:** _This filter fires whenever the Sentry SDK is sending data to the Sentry server._
 
 ### Specific to JS tracker
 
