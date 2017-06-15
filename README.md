@@ -225,6 +225,35 @@ add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 ```
 
 
+## Catching plugin errors
+
+Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occuring in plugins that load before it.
+
+You can remedy this by loading WordPress Sentry as a must-use plugin by creating the file `wp-content/mu-plugins/wp-sentry-integration.php` (if the `mu-plugins` directory does not exists you ust create that too).
+
+```php
+<?php
+
+/**
+ * Plugin Name: WordPress Sentry
+ * Plugin URI: https://github.com/stayallive/wp-sentry
+ * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
+ * Version: must-use-proxy
+ * Author: Alex Bouma
+ * Author URI: https://alex.bouma.me
+ * License: MIT
+ */
+
+require __DIR__ . '/../plugins/wp-sentry-integration/wp-sentry.php';
+
+define( 'WP_SENTRY_MU_LOADED', true );
+```
+
+Now `wp-sentry-integration` will load always and before all other plugins.
+
+**Note**: We advise you leave the original `wp-sentry-integration` in the `/wp-content/plugins` folder to still have updates come in through the WordPress updater. However enabling or disabling does nothing if the above script is active (since it will always be enabled).
+
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at me@alexbouma.me. All security vulnerabilities will be swiftly addressed.

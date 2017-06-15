@@ -13,6 +13,11 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// If the plugin was already loaded as a mu-plugin do not load again.
+if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
+	return;
+}
+
 // Resolve the sentry plugin file.
 define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( function () {
 	global $wp_plugin_paths;
