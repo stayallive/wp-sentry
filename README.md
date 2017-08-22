@@ -1,6 +1,6 @@
-# WordPress [Sentry](https://sentry.io) (wp-sentry)
+# [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/) (wp-sentry)
 
-A (unofficial) WordPress plugin to report PHP and JavaScript errors to [Sentry](https://sentry.io).
+A (unofficial) [WordPress plugin](https://wordpress.org/plugins/wp-sentry-integration/) to report PHP and JavaScript errors to [Sentry](https://sentry.io).
 
 ## What?
 
