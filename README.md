@@ -243,8 +243,14 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * Author URI: https://alex.bouma.me
  * License: MIT
  */
+ 
+$wp_sentry = __DIR__ . '/../plugins/wp-sentry-integration/wp-sentry.php';
 
-require __DIR__ . '/../plugins/wp-sentry-integration/wp-sentry.php';
+if ( ! file_exists( $wp_sentry ) ) {
+	return;
+}
+
+require $wp_sentry;
 
 define( 'WP_SENTRY_MU_LOADED', true );
 ```
