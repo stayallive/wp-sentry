@@ -1,0 +1,39 @@
+{
+  "name": "stayallive/wp-sentry",
+  "type": "wordpress-plugin",
+  "license": "MIT",
+  "description": "A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry",
+  "homepage": "https://github.com/stayallive/wp-sentry/",
+  "authors": [
+    {
+      "name": "Alex Bouma",
+      "homepage": "https://alex.bouma.me"
+    }
+  ],
+  "keywords": [
+    "wordpress",
+    "sentry"
+  ],
+  "support": {
+    "issues": "https://github.com/stayallive/wp-sentry/issues"
+  },
+  "autoload": {
+    "psr-0": {
+      "WP_Sentry_": "."
+    }
+  },
+  "require": {
+    "php": ">=5.4.0",
+    "composer/installers": "~1.0",
+    "sentry/sentry": "^1.7.1"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.3",
+    "wp-coding-standards/wpcs": "^0.13.1"
+  },
+  "scripts": {
+    "test": [
+      "vendor/bin/phpcs"
+    ]
+  }
+}

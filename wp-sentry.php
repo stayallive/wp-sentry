@@ -36,6 +36,11 @@ define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( function () {
 	return $plugin_file;
 } ) );
 
+// Load dependencies
+if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
+
 // Define the sentry version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
@@ -43,8 +48,6 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 
 // Load the PHP tracker if we have a private DSN
 if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
-	require_once __DIR__ . '/trackers/class-wp-sentry-php-tracker.php';
-
 	add_filter( 'wp_sentry_dsn', function () {
 		return WP_SENTRY_DSN;
 	}, 1, 0 );
@@ -54,8 +57,6 @@ if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
 
 // Load the Javascript tracker if we have a public DSN
 if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! empty( WP_SENTRY_PUBLIC_DSN ) ) {
-	require_once __DIR__ . '/trackers/class-wp-sentry-js-tracker.php';
-
 	add_filter( 'wp_sentry_public_dsn', function () {
 		return WP_SENTRY_PUBLIC_DSN;
 	}, 1, 0 );

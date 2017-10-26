@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/class-wp-sentry-tracker-base.php';
-
 /**
  * WordPress Sentry PHP Tracker.
  */
@@ -34,12 +32,6 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	protected function bootstrap() {
-		// Require the Raven PHP autoloader
-		require_once plugin_dir_path( WP_SENTRY_PLUGIN_FILE ) . 'raven/php/Raven/Autoloader.php';
-
-		// Register the autoloader.
-		Raven_Autoloader::register();
-
 		// Instantiate the client and install.
 		$this->get_client()->install()->setSendCallback( [ $this, 'on_send_data' ] );
 

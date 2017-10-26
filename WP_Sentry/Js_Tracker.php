@@ -1,7 +1,5 @@
 <?php
 
-require_once __DIR__ . '/class-wp-sentry-tracker-base.php';
-
 /**
  * WordPress Sentry Javascript Tracker.
  */
