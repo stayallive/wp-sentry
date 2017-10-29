@@ -24,6 +24,7 @@
   },
   "require": {
     "php": ">=5.4.0",
-    "sentry/sentry": "^1.7.1"
+    "sentry/sentry": "^1.7.1",
+    "composer/installers": "~1.0"
   }
 }
