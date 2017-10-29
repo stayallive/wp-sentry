@@ -18,9 +18,9 @@
     "issues": "https://github.com/stayallive/wp-sentry/issues"
   },
   "autoload": {
-    "psr-0": {
-      "WP_Sentry_": "."
-    }
+    "classmap": [
+      "src/"
+    ]
   },
   "require": {
     "php": ">=5.4.0",
