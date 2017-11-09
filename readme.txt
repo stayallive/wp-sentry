@@ -2,7 +2,7 @@
 Contributors: stayallive
 Tags: sentry, errors, tracking
 Requires at least: 4.4
-Tested up to: 4.8
+Tested up to: 4.9
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
@@ -39,7 +39,7 @@ It will auto detect authenticated users and add context where possible. All cont
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v2.1.2’ );`
+`define( 'WP_SENTRY_VERSION', 'v2.1.3’ );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -63,6 +63,11 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
+= 2.1.3 =
+
+* Tested up to WordPress 4.9
+* Update Raven PHP to version 1.8.1
+
 = 2.1.2 =
 
 * Update Raven PHP to version 1.8.0
