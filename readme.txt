@@ -3,7 +3,7 @@ Contributors: stayallive
 Tags: sentry, errors, tracking
 Requires at least: 4.4
 Tested up to: 4.9
-Requires PHP: 5.3
+Requires PHP: 5.4
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
@@ -64,6 +64,10 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
+= 2.2.0 =
+
+* Change minimum PHP requirement to 5.4
+
 = 2.1.5 =
 
 * "Fix" PHP 5.3 support (this will be the last version supporting PHP 5.3)
