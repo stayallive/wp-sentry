@@ -67,6 +67,7 @@ Specific to JS tracker:
 = 2.1.5 =
 
 * "Fix" PHP 5.3 support (this will be the last version supporting PHP 5.3)
+* Update Raven JS to version 3.22.0
 
 = 2.1.4 =
 
