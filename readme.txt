@@ -40,7 +40,7 @@ It will auto detect authenticated users and add context where possible. All cont
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v2.1.5’ );`
+`define( 'WP_SENTRY_VERSION', 'v2.2.0’ );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
