@@ -24,11 +24,11 @@ abstract class WP_Sentry_Tracker_Base {
 	 *
 	 * @var array
 	 */
-	private $context = [
+	private $context = array(
 		'user'  => null,
-		'tags'  => [],
-		'extra' => [],
-	];
+		'tags'  => array(),
+		'extra' => array(),
+	);
 
 	/**
 	 * Class constructor.
@@ -38,7 +38,7 @@ abstract class WP_Sentry_Tracker_Base {
 		$this->set_options( $this->get_default_options() );
 
 		// Set the current user when available.
-		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		add_action( 'set_current_user', array( $this, 'on_set_current_user' ) );
 
 		// Bootstrap the tracker
 		$this->bootstrap();
@@ -47,7 +47,7 @@ abstract class WP_Sentry_Tracker_Base {
 	/**
 	 * Bootstrap the tracker.
 	 */
-	protected abstract function bootstrap();
+	abstract protected function bootstrap();
 
 	/**
 	 * Target of set_current_user action.
@@ -58,20 +58,20 @@ abstract class WP_Sentry_Tracker_Base {
 		$current_user = wp_get_current_user();
 
 		// Default user context to anonymous.
-		$user_context = [
+		$user_context = array(
 			'id'   => 0,
 			'name' => 'anonymous',
-		];
+		);
 
 		// Determine whether the user is logged in assign their details.
 		if ( $current_user instanceof WP_User ) {
 			if ( $current_user->exists() ) {
-				$user_context = [
+				$user_context = array(
 					'id'       => $current_user->ID,
 					'name'     => $current_user->display_name,
 					'email'    => $current_user->user_email,
 					'username' => $current_user->user_login,
-				];
+				);
 			}
 		}
 
@@ -129,7 +129,7 @@ abstract class WP_Sentry_Tracker_Base {
 	 * @return array
 	 */
 	public function get_default_options() {
-		return [];
+		return array();
 	}
 
 	/**

@@ -47,19 +47,27 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 }
 
 // Load the PHP tracker if we have a private DSN
-if ( defined( 'WP_SENTRY_DSN' ) && ! empty( WP_SENTRY_DSN ) ) {
-	add_filter( 'wp_sentry_dsn', function () {
-		return WP_SENTRY_DSN;
-	}, 1, 0 );
+if ( defined( 'WP_SENTRY_DSN' ) ) {
+	$sentry_dsn = WP_SENTRY_DSN;
 
-	WP_Sentry_Php_Tracker::get_instance();
+	if ( ! empty( $sentry_dsn ) ) {
+		add_filter( 'wp_sentry_dsn', function () {
+			return WP_SENTRY_DSN;
+		}, 1, 0 );
+
+		WP_Sentry_Php_Tracker::get_instance();
+	}
 }
 
 // Load the Javascript tracker if we have a public DSN
-if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! empty( WP_SENTRY_PUBLIC_DSN ) ) {
-	add_filter( 'wp_sentry_public_dsn', function () {
-		return WP_SENTRY_PUBLIC_DSN;
-	}, 1, 0 );
+if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
+	$sentry_public_dsn = WP_SENTRY_PUBLIC_DSN;
 
-	WP_Sentry_Js_Tracker::get_instance();
+	if ( ! empty( $sentry_public_dsn ) ) {
+		add_filter( 'wp_sentry_public_dsn', function () {
+			return WP_SENTRY_PUBLIC_DSN;
+		}, 1, 0 );
+
+		WP_Sentry_Js_Tracker::get_instance();
+	}
 }

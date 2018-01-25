@@ -3,6 +3,7 @@ Contributors: stayallive
 Tags: sentry, errors, tracking
 Requires at least: 4.4
 Tested up to: 4.9
+Requires PHP: 5.3
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
@@ -63,6 +64,10 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
+= 2.1.5 =
+
+* "Fix" PHP 5.3 support (this will be the last version supporting PHP 5.3)
+
 = 2.1.4 =
 
 * Update Raven JS to version 3.21.0

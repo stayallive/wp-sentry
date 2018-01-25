@@ -81,14 +81,14 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return array
 	 */
 	public function get_default_options() {
-		return [
+		return array(
 			'release'     => WP_SENTRY_VERSION,
 			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
-			'tags'        => [
+			'tags'        => array(
 				'wordpress' => get_bloginfo( 'version' ),
 				'language'  => get_bloginfo( 'language' ),
-			],
-		];
+			),
+		);
 	}
 
 	/**
@@ -100,17 +100,17 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 		wp_enqueue_script(
 			'wp-sentry-raven',
 			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/raven-3.21.0.min.js',
-			[],
+			array(),
 			'3.21.0'
 		);
 
 		wp_localize_script(
 			'wp-sentry-raven',
 			'wp_sentry',
-			[
+			array(
 				'dsn'     => $this->get_dsn(),
 				'options' => $this->get_options(),
-			]
+			)
 		);
 	}
 

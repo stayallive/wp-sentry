@@ -8,6 +8,12 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
 
+## Requirements
+
+This plugin requires PHP 5.3+ but urges users to use a PHP version that is not end of life (EOL) and no longer supported. For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
+
+Version 2.1.* of this plugin will be the last to support PHP 5.3.
+
 ## Usage
 
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder

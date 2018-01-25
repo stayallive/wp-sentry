@@ -33,12 +33,15 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 */
 	protected function bootstrap() {
 		// Instantiate the client and install.
-		$this->get_client()->install()->setSendCallback( [ $this, 'on_send_data' ] );
+		$this->get_client()->install()->setSendCallback( array( $this, 'on_send_data' ) );
+
+		// This can be moved inside the closure after we drop 5.3 support.
+		$tracker = $this;
 
 		// After the theme was setup reset the options
-		add_action( 'after_setup_theme', function () {
+		add_action( 'after_setup_theme', function () use ( $tracker ) {
 			if ( has_filter( 'wp_sentry_options' ) ) {
-				$this->set_dsn( $this->get_dsn() );
+				$tracker->set_dsn( $tracker->get_dsn() );
 			}
 		} );
 	}
@@ -113,15 +116,15 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_default_options() {
-		$options = [
+		$options = array(
 			'release'     => WP_SENTRY_VERSION,
 			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
-			'tags'        => [
+			'tags'        => array(
 				'wordpress' => get_bloginfo( 'version' ),
 				'language'  => get_bloginfo( 'language' ),
-				'php'       => phpversion(),
-			],
-		];
+				'php'       => PHP_VERSION,
+			),
+		);
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
 			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
@@ -136,10 +139,7 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return Raven_Client
 	 */
 	public function get_client() {
-		return $this->client ?: $this->client = new Raven_Client(
-			$this->get_dsn(),
-			$this->get_options()
-		);
+		return $this->client ?: $this->client = new Raven_Client( $this->get_dsn(), $this->get_options() );
 	}
 
 	/**
@@ -160,7 +160,9 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_user_context() {
-		return $this->get_context()['user'];
+		$content = $this->get_context();
+
+		return $content['user'];
 	}
 
 	/**
@@ -174,7 +176,9 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_tags_context() {
-		return $this->get_context()['tags'];
+		$context = $this->get_context();
+
+		return $context['tags'];
 	}
 
 	/**
@@ -188,7 +192,9 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	 * {@inheritDoc}
 	 */
 	public function get_extra_context() {
-		return $this->get_context()['extra'];
+		$context = $this->get_context();
+
+		return $context['extra'];
 	}
 
 }
