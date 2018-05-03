@@ -99,9 +99,9 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	public function on_enqueue_scripts() {
 		wp_enqueue_script(
 			'wp-sentry-raven',
-			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/raven-3.22.0.min.js',
+			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/raven-3.24.2.min.js',
 			[],
-			'3.22.0'
+			'3.24.2'
 		);
 
 		wp_localize_script(
