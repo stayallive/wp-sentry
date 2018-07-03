@@ -230,7 +230,36 @@ function customize_public_sentry_options( array $options ) {
 }
 add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 ```
+## Catching plugin errors
 
+Allowing User Feedback for non-fatal PHP errors. Insert into the bottom of footer.php of your current theme. If the user is logged in the report will automatically fill out their user name and email, if user is logged out the form will default as anonymous.
+
+'''php
+<?php $sentry = class_exists('WP_Sentry_Php_Tracker') 
+global $current_user;
+$current_user = wp_get_current_user();
+    ? WP_Sentry_Php_Tracker::get_instance()->get_client() 
+	: null;
+
+if ($sentry !== null && !empty($sentry->getLastEventID())) : ?>
+    <p>Error ID: <?php echo $sentry->getLastEventID(); ?></p>
+
+    <!-- Sentry JS SDK 2.1.+ required -->
+    <script src="https://cdn.ravenjs.com/3.26.2/raven.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        Raven.showReportDialog({
+            eventId: '<?php echo $sentry->getLastEventID(); ?>',
+            // use the public DSN (dont include your secret!)
+            dsn: '<?php echo WP_SENTRY_PUBLIC_DSN; ?>',
+            user: {
+                'name': '<?php if ( is_user_logged_in() ) { echo $current_user->user_login; } else { echo 'Anonymou'; } ?>',
+                'email': '<?php if ( is_user_logged_in() ) { echo $current_user->$current_user->user_email; } else { echo 'Anonymous@noemail.com'; } ?>',
+            }
+        });
+    </script>
+<?php endif; ?>
+```
 
 ## Catching plugin errors
 
