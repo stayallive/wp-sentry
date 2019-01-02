@@ -129,7 +129,7 @@ add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the Sentry options used to initialize the PHP tracker.
+You can use this filter to customize the [Sentry options](https://docs.sentry.io/error-reporting/configuration/) used to initialize the PHP tracker.
 
 Example usage:
 
@@ -207,7 +207,7 @@ add_filter( 'wp_sentry_public_dsn', 'customize_public_sentry_dsn' );
 
 #### `wp_sentry_public_options` (array)
 
-You can use this filter to customize/override the sentry options used to initialize the JS tracker.
+You can use this filter to customize/override the [Sentry options](https://docs.sentry.io/error-reporting/configuration/) used to initialize the JS tracker.
 
 > **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
 
@@ -217,14 +217,19 @@ Example usage:
 /**
  * Customize public sentry options.
  *
+ * Note: Items prefixed with `regex:` in blacklistUrls and whitelistUrls option arrays
+ * will be translated into pure RegExp.
+ * 
  * @param array $options The current sentry public options.
  *
  * @return array
  */
-function customize_public_sentry_options( array $options ) {
+function customize_sentry_public_options( array $options ) {
     return array_merge( $options, array(
-        'tags' => array(
-            'custom-tag' => 'custom value',
+        'sampleRate' => '0.5',
+        'blacklistUrls' => array(
+            'https://github.com/',
+            'regex:\\w+\\.example\\.com',
         ),
     ));
 }
