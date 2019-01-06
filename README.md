@@ -129,7 +129,7 @@ add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the [Sentry options](https://docs.sentry.io/error-reporting/configuration/) used to initialize the PHP tracker.
+You can use this filter to customize the Sentry [options](https://docs.sentry.io/clients/php/config/#available-settings) used to initialize the PHP tracker.
 
 Example usage:
 
@@ -207,7 +207,7 @@ add_filter( 'wp_sentry_public_dsn', 'customize_public_sentry_dsn' );
 
 #### `wp_sentry_public_options` (array)
 
-You can use this filter to customize/override the [Sentry options](https://docs.sentry.io/error-reporting/configuration/) used to initialize the JS tracker.
+You can use this filter to customize/override the Sentry [options](https://docs.sentry.io/error-reporting/configuration/?platform=browser#common-options) used to initialize the JS tracker.
 
 > **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
 
