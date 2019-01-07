@@ -67,7 +67,9 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			}
 		}
 
-		$options = array_merge( $options, $context );
+		$options = array_merge( $options, [
+			'context' => $context
+		] );
 
 		if ( has_filter( 'wp_sentry_public_options' ) ) {
 			$options = (array) apply_filters( 'wp_sentry_public_options', $options );
@@ -109,8 +111,7 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			'wp_sentry',
 			[
 				'dsn'     => $this->get_dsn(),
-				'options' => $this->get_options(),
-			]
+			] + $this->get_options()
 		);
 	}
 
