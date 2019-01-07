@@ -205,4 +205,4 @@ This version allows the usage of the new private key-less DSN introduced in Sent
 
 == Contributors ==
 
-See: https://github.com/stayallive/wp-sentry/graphs/contributors
+See: [github.com/stayallive/wp-sentry/graphs/contributors](https://github.com/stayallive/wp-sentry/graphs/contributors)
