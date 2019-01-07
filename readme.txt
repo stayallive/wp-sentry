@@ -197,6 +197,4 @@ This version allows the usage of the new private key-less DSN introduced in Sent
 
 == Contributors ==
 
-stayallive (https://github.com/stayallive)
-ikappas (https://github.com/ikappas)
-mckernanin (https://github.com/mckernanin)
+See: https://github.com/stayallive/wp-sentry/graphs/contributors
