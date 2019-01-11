@@ -3,6 +3,4 @@
 docs
 release.sh
 vendor/bin
-composer.json
-composer.lock
 release-exclude.txt
