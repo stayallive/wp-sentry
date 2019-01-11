@@ -16,7 +16,7 @@ rm -rf /tmp/wordpress-wp-sentry-plugin-svn
 svn co http://plugins.svn.wordpress.org/wp-sentry-integration/ /tmp/wordpress-wp-sentry-plugin-svn
 
 echo "Copying files to trunk"
-rsync -Rrd --delete --exclude 'release.sh' --exclude ".*" ./ /tmp/wordpress-wp-sentry-plugin-svn/trunk/
+rsync -Rrd --delete --delete-excluded --exclude-from 'release-exclude.txt' ./ /tmp/wordpress-wp-sentry-plugin-svn/trunk/
 
 cd /tmp/wordpress-wp-sentry-plugin-svn/
 
