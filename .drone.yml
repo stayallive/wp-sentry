@@ -12,6 +12,6 @@ pipeline:
       - ./release.sh
     environment:
       - RELEASE_VERSION="${DRONE_TAG##v}"
-#    when:
-#      event: [ tag ]
-#      status: success
+    when:
+      event: [ tag ]
+      status: success

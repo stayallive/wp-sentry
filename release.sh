@@ -56,9 +56,6 @@ svn add --force * --auto-props --parents --depth infinity -q
 
 svn status
 
-echo "!> Early debug exit for testing! Nothing has changed!"
-exit 0
-
 svn commit -m "Syncing v${RELEASE_VERSION} from GitHub"
 
 echo " > Creating release tag"
