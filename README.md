@@ -57,7 +57,7 @@ define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
-define( 'WP_SENTRY_VERSION', 'v2.7.0' );
+define( 'WP_SENTRY_VERSION', 'v2.7.1' );
 ```
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
