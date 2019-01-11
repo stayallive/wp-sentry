@@ -24,12 +24,16 @@ else
     yes yes | svn --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" ls ${SVN_URL} &>/dev/null
 fi
 
-echo "=> Starting release of version v${RELEASE_VERSION}..."
+echo ""
+echo "-----------------------------------------------------"
+echo "=> Starting release of version v${RELEASE_VERSION}"
 echo "   To SVN repository hosted on: ${SVN_URL}"
 echo "   Using temporary folder: ${TMP_DIR}"
 echo "-----------------------------------------------------"
+echo ""
 
 echo " > Making sure composer vendor files are on the locked version"
+echo ""
 
 # Install the dependencies (as defined in the composer.lock) first so we can package them up
 composer install --no-dev --optimize-autoloader --no-interaction --no-progress
@@ -69,5 +73,6 @@ svn cp --parents trunk/* tags/${RELEASE_VERSION}
 
 svn commit -m "Tagging v${RELEASE_VERSION}"
 
+echo ""
 echo "-----------------------------------------------------"
 echo "=> Finished releasing version v${RELEASE_VERSION}!"
