@@ -1,0 +1,16 @@
+clone:
+  git:
+    image: plugins/git
+    depth: 1
+
+pipeline:
+  release:
+    image: stayallive/php:7.3
+    secrets: [ svn_username, svn_password ]
+    commands:
+      - ./release.sh
+    environment:
+      - RELEASE_VERSION="${DRONE_TAG##v}"
+#    when:
+#      event: [ tag ]
+#      status: success
