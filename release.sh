@@ -57,7 +57,7 @@ svn status
 if [[ -z "${SVN_USERNAME}" ]]; then
     svn commit -m "Syncing v${RELEASE_VERSION} from GitHub"
 else
-    svn commit --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" -m "Syncing v${RELEASE_VERSION} from GitHub"
+    svn commit --username "${SVN_USERNAME}" --password "{$SVN_PASSWORD}" -m "Syncing v${RELEASE_VERSION} from GitHub"
 fi
 
 echo " > Creating release tag"
@@ -68,7 +68,7 @@ svn add ${TMP_DIR}/tags/${RELEASE_VERSION}
 if [[ -z "${SVN_USERNAME}" ]]; then
     svn commit -m "Creating tag for v${RELEASE_VERSION}"
 else
-    svn commit --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" -m "Creating tag for v${RELEASE_VERSION}"
+    svn commit --username "${SVN_USERNAME}" --password "{$SVN_PASSWORD}" -m "Creating tag for v${RELEASE_VERSION}"
 fi
 
 echo " > Copying versioned files to v${RELEASE_VERSION} tag"
@@ -78,7 +78,7 @@ svn cp --parents trunk/* tags/${RELEASE_VERSION}
 if [[ -z "${SVN_USERNAME}" ]]; then
     svn commit -m "Tagging v${RELEASE_VERSION}"
 else
-    svn commit --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" -m "Tagging v${RELEASE_VERSION}"
+    svn commit --username "${SVN_USERNAME}" --password "{$SVN_PASSWORD}" -m "Tagging v${RELEASE_VERSION}"
 fi
 
 echo ""
