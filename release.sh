@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 SVN_URL="https://plugins.svn.wordpress.org/wp-sentry-integration/"
 TMP_DIR="/tmp/wordpress-wp-sentry-plugin-svn"
 
