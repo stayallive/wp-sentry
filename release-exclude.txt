@@ -1,5 +1,6 @@
 .*
 *.md
+docs
 release.sh
 vendor/bin
 composer.json

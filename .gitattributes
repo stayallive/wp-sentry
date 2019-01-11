@@ -1,0 +1,13 @@
+* text=auto
+
+# cleanup exported zip
+docs/* export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+
+# Disable diff on manifest files
+public/build/rev-manifest.json -diff
+public/build/sri-manifest.json -diff
+
+# Make sure we are not marked as a JavaScript project
+public/sentry-browser-*.js linguist-vendored
