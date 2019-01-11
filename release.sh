@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SVN_URL="http://plugins.svn.wordpress.org/wp-sentry-integration/"
+SVN_URL="https://plugins.svn.wordpress.org/wp-sentry-integration/"
 TMP_DIR="/tmp/wordpress-wp-sentry-plugin-svn"
 
 # If there is no release version ask for it
@@ -19,7 +19,7 @@ fi
 if [[ -z "${SVN_USERNAME}" ]]; then
     echo "!> Using SVN credentials stored on system or supplied interactive"
 else
-    echo "!> Using SVN credentials from environment vars"
+    echo "!> Using SVN credentials from environment variables"
 
     yes yes | svn --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" ls ${SVN_URL} &>/dev/null
 fi
@@ -32,13 +32,14 @@ echo "-----------------------------------------------------"
 echo " > Making sure composer vendor files are on the locked version"
 
 # Install the dependencies (as defined in the composer.lock) first so we can package them up
-composer install --no-dev --optimize-autoloader --no-interaction
+composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
 # Cleanup the old dir if it is there
 rm -rf /tmp/wordpress-wp-sentry-plugin-svn
 
-# Checkout the svn repo
-svn co ${SVN_URL} ${TMP_DIR}
+echo " > Checking out the SVN repository... (this might take a while)"
+
+svn co -q ${SVN_URL} ${TMP_DIR}
 
 echo " > Copying files to trunk"
 
