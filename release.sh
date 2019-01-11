@@ -20,8 +20,6 @@ if [[ -z "${SVN_USERNAME}" ]]; then
     echo "!> Using SVN credentials stored on system or supplied interactive"
 else
     echo "!> Using SVN credentials from environment variables"
-
-    yes yes | svn --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" ls ${SVN_URL} &>/dev/null
 fi
 
 echo ""
@@ -56,19 +54,32 @@ svn add --force * --auto-props --parents --depth infinity -q
 
 svn status
 
-svn commit -m "Syncing v${RELEASE_VERSION} from GitHub"
+if [[ -z "${SVN_USERNAME}" ]]; then
+    svn commit -m "Syncing v${RELEASE_VERSION} from GitHub"
+else
+    svn commit --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" -m "Syncing v${RELEASE_VERSION} from GitHub"
+fi
 
 echo " > Creating release tag"
 
 mkdir ${TMP_DIR}/tags/${RELEASE_VERSION}
 svn add ${TMP_DIR}/tags/${RELEASE_VERSION}
-svn commit -m "Creating tag for v${RELEASE_VERSION}"
+
+if [[ -z "${SVN_USERNAME}" ]]; then
+    svn commit -m "Creating tag for v${RELEASE_VERSION}"
+else
+    svn commit --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" -m "Creating tag for v${RELEASE_VERSION}"
+fi
 
 echo " > Copying versioned files to v${RELEASE_VERSION} tag"
 
 svn cp --parents trunk/* tags/${RELEASE_VERSION}
 
-svn commit -m "Tagging v${RELEASE_VERSION}"
+if [[ -z "${SVN_USERNAME}" ]]; then
+    svn commit -m "Tagging v${RELEASE_VERSION}"
+else
+    svn commit --username="${SVN_USERNAME}" --password="{$SVN_PASSWORD}" -m "Tagging v${RELEASE_VERSION}"
+fi
 
 echo ""
 echo "-----------------------------------------------------"
