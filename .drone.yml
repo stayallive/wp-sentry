@@ -16,7 +16,7 @@ steps:
       SVN_USERNAME:
         from_secret: svn_username
       SVN_PASSWORD:
-        from_password: svn_username
+        from_secret: svn_password
 
 trigger:
   event:
