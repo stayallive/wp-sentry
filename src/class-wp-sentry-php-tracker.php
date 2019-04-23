@@ -1,14 +1,19 @@
 <?php
 
+use Sentry\State\Hub;
+use Sentry\State\Scope;
+use Sentry\ClientBuilder;
+use Sentry\State\HubInterface;
+
 /**
  * WordPress Sentry PHP Tracker.
  */
-final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
+final class WP_Sentry_Php_Tracker {
 
 	/**
 	 * Holds an instance to the sentry client.
 	 *
-	 * @var Raven_Client
+	 * @var \Sentry\ClientInterface
 	 */
 	protected $client;
 
@@ -22,19 +27,28 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	/**
 	 * Get the sentry tracker instance.
 	 *
-	 * @return WP_Sentry_Php_Tracker
+	 * @return \WP_Sentry_Php_Tracker
 	 */
-	public static function get_instance() {
+	public static function get_instance(): WP_Sentry_Php_Tracker {
 		return self::$instance ?: self::$instance = new self();
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * WP_Sentry_Php_Tracker constructor.
 	 */
-	protected function bootstrap() {
-		// Instantiate the client and install.
-		$this->get_client()->install()->setSendCallback( [ $this, 'on_send_data' ] );
+	protected function __construct() {
+		// Set the current user when available.
+		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		add_action( 'after_setup_theme', [ $this, 'on_after_setup_theme' ] );
 
+		// Bootstrap the tracker
+		$this->bootstrap();
+	}
+
+	/**
+	 * Bootstrap the tracker.
+	 */
+	protected function bootstrap(): void {
 		// After the theme was setup reset the options
 		add_action( 'after_setup_theme', function () {
 			if ( has_filter( 'wp_sentry_options' ) ) {
@@ -44,50 +58,50 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	}
 
 	/**
-	 * Execute login on client send data.
-	 *
-	 * @access private
-	 *
-	 * @param array $data A reference to the data being sent.
-	 *
-	 * @return bool True to send data; Otherwise false.
+	 * Handle the `set_current_user` WP action.
 	 */
-	public function on_send_data( array &$data ) {
-		if ( has_filter( 'wp_sentry_send_data' ) ) {
-			$filtered = apply_filters( 'wp_sentry_send_data', $data );
+	public function on_set_current_user(): void {
+		$current_user = wp_get_current_user();
 
-			if ( is_array( $filtered ) ) {
-				$data = array_merge( $data, $filtered );
-			} else {
-				return (bool) $filtered;
-			}
+		// Determine whether the user is logged in assign their details.
+		$user_context = $current_user instanceof WP_User && $current_user->exists() ? [
+			'id'       => $current_user->ID,
+			'name'     => $current_user->display_name,
+			'email'    => $current_user->user_email,
+			'username' => $current_user->user_login,
+		] : [
+			'id'   => 0,
+			'name' => 'anonymous',
+		];
+
+		// Filter the user context so that plugins that manage users on their own
+		// can provide alternate user context. ie. members plugin
+		if ( has_filter( 'wp_sentry_user_context' ) ) {
+			$user_context = apply_filters( 'wp_sentry_user_context', $user_context );
 		}
 
-		return true;
+		// Finally assign the user context to the client.
+		$this->get_client()->configureScope( static function ( Scope $scope ) use ( $user_context ) {
+			$scope->setUser( $user_context );
+		} );
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Handle the `after_setup_theme` WP action.
 	 */
-	public function set_dsn( $dsn ) {
-		parent::set_dsn( $dsn );
-
-		if ( is_string( $dsn ) ) {
-			// Update Raven client
-			$options = array_merge( $this->get_options(), Raven_Client::parseDSN( $dsn ) );
-			$client  = $this->get_client();
-
-			foreach ( $options as $key => $value ) {
-				$client->$key = $value;
-			}
+	public function on_after_setup_theme(): void {
+		if ( has_filter( 'wp_sentry_options' ) ) {
+			apply_filters( 'wp_sentry_options', $this->get_client()->getClient()->getOptions() );
 		}
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Retrieve the DSN.
+	 *
+	 * @return string|null
 	 */
-	public function get_dsn() {
-		$dsn = parent::get_dsn();
+	public function get_dsn(): ?string {
+		$dsn = defined( 'WP_SENTRY_DSN' ) ? WP_SENTRY_DSN : null;
 
 		if ( has_filter( 'wp_sentry_dsn' ) ) {
 			$dsn = (string) apply_filters( 'wp_sentry_dsn', $dsn );
@@ -97,10 +111,12 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Get the options.
+	 *
+	 * @return array
 	 */
-	public function get_options() {
-		$options = parent::get_options();
+	public function get_options(): array {
+		$options = $this->get_default_options();
 
 		if ( has_filter( 'wp_sentry_options' ) ) {
 			$options = (array) apply_filters( 'wp_sentry_options', $options );
@@ -110,17 +126,52 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Get the sentry client.
+	 *
+	 * @return \Sentry\State\HubInterface
 	 */
-	public function get_default_options() {
+	public function get_client(): HubInterface {
+		if ( $this->client === null && $this->get_dsn() !== null ) {
+			$clientBuilder = ClientBuilder::create( $this->get_options() );
+
+			$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
+			$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
+
+			Hub::setCurrent( new Hub( $this->client = $clientBuilder->getClient() ) );
+
+			Hub::getCurrent()->configureScope( function ( Scope $scope ) {
+				foreach ( $this->get_default_tags() as $tag => $value ) {
+					$scope->setTag( $tag, $value );
+				}
+			} );
+		}
+
+		return Hub::getCurrent();
+	}
+
+	/**
+	 * Get the default tags.
+	 *
+	 * @return array
+	 */
+	public function get_default_tags(): array {
+		return [
+			'wordpress' => get_bloginfo( 'version' ),
+			'language'  => get_bloginfo( 'language' ),
+			'php'       => phpversion(),
+		];
+	}
+
+	/**
+	 * Get the default options.
+	 *
+	 * @return array
+	 */
+	public function get_default_options(): array {
 		$options = [
+			'dsn'         => $this->get_dsn(),
 			'release'     => WP_SENTRY_VERSION,
 			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
-			'tags'        => [
-				'wordpress' => get_bloginfo( 'version' ),
-				'language'  => get_bloginfo( 'language' ),
-				'php'       => phpversion(),
-			],
 		];
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
@@ -128,67 +179,6 @@ final class WP_Sentry_Php_Tracker extends WP_Sentry_Tracker_Base {
 		}
 
 		return $options;
-	}
-
-	/**
-	 * Get the sentry client.
-	 *
-	 * @return Raven_Client
-	 */
-	public function get_client() {
-		return $this->client ?: $this->client = new Raven_Client(
-			$this->get_dsn(),
-			$this->get_options()
-		);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function get_context() {
-		return (array) $this->get_client()->context;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function set_user_context( array $data ) {
-		$this->get_client()->user_context( $data );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function get_user_context() {
-		return $this->get_context()['user'];
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function set_tags_context( array $data ) {
-		$this->get_client()->tags_context( $data );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function get_tags_context() {
-		return $this->get_context()['tags'];
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function set_extra_context( array $data ) {
-		$this->get_client()->extra_context( $data );
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public function get_extra_context() {
-		return $this->get_context()['extra'];
 	}
 
 }

@@ -2,8 +2,8 @@
 Contributors: stayallive
 Tags: sentry, errors, tracking
 Requires at least: 4.4
-Tested up to: 5.0
-Requires PHP: 5.4
+Tested up to: 5.1
+Requires PHP: 7.1
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
@@ -22,19 +22,19 @@ It will auto detect authenticated users and add context where possible. All cont
 
 **Note:** this plugin does not do anything by default and has no admin interface. A Sentry DSN must be configured.
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `DSN` with your actual DSN that you find in Sentry:
+(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find in Sentry:
 
-`define( 'WP_SENTRY_DSN', 'DSN' );`
+`define( 'WP_SENTRY_DSN', 'PHP_DSN' );`
+
+**Note:** Remove or comment this constant to disable the PHP tracker.
 
 (Optionally) set the error types the PHP tracker will track:
 
 `define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );`
 
-**Note:** Remove or comment this constant to disable the PHP tracker.
+(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry:
 
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
-
-`define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );`
+`define( 'WP_SENTRY_PUBLIC_DSN', 'JS_DSN' );`
 
 **Note:** Remove or comment this constant to disable the JavaScript tracker.
 
@@ -50,13 +50,13 @@ It will auto detect authenticated users and add context where possible. All cont
 This plugin provides the following filters to plugin/theme developers. For more information have a look at the README.md file.
 
 Common to both trackers:
+
 - `wp_sentry_user_context`
 
 Specific to PHP tracker:
 
 - `wp_sentry_dsn`
 - `wp_sentry_options`
-- `wp_sentry_send_data`
 
 Specific to JS tracker:
 
@@ -64,6 +64,16 @@ Specific to JS tracker:
 - `wp_sentry_public_options`
 
 == Changelog ==
+= 3.0.0 =
+
+Note: This is a *breaking release* for the PHP tracker, the base SDK was updated to 2.0 which has many changes!
+
+If you are doing anything more than just have this plugin installed, check out the upgrade docs: https://github.com/getsentry/sentry-php/blob/master/UPGRADE-2.0.md
+
+This plugin also has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
+
+* Update PHP SDK to version 2.0.1
+
 = 2.7.2 =
 
 * Remove unneeded files from the plugin download

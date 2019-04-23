@@ -10,10 +10,15 @@ It will auto detect authenticated users and add context where possible. All cont
 
 ## Requirements
 
-This plugin requires PHP 5.4+ but urges users to use a PHP version that is not end of life (EOL) and no longer supported. For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
+This plugin requires PHP 7.1+ starting from version 3.0.0.
+
+If you are on older PHP versions you can use version 2.x.
+
+> Please do use a PHP version that is not end of life (EOL) and no longer supported. 
+For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
 
 Version 2.1.* of this plugin will be the last to support PHP 5.3.
-Version 2.2.* of this plugin will be the last to support PHP 5.4.
+Version 2.7.* of this plugin will be the last to support PHP 5.4.
 
 ## Usage
 
@@ -26,10 +31,10 @@ Version 2.2.* of this plugin will be the last to support PHP 5.4.
 
 ## Configuration
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `DSN` with your actual DSN that you find in Sentry:
+(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find in Sentry:
 
 ```php
-define( 'WP_SENTRY_DSN', 'DSN' );
+define( 'WP_SENTRY_DSN', 'PHP_DSN' );
 ```
 
 **Note:** Do not set this constant to disable the PHP tracker.
@@ -44,10 +49,10 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 ---
 
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `PUBLIC_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
+(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
 ```php
-define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
+define( 'WP_SENTRY_PUBLIC_DSN', 'JS_DSN' );
 ```
 
 **Note:** Do not set this constant to disable the JavaScript tracker.
@@ -57,7 +62,7 @@ define( 'WP_SENTRY_PUBLIC_DSN', 'PUBLIC_DSN' );
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
-define( 'WP_SENTRY_VERSION', 'v2.7.2' );
+define( 'WP_SENTRY_VERSION', 'v3.0.0' );
 ```
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
@@ -65,6 +70,7 @@ define( 'WP_SENTRY_VERSION', 'v2.7.2' );
 ```php
 define( 'WP_SENTRY_ENV', 'production' );
 ```
+
 
 ## Filters
 
@@ -100,7 +106,6 @@ add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 
 **Note:** _This filter fires on the WordPress `set_current_user` action._
 
-
 ### Specific to PHP tracker:
 
 #### `wp_sentry_dsn` (string)
@@ -123,13 +128,13 @@ function customize_sentry_dsn( $dsn ) {
 add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 ```
 
-**Note:** _This filter fires on when WP Sentry initializes and after the WP `after_setup_theme`._
+**Note:** _This filter fires on when WP Sentry initializes. To change the DSN at runtime use the `wp_sentry_options` filter or set the DSN to the client directly._
 
 ---
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the Sentry [options](https://docs.sentry.io/clients/php/config/#available-settings) used to initialize the PHP tracker.
+You can use this filter to customize the Sentry [options](https://docs.sentry.io/error-reporting/configuration/?platform=php) used to initialize the PHP tracker.
 
 Example usage:
 
@@ -141,43 +146,14 @@ Example usage:
  *
  * @return array
  */
-function customize_sentry_options( array $options ) {
-    return array_merge( $options, array(
-        'tags' => array(
-            'my-custom-tag' => 'custom value',
-        ),
-    ));
+function customize_sentry_options( \Sentry\Options $options ) {
+    // Only sample 90% of the events
+    $options->setSampleRate(0.9);
 }
 add_filter( 'wp_sentry_options', 'customize_sentry_options' );
 ```
 
-**Note:** _This filter fires on when WP Sentry initializes and after the WP `after_setup_theme`._
-
----
-
-#### `wp_sentry_send_data` (array|bool)
-
-Provide a function which will be called before Sentry PHP tracker sends any data, allowing you both to mutate that data, as well as prevent it from being sent to the server.
-
-Example usage:
-
-```php
-/**
- * Customize sentry send data.
- *
- * @param array $data The sentry send data.
- *
- * @return array|bool Return the data array or false to cancel the send operation.
- */
-function filter_sentry_send_data( array $data ) {
-    $data['tags']['my_custom_key'] = 'my_custom_value';
-
-    return $data;
-}
-add_filter( 'wp_sentry_send_data', 'filter_sentry_send_data' );
-```
-
-**Note:** _This filter fires whenever the Sentry SDK is sending data to the Sentry server._
+**Note:** _This filter fires on the WordPress `after_setup_theme` action._
 
 ### Specific to JS tracker
 

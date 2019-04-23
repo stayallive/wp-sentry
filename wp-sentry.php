@@ -19,7 +19,7 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 }
 
 // Resolve the sentry plugin file.
-define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( function () {
+define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( static function () {
 	global $wp_plugin_paths;
 
 	$plugin_file = __FILE__;
@@ -51,7 +51,7 @@ if ( defined( 'WP_SENTRY_DSN' ) ) {
 	$sentry_dsn = WP_SENTRY_DSN;
 
 	if ( ! empty( $sentry_dsn ) ) {
-		add_filter( 'wp_sentry_dsn', function () {
+		add_filter( 'wp_sentry_dsn', static function () {
 			return WP_SENTRY_DSN;
 		}, 1, 0 );
 
@@ -64,10 +64,38 @@ if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 	$sentry_public_dsn = WP_SENTRY_PUBLIC_DSN;
 
 	if ( ! empty( $sentry_public_dsn ) ) {
-		add_filter( 'wp_sentry_public_dsn', function () {
+		add_filter( 'wp_sentry_public_dsn', static function () {
 			return WP_SENTRY_PUBLIC_DSN;
 		}, 1, 0 );
 
 		WP_Sentry_Js_Tracker::get_instance();
 	}
+}
+
+// Register a "safe" function to call Sentry functions safer in your own code,
+// the callback only executed if a DSN was set and thus the client is able to sent events.
+//
+// Usage:
+//if ( function_exists( 'wp_sentry_safe' ) ) {
+//	wp_sentry_safe( function ( \Sentry\State\HubInterface $client ) {
+//		$client->captureMessage( 'This is a test message!', \Sentry\Severity::debug() );
+//	} );
+//}
+if ( ! function_exists( 'wp_sentry_safe' ) ) {
+
+	/**
+	 * Call the callback with the Sentry client, or not at all if there is no client.
+	 *
+	 * @param callable $callback
+	 */
+	function wp_sentry_safe( callable $callback ) {
+		if ( class_exists( 'WP_Sentry_Php_Tracker' ) ) {
+			$tracker = WP_Sentry_Php_Tracker::get_instance();
+
+			if ( ! empty( $tracker->get_dsn() ) ) {
+				$callback( $tracker->get_client() );
+			}
+		}
+	}
+
 }
