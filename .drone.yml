@@ -1,17 +1,24 @@
-clone:
-  git:
-    image: plugins/git
-    depth: 1
+kind: pipeline
+name: release
 
-pipeline:
-  release:
+clone:
+  depth: 1
+
+steps:
+  - name: wp-plugin
+    pull: always
     image: stayallive/php:7.3
-    secrets: [ svn_username, svn_password ]
     commands:
       - docker-php-ext-enable zip
       - ./release.sh
     environment:
-      - RELEASE_VERSION=${DRONE_TAG##v}
-    when:
-      event: [ tag ]
-      status: success
+      RELEASE_VERSION: ${DRONE_TAG##v}
+      SVN_USERNAME:
+        from_secret: svn_username
+      SVN_PASSWORD:
+        from_password: svn_username
+
+when:
+  event:
+    include:
+      - tag
