@@ -18,7 +18,7 @@ steps:
       SVN_PASSWORD:
         from_password: svn_username
 
-when:
+trigger:
   event:
     include:
       - tag
