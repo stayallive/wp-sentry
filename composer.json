@@ -23,7 +23,7 @@
     }
   },
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.0",
     "sentry/sdk": "^2.0.2",
     "composer/installers": "~1.0"
   }
