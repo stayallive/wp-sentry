@@ -19,7 +19,7 @@
   },
   "autoload": {
     "psr-4": {
-      "SentryWP\\": "src/"
+      "WPSentry\\": "src/"
     }
   },
   "require": {
