@@ -62,6 +62,13 @@ defined( 'WP_SENTRY_AUTOLOAD_FILE' ) or define( 'WP_SENTRY_AUTOLOAD_FILE', dirna
  * @since 3.0.0
  */
 defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  dirname( WP_SENTRY_PLUGIN_FILE ) . '//config/' );
+
+/**
+ * Define the sentry js script version to load in the browser
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_SCRIPT_VERSION' ) || define( 'WP_SENTRY_SCRIPT_VERSION', '4.6.6' );
+
 }
 
 // Load the PHP tracker if we have a private DSN
