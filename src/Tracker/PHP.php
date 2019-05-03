@@ -9,6 +9,7 @@ use WPSentry\Tracker\TrackerBase;
 /**
  * Implement Sentry.io for PHP
  *
+ * @package WPSentry\Tracker;
  * @since 3.0.0
  */
 class PHP extends TrackerBase {
@@ -25,8 +26,8 @@ class PHP extends TrackerBase {
     Sentry\init( $this->get_init_config() );
 
     add_action( 'set_current_user', [ $this, 'provide_user_context' ] );
-    add_action( 'add_theme_support', [ $this, 'provide_tags_context' ] );
-    add_action( 'add_theme_support', [ $this, 'provide_extra_context' ] );
+    add_action( 'plugins_loaded', [ $this, 'provide_tags_context' ] );
+    add_action( 'plugins_loaded', [ $this, 'provide_extra_context' ] );
 
   }
 
@@ -107,8 +108,7 @@ class PHP extends TrackerBase {
   /**
    * Get initial runtime configurations to pass along to Sentry.
    *
-   * This configuration is filterable via `wp_sentry_options` to allow plugins and
-   * themes to manage their own context.
+   * Available Filter: 'wp_sentry_options' - allow plugins to manage their own context.
    *
    * @uses array_filter() to clean out empty properties from the array before returning.
    * @return array
