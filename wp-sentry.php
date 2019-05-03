@@ -56,9 +56,6 @@ if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
  */
 defined( 'WP_SENTRY_AUTOLOAD_FILE' ) or define( 'WP_SENTRY_AUTOLOAD_FILE', dirname( WP_SENTRY_PLUGIN_FILE ) . '/vendor/autoload.php' );
 
-// Define the sentry version.
-if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
-	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
 /**
  * The plugin's config folder location.
  *
