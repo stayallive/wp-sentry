@@ -1,0 +1,22 @@
+{
+  "name": "stayallive-wp-sentry",
+  "version": "3.0.0",
+  "description": "A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry",
+  "repository": "https://github.com/CreativeFuse/cf.theme.fuse.git",
+  "author": "Alex Bouma",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stayallive/wp-sentry/issues"
+  },
+  "homepage": "https://github.com/stayallive/wp-sentry/",
+  "devDependencies": {
+    "parcel-bundler": "^1.12.3"
+  },
+  "dependencies": {
+    "@sentry/browser": "^5.1.2"
+  },
+  "scripts": {
+    "dev": "parcel watch ./assets/js/wp-sentry.js",
+    "build": "parcel build ./assets/js/wp-sentry.js"
+  }
+}

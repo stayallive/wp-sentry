@@ -52,20 +52,26 @@ class JS extends TrackerBase{
     $this->context->hydrate_tags_context();
     $this->context->hydrate_extra_context();
 
+    $script_data = [
+
+      'init_options' => $this->get_init_config(),
+      'context'      => $this->context->config->get(),
+
+    ];
+
+
+    // TODO: Generate content hash on wp-sentry.js compile and dynamically reference it from a manifest when enqueuing
     wp_enqueue_script(
       'wp-sentry-browser',
-      WP_SENTRY_PLUGIN_DIR_URL . 'public/sentry-browser-' . WP_SENTRY_SCRIPT_VERSION . '.min.js',
+      WP_SENTRY_PLUGIN_DIR_URL . 'dist/wp-sentry.js',
       [],
-			WP_SENTRY_PLUGIN_VERSION
+      ''
     );
 
     wp_localize_script(
       'wp-sentry-browser',
       'wp_sentry',
-      [
-        $this->get_init_config(),
-        $this->context->config->get(),
-      ]
+      $script_data
     );
 
   }
