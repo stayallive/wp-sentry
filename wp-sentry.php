@@ -49,6 +49,12 @@ defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_URL', plu
 if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
+/**
+ * The composer autoload, absolute unix path.
+ *
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_AUTOLOAD_FILE' ) or define( 'WP_SENTRY_AUTOLOAD_FILE', dirname( WP_SENTRY_PLUGIN_FILE ) . '/vendor/autoload.php' );
 
 // Define the sentry version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
