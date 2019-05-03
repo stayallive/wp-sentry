@@ -22,30 +22,35 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 
 /**
  * Define the current plugin version
+ *
  * @since 3.0.0
  */
 defined( 'WP_SENTRY_PLUGIN_VERSION' ) || define( 'WP_SENTRY_PLUGIN_VERSION', '3.0.0' );
 
 /**
  * Establish a minimum PHP Version for WP Sentry
+ *
  * @since 3.0.0
  */
 defined ( 'WP_SENTRY_MIN_PHP_VERSION' ) || define( 'WP_SENTRY_MIN_PHP_VERSION', '7.0' );
 
 /**
  * Define a Text Domain for WP Sentry.
+ *
  * @since 3.0.0
  */
 defined( 'WP_SENTRY_TEXT_DOMAIN' ) || define( 'WP_SENTRY_TEXT_DOMAIN', 'wp-sentry' );
 
 /**
  * Resolve the Sentry Plugin File
+ *
  * @since 1.0.0
  */
 defined( 'WP_SENTRY_PLUGIN_FILE' ) || define( 'WP_SENTRY_PLUGIN_FILE', __FILE__ );
 
 /**
  * Resolve the Sentry Plugin DIR url for enqueuing assets
+ *
  * @since 3.0.0
  */
 defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
@@ -66,6 +71,7 @@ defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  dirname( W
 
 /**
  * Define the sentry js script version to load in the browser
+ *
  * @since 3.0.0
  */
 defined( 'WP_SENTRY_SCRIPT_VERSION' ) || define( 'WP_SENTRY_SCRIPT_VERSION', '4.6.6' );
