@@ -11,7 +11,7 @@ use Sentry;
  * This class holds shared configuration and functionality
  * for various Sentry.io implementations
  *
- * @package WPSentry\Context;
+ * @package WPSentry\Tracker;
  * @since 3.0.0
  */
 abstract class TrackerBase{
