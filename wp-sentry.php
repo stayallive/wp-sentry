@@ -45,10 +45,6 @@ defined( 'WP_SENTRY_PLUGIN_FILE' ) || define( 'WP_SENTRY_PLUGIN_FILE', __FILE__ 
  */
 defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
 
-// Load dependencies
-if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
-	require_once __DIR__ . '/vendor/autoload.php';
-}
 /**
  * The composer autoload, absolute unix path.
  *
@@ -84,31 +80,52 @@ if( defined( 'WP_SENTRY_DSN' ) && ! defined( 'WP_SENTRY_PHP_DSN' ) ){
   define( 'WP_SENTRY_PHP_DSN', WP_SENTRY_DSN );
 }
 
-// Load the PHP tracker if we have a private DSN
-if ( defined( 'WP_SENTRY_DSN' ) ) {
-	$sentry_dsn = WP_SENTRY_DSN;
 if( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! defined( 'WP_SENTRY_JS_DSN' ) ){
   define( 'WP_SENTRY_JS_DSN', WP_SENTRY_PUBLIC_DSN );
 }
 
-	if ( ! empty( $sentry_dsn ) ) {
-		add_filter( 'wp_sentry_dsn', function () {
-			return WP_SENTRY_DSN;
-		}, 1, 0 );
 
-		WP_Sentry_Php_Tracker::get_instance();
-	}
+/**
+ * Run the plugin if:
+ *
+ * 1. A DSN is defined
+ * 2. An instance of the abstract class TrackerBase does not already exist
+ *
+ * @since 3.0.0
+ */
+if( ! class_exists( '\WPSentry\Tracker\TrackerBase' ) ){
+  run_wp_sentry();
 }
 
-// Load the Javascript tracker if we have a public DSN
-if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
-	$sentry_public_dsn = WP_SENTRY_PUBLIC_DSN;
+/**
+ * The function responsible for running the Wordpress Sentry Plugin
+ *
+ * @since 3.0.0
+ */
+function run_wp_sentry(){
 
-	if ( ! empty( $sentry_public_dsn ) ) {
-		add_filter( 'wp_sentry_public_dsn', function () {
-			return WP_SENTRY_PUBLIC_DSN;
-		}, 1, 0 );
+  // Load dependencies
+  require_once WP_SENTRY_AUTOLOAD_FILE;
 
-		WP_Sentry_Js_Tracker::get_instance();
-	}
+  // Instantiate the Context provider
+  $context_config = new \WPSentry\Config\Config( WP_SENTRY_CONFIG_DIR . 'context.php' );
+  $context = new \WPSentry\Context\Context( $context_config );
+
+  // Get init runtime configs
+  $init_config = new \WPSentry\Config\Config( WP_SENTRY_CONFIG_DIR . 'init.php' );
+
+  // Instantiate Sentry PHP Tracker if required DSN is defined
+  if( defined( 'WP_SENTRY_PHP_DSN' ) ){
+
+    $sentry_php = new \WPSentry\Tracker\PHP( WP_SENTRY_PHP_DSN, $init_config, $context );
+
+  }
+
+  // Instantiate Sentry JS Tracker if required DSN is defined
+  if( defined( 'WP_SENTRY_JS_DSN' ) ){
+
+    $sentry_js = new \WPSentry\Tracker\JS( WP_SENTRY_JS_DSN, $init_config, $context );
+
+  }
+
 }
