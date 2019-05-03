@@ -20,33 +20,25 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 	return;
 }
 
-// Resolve the sentry plugin file.
-define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( function () {
-	global $wp_plugin_paths;
 
-	$plugin_file = __FILE__;
 /**
  * Establish a minimum PHP Version for WP Sentry
  * @since 3.0.0
  */
 defined ( 'WP_SENTRY_MIN_PHP_VERSION' ) || define( 'WP_SENTRY_MIN_PHP_VERSION', '7.0' );
 
-	if ( ! empty( $wp_plugin_paths ) ) {
-		$wp_plugin_real_paths = array_flip( $wp_plugin_paths );
-		$plugin_path          = wp_normalize_path( dirname( $plugin_file ) );
 /**
  * Define a Text Domain for WP Sentry.
  * @since 3.0.0
  */
 defined( 'WP_SENTRY_TEXT_DOMAIN' ) || define( 'WP_SENTRY_TEXT_DOMAIN', 'wp-sentry' );
 
-		if ( isset( $wp_plugin_real_paths[ $plugin_path ] ) ) {
-			$plugin_file = str_replace( $plugin_path, $wp_plugin_real_paths[ $plugin_path ], $plugin_file );
-		}
-	}
+/**
+ * Resolve the Sentry Plugin File
+ * @since 1.0.0
+ */
+defined( 'WP_SENTRY_PLUGIN_FILE' ) || define( 'WP_SENTRY_PLUGIN_FILE', __FILE__ );
 
-	return $plugin_file;
-} ) );
 
 // Load dependencies
 if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
