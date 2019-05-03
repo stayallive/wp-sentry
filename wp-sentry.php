@@ -59,6 +59,12 @@ defined( 'WP_SENTRY_AUTOLOAD_FILE' ) or define( 'WP_SENTRY_AUTOLOAD_FILE', dirna
 // Define the sentry version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
+/**
+ * The plugin's config folder location.
+ *
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  dirname( WP_SENTRY_PLUGIN_FILE ) . '//config/' );
 }
 
 // Load the PHP tracker if we have a private DSN
