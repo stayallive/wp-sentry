@@ -39,6 +39,11 @@ defined( 'WP_SENTRY_TEXT_DOMAIN' ) || define( 'WP_SENTRY_TEXT_DOMAIN', 'wp-sentr
  */
 defined( 'WP_SENTRY_PLUGIN_FILE' ) || define( 'WP_SENTRY_PLUGIN_FILE', __FILE__ );
 
+/**
+ * Resolve the Sentry Plugin DIR url for enqueuing assets
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_URL', plugin_dir_url( __FILE__ ) );
 
 // Load dependencies
 if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
