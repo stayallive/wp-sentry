@@ -69,11 +69,27 @@ defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  dirname( W
  */
 defined( 'WP_SENTRY_SCRIPT_VERSION' ) || define( 'WP_SENTRY_SCRIPT_VERSION', '4.6.6' );
 
+/**
+ * Re-map deprecated dsn constants to new constant values
+ * if they exist.
+ *
+ * Note that Sentry no longer has "secret"
+ * and "public" dsn. The dsn is unified and never includes
+ * a secret, so now we are just differentiating between
+ * "PHP" and "JS" dsn instead of referencing dsn scope in the name.
+ *
+ * @since 3.0.0
+ */
+if( defined( 'WP_SENTRY_DSN' ) && ! defined( 'WP_SENTRY_PHP_DSN' ) ){
+  define( 'WP_SENTRY_PHP_DSN', WP_SENTRY_DSN );
 }
 
 // Load the PHP tracker if we have a private DSN
 if ( defined( 'WP_SENTRY_DSN' ) ) {
 	$sentry_dsn = WP_SENTRY_DSN;
+if( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! defined( 'WP_SENTRY_JS_DSN' ) ){
+  define( 'WP_SENTRY_JS_DSN', WP_SENTRY_PUBLIC_DSN );
+}
 
 	if ( ! empty( $sentry_dsn ) ) {
 		add_filter( 'wp_sentry_dsn', function () {
