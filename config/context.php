@@ -12,7 +12,10 @@
     'name' => 'anonymous',
 
   ],
-  'tags' => [],
+  'tags'  => [],
   'extra' => [],
+
+  // Default from
+  'level' => 'error',
 
  ];

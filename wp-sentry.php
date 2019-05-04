@@ -50,15 +50,16 @@ defined( 'WP_SENTRY_PLUGIN_FILE' ) || define( 'WP_SENTRY_PLUGIN_FILE', __FILE__ 
 defined( 'WP_SENTRY_BOOTSTRAP_DIR' ) || define( 'WP_SENTRY_BOOTSTRAP_DIR', dirname( WP_SENTRY_PLUGIN_FILE ) . '/bootstrap/' );
 
 /**
- * The function responsible for running the Wordpress Sentry Plugin
+ * The function responsible for running the plugin setup process.
  *
  * @since 3.0.0
  */
 function run_wp_sentry(){
 
-  // Load dependencies
+  // Load constant definitions
   require_once WP_SENTRY_BOOTSTRAP_DIR . '/define.php';
 
+  // Load plugin setup
   require_once WP_SENTRY_BOOTSTRAP_DIR . '/setup.php';
 
 }
