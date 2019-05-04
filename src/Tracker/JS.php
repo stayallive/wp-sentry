@@ -5,6 +5,9 @@ use WPSentry\Config\ConfigInterface;
 use WPSentry\Context\Context;
 use WPSentry\Tracker\TrackerBase;
 
+// Exit if plugin isn't running
+defined( 'WP_SENTRY_EXISTS' ) || exit;
+
 /**
  * Implement Sentry.io for Javascript
  *

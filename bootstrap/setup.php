@@ -5,7 +5,8 @@ namespace WPSentry;
  * @package WPSentry/Bootstrap
  */
 
-defined( 'WP_SENTRY_PRESENT' ) || die;
+// Exit if plugin isn't running
+defined( 'WP_SENTRY_EXISTS' ) || exit;
 
 (function() {
 

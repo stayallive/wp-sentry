@@ -5,6 +5,9 @@ use WPSentry\Config\ConfigInterface;
 use WPSentry\Context\Context;
 use Sentry;
 
+// Exit if plugin isn't running
+defined( 'WP_SENTRY_EXISTS' ) || exit;
+
 /**
  * Wordpress Sentry Tracker Base Abstract class
  *

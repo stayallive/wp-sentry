@@ -2,6 +2,9 @@
 namespace WPSentry\Context;
 use WPSentry\Config\ConfigInterface;
 
+// Exit if plugin isn't running
+defined( 'WP_SENTRY_EXISTS' ) || exit;
+
 /**
  * Wordpress Sentry Context class
  *

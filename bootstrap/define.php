@@ -2,7 +2,9 @@
 /**
  * @package WPSentry/Bootstrap
  */
-defined( 'ABSPATH' ) || die;
+
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Tells the world the plugin is present and ready to be used.
@@ -13,7 +15,7 @@ defined( 'ABSPATH' ) || die;
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_PRESENT', true );
+define( 'WP_SENTRY_EXISTS', true );
 
 /**
  * Define a Text Domain for WP Sentry.

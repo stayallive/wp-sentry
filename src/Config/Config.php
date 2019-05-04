@@ -6,6 +6,9 @@ use ArrayObject;
 use Exception;
 use RuntimeException;
 
+// Exit if plugin isn't running
+defined( 'WP_SENTRY_EXISTS' ) || exit;
+
 /**
  * Class Config.
  *
