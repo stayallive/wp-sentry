@@ -26,11 +26,30 @@ final class PHP extends TrackerBase {
    */
 	protected function bootstrap(){
 
+    $this->init_sentry();
+    $this->set_error_severity_level();
+
+    add_action( 'wp_sentry_user_context_hydrated', [ $this, 'provide_user_context' ] );
+    add_action( 'wp_sentry_tags_context_hydrated', [ $this, 'provide_tags_context' ] );
+    add_action( 'wp_sentry_extra_context_hydrated', [ $this, 'provide_extra_context' ] );
+
+  }
+
+  private function init_sentry(){
+
     Sentry\init( $this->get_init_config() );
 
-    add_action( 'set_current_user', [ $this, 'provide_user_context' ] );
-    add_action( 'plugins_loaded', [ $this, 'provide_tags_context' ] );
-    add_action( 'plugins_loaded', [ $this, 'provide_extra_context' ] );
+  }
+
+  private function set_error_severity_level(){
+
+    Sentry\configureScope(function (Sentry\State\Scope $scope): void {
+
+      $level = $this->context->config->get( 'level' );
+
+      $scope->setLevel( Sentry\Severity::$level() );
+
+    });
 
   }
 
@@ -41,8 +60,6 @@ final class PHP extends TrackerBase {
    * @since 3.0.0
    */
   public function provide_user_context(){
-
-    $this->context->hydrate_user_context();
 
     Sentry\configureScope(function (Sentry\State\Scope $scope){
 
@@ -59,8 +76,6 @@ final class PHP extends TrackerBase {
    * @since 3.0.0
    */
   public function provide_tags_context(){
-
-    $this->context->hydrate_tags_context();
 
 		Sentry\configureScope(function (Sentry\State\Scope $scope){
 
@@ -87,8 +102,6 @@ final class PHP extends TrackerBase {
    * @since 3.0.0
    */
   public function provide_extra_context(){
-
-    $this->context->hydrate_extra_context();
 
     Sentry\configureScope(function (Sentry\State\Scope $scope){
 
