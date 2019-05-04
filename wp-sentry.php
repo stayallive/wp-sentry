@@ -16,7 +16,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // If the plugin was already loaded, do not load again.
-if ( defined( 'WP_SENTRY_PRESENT' ) ) {
+if ( defined( 'WP_SENTRY_EXISTS' ) ) {
 	return;
 }
 
