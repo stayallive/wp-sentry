@@ -42,7 +42,16 @@
    */
   'extra' => [],
 
-  // Default from
-  'level' => 'error',
+  /**
+   * Default 'Level' context config
+   * You can set the severity of an event to one of five values:
+   * ‘fatal’, ‘error’, ‘warning’, ‘info’, and ‘debug’. (‘error’ is the default.)
+   *
+   * Available Filter: `wp_sentry_level_context` - allow the level context to be set elsewhere
+   *
+   * @link https://docs.sentry.io/enriching-error-data/context/?platform=php#setting-the-level
+   * @since 3.0.0
+   */
+  'level' => (string) apply_filters( 'wp_sentry_level_context', 'error' ),
 
  ];
