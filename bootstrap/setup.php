@@ -2,7 +2,7 @@
 namespace WPSentry;
 
 /**
- * @package WPSentry/Bootstrap
+ * @package WPSentry/bootstrap
  */
 
 // Exit if plugin isn't running

@@ -1,6 +1,6 @@
 <?php
 /**
- * @package WPSentry/Bootstrap
+ * @package WPSentry/bootstrap
  */
 
 // Exit if accessed directly.
