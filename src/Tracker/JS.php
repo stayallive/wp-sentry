@@ -11,7 +11,7 @@ use WPSentry\Tracker\TrackerBase;
  * @package WPSentry\Tracker;
  * @since 3.0.0
  */
-class JS extends TrackerBase{
+final class JS extends TrackerBase{
 
   /**
    * Bootstrap the tracker
@@ -58,7 +58,6 @@ class JS extends TrackerBase{
       'context'      => $this->context->config->get(),
 
     ];
-
 
     // TODO: Generate content hash on wp-sentry.js compile and dynamically reference it from a manifest when enqueuing
     wp_enqueue_script(

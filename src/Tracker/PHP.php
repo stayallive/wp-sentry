@@ -12,7 +12,7 @@ use WPSentry\Tracker\TrackerBase;
  * @package WPSentry\Tracker;
  * @since 3.0.0
  */
-class PHP extends TrackerBase {
+final class PHP extends TrackerBase {
 
   /**
    * Bootstrap the tracker with runtime configs and handle providing
