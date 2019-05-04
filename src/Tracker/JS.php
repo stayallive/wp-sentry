@@ -40,20 +40,14 @@ final class JS extends TrackerBase{
    * Enqueue the plugin-defined version of sentry-browser.js and then localize the
    * script with runtime configuration options and the currently defined context.
    *
-   * Note that contexts should be hydrated at this point, but if they are not
-   * they will get hydrated here. We are safe to attempt this, as contexts
-   * will only ever be hydrated once per page lifecycle no matter how many
-   * times the hydration methods are called.
+   * Note that contexts should all be hydrated at this point, as the enqueue scripts hooks
+   * run much later than the context hydration functions.
    *
-   * @link https://docs.sentry.io/enriching-error-data/context/?platform=php#capturing-the-user
+   * @see `wp-sentry/src/Context/Context.php - hydrate_all_contexts()` for more info on the hydration process
+   *
    * @since 3.0.0
    */
   public function load_sentry_js(){
-
-    // If any contexts have not yet been hydrated, they will be hydrated here
-    $this->context->hydrate_user_context();
-    $this->context->hydrate_tags_context();
-    $this->context->hydrate_extra_context();
 
     $script_data = [
 
