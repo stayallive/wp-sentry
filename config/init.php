@@ -1,7 +1,12 @@
 <?php
 /**
  * Default runtime configurations for WPSentry passed in upon init.
+ *
+ * @package WPSentry/config
+ * @link https://docs.sentry.io/error-reporting/configuration/?platform=php
+ * @since 3.0.0
  */
+
 return [
 
   'dsn'			    => '',
