@@ -59,7 +59,7 @@ final class JS extends TrackerBase{
     // TODO: Generate content hash on wp-sentry.js compile and dynamically reference it from a manifest when enqueuing
     wp_enqueue_script(
       'wp-sentry-browser',
-      $this->manifest->get_asset_path( 'wpSentry.js' ),
+      $this->manifest->get_asset_url( 'wpSentry.js' ),
       [],
       ''
     );
