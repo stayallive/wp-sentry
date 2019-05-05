@@ -15,17 +15,16 @@ defined( 'WP_SENTRY_EXISTS' ) || exit;
  * This is a very basic Config class that can be used to abstract away the
  * loading of a PHP array from a file.
  *
- * @since   0.1.0
- *
  * @package WPSentry\Config;
  * @link https://github.com/schlessera/better-settings-v1
+ * @since   3.0.0
  */
 class Config extends ArrayObject implements ConfigInterface {
 
 	/**
 	 * Instantiate the Config object.
 	 *
-	 * @since 0.1.0
+	 * @since 3.0.0
 	 *
 	 * @param array|string $config Array with settings or path to Config file.
 	 */
@@ -44,7 +43,7 @@ class Config extends ArrayObject implements ConfigInterface {
 	/**
 	 * Check whether the Config has a specific key.
 	 *
-	 * @since 0.1.0
+	 * @since 3.0.0
 	 *
 	 * @param string $key The key to check the existence for.
 	 *
@@ -59,7 +58,7 @@ class Config extends ArrayObject implements ConfigInterface {
 	/**
 	 * Get the value of a specific key.
 	 *
-	 * @since 0.1.0
+	 * @since 3.0.0
 	 *
 	 * @param string $key The key to get the value for.
 	 *
@@ -89,7 +88,7 @@ class Config extends ArrayObject implements ConfigInterface {
 	/**
 	 * Get an array with all the keys.
 	 *
-	 * @since 0.1.0
+	 * @since 3.0.0
 	 *
 	 * @return array Array of config keys.
 	 */
