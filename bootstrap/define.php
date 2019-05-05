@@ -53,6 +53,13 @@ defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  dirname( W
 defined( 'WP_SENTRY_SCRIPT_VERSION' ) || define( 'WP_SENTRY_SCRIPT_VERSION', '4.6.6' );
 
 /**
+ * Define the asset manifest location
+ *
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_ASSET_MANIFEST' ) || define( 'WP_SENTRY_ASSET_MANIFEST', WP_SENTRY_PLUGIN_PATH . '/dist/manifest.json' );
+
+/**
  * Re-map deprecated dsn constants to new constant values
  * if they exist.
  *
