@@ -35,12 +35,22 @@ final class PHP extends TrackerBase {
 
   }
 
+  /**
+   * Init the connection with Sentry
+   *
+   * @since 3.0.0
+   */
   private function init_sentry(){
 
     Sentry\init( $this->get_init_config() );
 
   }
 
+  /**
+   * Set the severity level of the errors being reported to Sentry
+   *
+   * @since 3.0.0
+   */
   private function set_error_severity_level(){
 
     Sentry\configureScope(function (Sentry\State\Scope $scope): void {
