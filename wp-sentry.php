@@ -43,11 +43,18 @@ defined ( 'WP_SENTRY_MIN_PHP_VERSION' ) || define( 'WP_SENTRY_MIN_PHP_VERSION', 
 defined( 'WP_SENTRY_PLUGIN_FILE' ) || define( 'WP_SENTRY_PLUGIN_FILE', __FILE__ );
 
 /**
+ * Resolve the Sentry Plugin path
+ *
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_PLUGIN_PATH' ) || define( 'WP_SENTRY_PLUGIN_PATH', dirname( WP_SENTRY_PLUGIN_FILE ) );
+
+/**
  * Resolve the WP Sentry Plugin Bootstrap folder location
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_BOOTSTRAP_DIR' ) || define( 'WP_SENTRY_BOOTSTRAP_DIR', dirname( WP_SENTRY_PLUGIN_FILE ) . '/bootstrap/' );
+defined( 'WP_SENTRY_BOOTSTRAP_DIR' ) || define( 'WP_SENTRY_BOOTSTRAP_DIR', WP_SENTRY_PLUGIN_PATH . '/bootstrap/' );
 
 /**
  * The function responsible for running the plugin setup process.
