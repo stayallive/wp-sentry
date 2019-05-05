@@ -29,7 +29,7 @@ defined( 'WP_SENTRY_TEXT_DOMAIN' ) || define( 'WP_SENTRY_TEXT_DOMAIN', 'wp-sentr
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_PATH', plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) );
+defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_URL', plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) );
 
 /**
  * The composer autoload, absolute unix path.
@@ -53,13 +53,15 @@ defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  WP_SENTRY_
 defined( 'WP_SENTRY_SCRIPT_VERSION' ) || define( 'WP_SENTRY_SCRIPT_VERSION', '4.6.6' );
 
 /**
+ * Define the location of the `dist` folder
+ *
+ * @since 3.0.0
+ */
+defined( 'WP_SENTRY_ASSET_DIST_URL' ) || define( 'WP_SENTRY_ASSET_DIST_URL', WP_SENTRY_PLUGIN_DIR_URL . 'dist/' );
+
+/**
  * Define the asset manifest location
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_ASSET_MANIFEST' ) || define( 'WP_SENTRY_ASSET_MANIFEST', WP_SENTRY_PLUGIN_PATH . '/dist/manifest.json' );
-
-/**
- *
- * @since 3.0.0
- */
+defined( 'WP_SENTRY_ASSET_MANIFEST_PATH' ) || define( 'WP_SENTRY_ASSET_MANIFEST_PATH', WP_SENTRY_PLUGIN_PATH . '/dist/manifest.json' );
