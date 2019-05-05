@@ -10,13 +10,26 @@
   },
   "homepage": "https://github.com/stayallive/wp-sentry/",
   "devDependencies": {
-    "parcel-bundler": "^1.12.3"
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "babel-loader": "^8.0.5",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-minify": "^0.5.0",
+    "babel-runtime": "^6.26.0",
+    "clean-webpack-plugin": "^2.0.1",
+    "cross-env": "^5.2.0",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "webpack": "^4.30.0",
+    "webpack-assets-manifest": "^3.1.1",
+    "webpack-clean-obsolete-chunks": "^0.4.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-md5-hash": "0.0.6"
   },
   "dependencies": {
     "@sentry/browser": "^5.1.2"
   },
   "scripts": {
-    "dev": "parcel watch ./assets/js/wp-sentry.js",
-    "build": "parcel build ./assets/js/wp-sentry.js"
+    "dev": "cd ./assets/build && cross-env NODE_ENV=development webpack --mode development --watch --progress",
+    "build": "cd ./assets/build && cross-env NODE_ENV=production webpack --mode production --progress"
   }
 }

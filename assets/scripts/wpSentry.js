@@ -24,7 +24,6 @@ function initializeWPSentry(){
     initOptions
   );
 
-
   // Provide additional context to the Sentry SDK
   provideUserContext( userContext );
   provideTagsContext( tagsContext );
