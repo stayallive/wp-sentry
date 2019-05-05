@@ -3,6 +3,7 @@ namespace WPSentry\Tracker;
 
 use WPSentry\Config\ConfigInterface;
 use WPSentry\Context\Context;
+use WPSentry\Assets\Manifest;
 use Sentry;
 
 // Exit if plugin isn't running
@@ -29,11 +30,19 @@ abstract class TrackerBase{
 
   /**
    * Holds an instance of Context
-
+   *
    * @since 3.0.0
    * @var Context
    */
   protected $context;
+
+  /**
+   * Holds an instance of Manifest
+   *
+   * @since 3.0.0
+   * @var Manifest
+   */
+  protected $manifest;
 
   /**
    * Holds the Sentry dsn for the current instance
@@ -43,18 +52,21 @@ abstract class TrackerBase{
    */
   private $dsn;
 
+
   /**
    * Class constructor
    *
    * @param string $dsn - the dsn being used for this tracker instance
    * @param ConfigInterface $config - runtime configurations for this tracker instance
    * @param Context $context - the context being used in this tracker instance
+   * @param Manifest $manifest - the asset manifest to use for this tracker instance
    */
-	public function __construct( string $dsn, ConfigInterface $config, Context $context ){
+	public function __construct( string $dsn, ConfigInterface $config, Context $context, Manifest $manifest = null ){
 
     $this->init_config = $config;
     $this->dsn = $dsn;
     $this->context = $context;
+    $this->manifest = $manifest;
 
     // Update the init configs with the dsn for this instance
     $this->init_config->push( 'dsn', $this->dsn );
