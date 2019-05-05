@@ -143,8 +143,7 @@ class Context{
   }
 
   /**
-   * Hydrate the user context with data based on the current logged-in user.
-   * If this data is not available, nothing will be added to the context.
+   * Hydrate the user context with data passed in via the user context filter
    *
    * @link https://docs.sentry.io/enriching-error-data/context/?platform=php#capturing-the-user
    *
@@ -170,7 +169,7 @@ class Context{
 	}
 
   /**
-   * Hydrate the tags context with data based on the current environment
+   * Hydrate the tags context with data passed in via the tags context filter
    *
    * Available Filter: `wp_sentry_tags_context` - allow plugins to manage their own context.
    * Available Action: `wp_sentry_tags_context_hydrated` - run actions after the context is fully hydrated
@@ -198,8 +197,7 @@ class Context{
   }
 
   /**
-   * Hydrate the tags context with data based on defined "extra context"
-   * If this data is not available, nothing will be added to the context
+   * Hydrate the extra context with data passed in via the extra context filter
    *
    * Available Filter: `wp_sentry_extra_context` - allow plugins to manage their own context.
    * Available Action: `wp_sentry_extra_context_hydrated` - run actions after the context is fully hydrated
