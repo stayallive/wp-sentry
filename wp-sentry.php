@@ -71,4 +71,7 @@ function run_wp_sentry(){
 
 }
 
-run_wp_sentry();
+// Only run the plugin if at least 1 DSN is defined.
+if( defined( 'WP_SENTRY_DSN' ) || defined( 'WP_SENTRY_PUBLIC_DSN' ) ){
+  run_wp_sentry();
+}
