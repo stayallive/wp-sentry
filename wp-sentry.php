@@ -36,7 +36,7 @@ defined ( 'WP_SENTRY_MIN_PHP_VERSION' ) || define( 'WP_SENTRY_MIN_PHP_VERSION', 
 
 
 /**
- * Resolve the WP Sentry Plugin File
+ * Resolve the WP Sentry Plugin file location
  *
  * @since 1.0.0
  */
