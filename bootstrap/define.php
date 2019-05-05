@@ -29,21 +29,21 @@ defined( 'WP_SENTRY_TEXT_DOMAIN' ) || define( 'WP_SENTRY_TEXT_DOMAIN', 'wp-sentr
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_URL', plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) );
+defined( 'WP_SENTRY_PLUGIN_DIR_URL' ) || define( 'WP_SENTRY_PLUGIN_DIR_PATH', plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) );
 
 /**
  * The composer autoload, absolute unix path.
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_AUTOLOAD_FILE' ) or define( 'WP_SENTRY_AUTOLOAD_FILE', dirname( WP_SENTRY_PLUGIN_FILE ) . '/vendor/autoload.php' );
+defined( 'WP_SENTRY_AUTOLOAD_FILE' ) or define( 'WP_SENTRY_AUTOLOAD_FILE', WP_SENTRY_PLUGIN_PATH . '/vendor/autoload.php' );
 
 /**
  * The plugin's config folder location.
  *
  * @since 3.0.0
  */
-defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  dirname( WP_SENTRY_PLUGIN_FILE ) . '//config/' );
+defined( 'WP_SENTRY_CONFIG_DIR' ) or define( 'WP_SENTRY_CONFIG_DIR',  WP_SENTRY_PLUGIN_PATH . '//config/' );
 
 /**
  * Define the sentry js script version to load in the browser
