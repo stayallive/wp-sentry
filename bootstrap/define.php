@@ -60,20 +60,6 @@ defined( 'WP_SENTRY_SCRIPT_VERSION' ) || define( 'WP_SENTRY_SCRIPT_VERSION', '4.
 defined( 'WP_SENTRY_ASSET_MANIFEST' ) || define( 'WP_SENTRY_ASSET_MANIFEST', WP_SENTRY_PLUGIN_PATH . '/dist/manifest.json' );
 
 /**
- * Re-map deprecated dsn constants to new constant values
- * if they exist.
- *
- * Note that Sentry no longer has "secret"
- * and "public" dsn. The dsn is unified and never includes
- * a secret, so now we are just differentiating between
- * "PHP" and "JS" dsn instead of referencing dsn scope in the name.
  *
  * @since 3.0.0
  */
-if( defined( 'WP_SENTRY_DSN' ) && ! defined( 'WP_SENTRY_PHP_DSN' ) ){
-  define( 'WP_SENTRY_PHP_DSN', WP_SENTRY_DSN );
-}
-
-if( defined( 'WP_SENTRY_PUBLIC_DSN' ) && ! defined( 'WP_SENTRY_JS_DSN' ) ){
-  define( 'WP_SENTRY_JS_DSN', WP_SENTRY_PUBLIC_DSN );
-}
