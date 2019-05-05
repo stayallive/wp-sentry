@@ -87,7 +87,7 @@ class Context{
     $current_user = (object) wp_get_current_user();
 
     if ( ! $current_user instanceof \WP_User || ! $current_user->exists() )
-      return;
+      return $user_context;
 
     $user_context = [
 
