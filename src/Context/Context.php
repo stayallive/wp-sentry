@@ -164,6 +164,7 @@ class Context{
     // Update our context configuration with new data
     $this->config->push( 'user', $user_context );
 
+    // @hooked - provide_user_context - 0 - \WPSentry\Tracker\PHP
     do_action( 'wp_sentry_user_context_hydrated', $this->config->get( 'user' ) );
 
 	}
@@ -173,8 +174,6 @@ class Context{
    *
    * Available Filter: `wp_sentry_tags_context` - allow plugins to manage their own context.
    * Available Action: `wp_sentry_tags_context_hydrated` - run actions after the context is fully hydrated
-   *
-   * @hooked - set_tags_context_data - 0
    *
    * @link https://docs.sentry.io/enriching-error-data/context/?platform=php#tagging-events
    * @uses array_filter() to clean out empty properties from the array before returning.
@@ -192,6 +191,7 @@ class Context{
     // Update our context configuration with new data
     $this->config->push( 'tags', $tags_context );
 
+    // @hooked - provide_tags_context - 0 - \WPSentry\Tracker\PHP
     do_action( 'wp_sentry_tags_context_hydrated', $this->config->get( 'tags' ) );
 
   }
@@ -218,7 +218,7 @@ class Context{
     // Update our context configuration with new data
     $this->config->push( 'extra', $extra_context );
 
-    // @hooked - set_extra_context_data - 0
+    // @hooked - provide_extra_context - 0 - \WPSentry\Tracker\PHP
     do_action( 'wp_sentry_extra_context_hydrated', $this->config->get( 'extra' ) );
 
   }
