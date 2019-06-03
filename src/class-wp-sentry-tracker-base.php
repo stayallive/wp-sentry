@@ -59,8 +59,9 @@ abstract class WP_Sentry_Tracker_Base {
 
 		// Default user context to anonymous.
 		$user_context = [
-			'id'   => 0,
-			'name' => 'anonymous',
+			'id'         => 0,
+			'name'       => 'anonymous',
+			'ip_address' => $_SERVER['REMOTE_ADDR'],
 		];
 
 		// Determine whether the user is logged in assign their details.
