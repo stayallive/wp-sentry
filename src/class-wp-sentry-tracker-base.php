@@ -61,7 +61,7 @@ abstract class WP_Sentry_Tracker_Base {
 		$user_context = [
 			'id'         => 0,
 			'name'       => 'anonymous',
-			'ip_address' => $_SERVER['REMOTE_ADDR'],
+			'ip_address' => isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '',
 		];
 
 		// Determine whether the user is logged in assign their details.
