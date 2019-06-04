@@ -61,7 +61,6 @@ abstract class WP_Sentry_Tracker_Base {
 		$user_context = [
 			'id'         => 0,
 			'name'       => 'anonymous',
-			'ip_address' => isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '',
 		];
 
 		// Determine whether the user is logged in assign their details.
@@ -74,6 +73,11 @@ abstract class WP_Sentry_Tracker_Base {
 					'username' => $current_user->user_login,
 				];
 			}
+		}
+
+		// Add client IP address if available
+		if ( !empty( $_SERVER['REMOTE_ADDR'] ) ) {
+			$user_context['ip_address'] = $_SERVER['REMOTE_ADDR'];
 		}
 
 		// Filter the user context so that plugins that manage users on their own
