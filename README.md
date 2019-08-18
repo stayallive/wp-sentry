@@ -8,12 +8,17 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
 
-## Requirements
+## Requirements & Sentry PHP SDK
 
-This plugin requires PHP 5.4+ but urges users to use a PHP version that is not end of life (EOL) and no longer supported. For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
+This plugin requires PHP `5.4`+ but urges users to use a PHP version that is not end of life (EOL) and no longer supported. For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
 
-Version 2.1.* of this plugin will be the last to support PHP 5.3.
-Version 2.2.* of this plugin will be the last to support PHP 5.4.
+- Version `2.1.*` of this plugin will be the last to support PHP `5.3`.
+- Version `2.2.*` of this plugin will be the last to support PHP `5.4`.
+
+Please note that version `3.x` is the most recent version of the wp-sentry plugin and only supports PHP `7.1` and up. If you need PHP `5.4-7.2` support check out version `2.x` but do keep in mind there are a lot of differences in the Sentry PHP SDK used.
+
+- Version [`2.x`](https://github.com/stayallive/wp-sentry/tree/2.x) of the wp-sentry plugin uses the [`1.x`](https://github.com/getsentry/sentry-php/tree/1.x) version of the official Sentry PHP SDK.
+- Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
 
 ## Usage
 
@@ -22,7 +27,6 @@ Version 2.2.* of this plugin will be the last to support PHP 5.4.
 2. Activate the plugin through the WordPress admin interface
 
 **Note:** this plugin does not do anything by default and has no admin interface. A DSN must be configured first.
-
 
 ## Configuration
 
