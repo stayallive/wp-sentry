@@ -6,7 +6,7 @@
  * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
  * Version: 2.8.0
  * Author: Alex Bouma
- * Author URI: https://alex.bouma.me
+ * Author URI: https://alex.bouma.dev
  * License: MIT
  */
 
@@ -41,7 +41,7 @@ if ( ! class_exists( 'WP_Sentry_Tracker_Base' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
 }
 
-// Define the sentry version.
+// Define the default version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
 }

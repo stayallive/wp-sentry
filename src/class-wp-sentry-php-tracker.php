@@ -37,24 +37,11 @@ final class WP_Sentry_Php_Tracker {
 	 * WP_Sentry_Php_Tracker constructor.
 	 */
 	protected function __construct() {
-		// Set the current user when available.
 		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
 		add_action( 'after_setup_theme', [ $this, 'on_after_setup_theme' ] );
 
-		// Bootstrap the tracker
-		$this->bootstrap();
-	}
-
-	/**
-	 * Bootstrap the tracker.
-	 */
-	protected function bootstrap(): void {
-		// After the theme was setup reset the options
-		add_action( 'after_setup_theme', function () {
-			if ( has_filter( 'wp_sentry_options' ) ) {
-				$this->set_dsn( $this->get_dsn() );
-			}
-		} );
+		// Force the initialization of the client immediately
+		$this->get_client();
 	}
 
 	/**
@@ -90,6 +77,19 @@ final class WP_Sentry_Php_Tracker {
 	 * Handle the `after_setup_theme` WP action.
 	 */
 	public function on_after_setup_theme(): void {
+		// If the DSN potentially has changed, re-initialize the client
+		if ( has_filter( 'wp_sentry_dsn' ) ) {
+			$this->initializeClient();
+		}
+
+		// Apply the filter to config the scope
+		if ( has_filter( 'wp_sentry_scope' ) ) {
+			$this->get_client()->configureScope( function ( Scope $scope ) {
+				apply_filters( 'wp_sentry_scope', $scope );
+			} );
+		}
+
+		// Apply the filter to configure any options
 		if ( has_filter( 'wp_sentry_options' ) ) {
 			apply_filters( 'wp_sentry_options', $this->get_client()->getClient()->getOptions() );
 		}
@@ -132,18 +132,7 @@ final class WP_Sentry_Php_Tracker {
 	 */
 	public function get_client(): HubInterface {
 		if ( $this->client === null && $this->get_dsn() !== null ) {
-			$clientBuilder = ClientBuilder::create( $this->get_options() );
-
-			$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
-			$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
-
-			Hub::setCurrent( new Hub( $this->client = $clientBuilder->getClient() ) );
-
-			Hub::getCurrent()->configureScope( function ( Scope $scope ) {
-				foreach ( $this->get_default_tags() as $tag => $value ) {
-					$scope->setTag( $tag, $value );
-				}
-			} );
+			$this->initializeClient();
 		}
 
 		return Hub::getCurrent();
@@ -181,4 +170,21 @@ final class WP_Sentry_Php_Tracker {
 		return $options;
 	}
 
+	/**
+	 * Initialize the Sentry client and register it with the Hub.
+	 */
+	private function initializeClient(): void {
+		$clientBuilder = ClientBuilder::create( $this->get_options() );
+
+		$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
+		$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
+
+		Hub::setCurrent( new Hub( $this->client = $clientBuilder->getClient() ) );
+
+		Hub::getCurrent()->configureScope( function ( Scope $scope ) {
+			foreach ( $this->get_default_tags() as $tag => $value ) {
+				$scope->setTag( $tag, $value );
+			}
+		} );
+	}
 }

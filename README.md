@@ -2,11 +2,13 @@
 
 A (unofficial) [WordPress plugin](https://wordpress.org/plugins/wp-sentry-integration/) to report PHP and JavaScript errors to [Sentry](https://sentry.io).
 
+
 ## What?
 
 This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to [Sentry](https://sentry.io) and integrates with its release tracking.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
+
 
 ## Requirements & Sentry PHP SDK
 
@@ -19,6 +21,7 @@ Please note that version `3.x` is the most recent version of the wp-sentry plugi
 
 - Version [`2.x`](https://github.com/stayallive/wp-sentry/tree/2.x) of the wp-sentry plugin uses the [`1.x`](https://github.com/getsentry/sentry-php/tree/1.x) version of the official Sentry PHP SDK.
 - Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
+
 
 ## Usage
 
@@ -128,13 +131,37 @@ function customize_sentry_dsn( $dsn ) {
 add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 ```
 
-**Note:** _This filter fires on when WP Sentry initializes. To change the DSN at runtime use the `wp_sentry_options` filter or set the DSN to the client directly._
+**Note:** _This filter fires on the WordPress `after_setup_theme` action. It is discouraged to use this and instead define the DSN in the `wp-config.php` using the `WP_SENTRY_DSN` constant_
+
+---
+
+#### `wp_sentry_scope` (void)
+
+You can use this filter to customize the Sentry [scope](https://docs.sentry.io/enriching-error-data/context/?platform=php).
+
+Example usage:
+
+```php
+/**
+ * Customize Sentry PHP SDK scope.
+ *
+ * @param \Sentry\State\Scope $scope
+ *
+ * @return void
+ */
+function customize_sentry_scope( \Sentry\State\Scope $scope ) {
+	$scope->setTag('my-custom-tag', 'tag-value');
+}
+add_filter( 'wp_sentry_scope', 'customize_sentry_scope' );
+```
+
+**Note:** _This filter fires on the WordPress `after_setup_theme` action._
 
 ---
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the Sentry [options](https://docs.sentry.io/error-reporting/configuration/?platform=php) used to initialize the PHP tracker.
+You can use this filter to customize the Sentry [options](https://docs.sentry.io/error-reporting/configuration/?platform=php).
 
 Example usage:
 
@@ -213,7 +240,29 @@ add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 ```
 
 
-## Catching plugin errors
+## Capturing handled exceptions
+
+The best thing to do with an exception is to capture it yourself, however you might still want to know about it.
+
+The Sentry plugin only captures unhandled exceptions and fatal errors, to capture handled exception you can do the following:
+
+```php
+try {
+	myMethodThatCanThrowAnException();
+} catch ( \Exception $e ) {
+	// We are using wp_sentry_safe to make sure this code runs even if the Sentry plugin is disabled
+	if ( function_exists( 'wp_sentry_safe' ) ) {
+		wp_sentry_safe( function ( \Sentry\State\HubInterface $client ) use ( $e ) {
+			$client->captureException( $e );
+		} );
+	}
+
+	wp_die( 'There was an error doing this thing you were doing, we have been notified!' );
+}
+```
+
+
+## Capturing plugin errors
 
 Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occuring in plugins that load before it.
 
@@ -228,7 +277,7 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
  * Version: must-use-proxy
  * Author: Alex Bouma
- * Author URI: https://alex.bouma.me
+ * Author URI: https://alex.bouma.dev
  * License: MIT
  */
  
@@ -250,7 +299,7 @@ Now `wp-sentry-integration` will load always and before all other plugins.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at me@alexbouma.me. All security vulnerabilities will be swiftly addressed.
+If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
 
 
 ## License
