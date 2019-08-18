@@ -2,7 +2,7 @@
 Contributors: stayallive
 Tags: sentry, errors, tracking
 Requires at least: 4.4
-Tested up to: 5.1
+Tested up to: 5.3
 Requires PHP: 7.1
 Stable tag: trunk
 License: MIT
