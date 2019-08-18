@@ -240,6 +240,19 @@ add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 ```
 
 
+## High volume of notices
+
+Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin. 
+
+This can cause a high volume of events and even slower page loads because of those events being transmitted to Sentry.
+
+The prevent this you can set the following in your `wp-config.php` to filter out errors of the notice type.
+
+```php
+define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_NOTICE );
+```
+
+
 ## Capturing handled exceptions
 
 The best thing to do with an exception is to capture it yourself, however you might still want to know about it.
