@@ -40,7 +40,7 @@ It will auto detect authenticated users and add context where possible. All cont
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v2.7.2’ );`
+`define( 'WP_SENTRY_VERSION', 'v2.8.0’ );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -73,6 +73,10 @@ If you are doing anything more than just have this plugin installed, check out t
 This plugin also has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
 
 * Update PHP SDK to version 2.0.1
+
+= 2.8.0 =
+
+* Update Sentry Browser to version 4.6.6
 
 = 2.7.2 =
 
