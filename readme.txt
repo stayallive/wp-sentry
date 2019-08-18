@@ -26,42 +26,38 @@ It will auto detect authenticated users and add context where possible. All cont
 
 `define( 'WP_SENTRY_DSN', 'PHP_DSN' );`
 
-**Note:** Remove or comment this constant to disable the PHP tracker.
+**Note:** Do not set this constant to disable the PHP tracker.
 
 (Optionally) set the error types the PHP tracker will track:
 
 `define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );`
 
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry:
+(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with.
+
+If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
+
+When enabled the current logged in user and IP address will be added to the event.
+
+`define( 'WP_SENTRY_DEFAULT_PII', true );`
+
+(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
 `define( 'WP_SENTRY_PUBLIC_DSN', 'JS_DSN' );`
 
-**Note:** Remove or comment this constant to disable the JavaScript tracker.
+**Note:** Do not set this constant to disable the JavaScript tracker.
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v2.8.0’ );`
+`define( 'WP_SENTRY_VERSION', 'v3.0.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
 == Filters ==
-This plugin provides the following filters to plugin/theme developers. For more information have a look at the README.md file.
+This plugin provides filters to plugin/theme developers.
 
-Common to both trackers:
-
-- `wp_sentry_user_context`
-
-Specific to PHP tracker:
-
-- `wp_sentry_dsn`
-- `wp_sentry_options`
-
-Specific to JS tracker:
-
-- `wp_sentry_public_dsn`
-- `wp_sentry_public_options`
+For more information have a look at the README.md file: https://github.com/stayallive/wp-sentry/blob/master/README.md#filters.
 
 == Changelog ==
 = 3.0.0 =
