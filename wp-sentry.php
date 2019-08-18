@@ -76,11 +76,11 @@ if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 // the callback only executed if a DSN was set and thus the client is able to sent events.
 //
 // Usage:
-//if ( function_exists( 'wp_sentry_safe' ) ) {
-//	wp_sentry_safe( function ( \Sentry\State\HubInterface $client ) {
-//		$client->captureMessage( 'This is a test message!', \Sentry\Severity::debug() );
-//	} );
-//}
+// if ( function_exists( 'wp_sentry_safe' ) ) {
+//     wp_sentry_safe( function ( \Sentry\State\HubInterface $client ) {
+//         $client->captureMessage( 'This is a test message!', \Sentry\Severity::debug() );
+//     } );
+// }
 if ( ! function_exists( 'wp_sentry_safe' ) ) {
 
 	/**

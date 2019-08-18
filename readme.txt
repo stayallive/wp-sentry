@@ -66,13 +66,17 @@ Specific to JS tracker:
 == Changelog ==
 = 3.0.0 =
 
-Note: This is a *breaking release* for the PHP tracker, the base SDK was updated to 2.0 which has many changes!
+Note: This is a *breaking release* for both the PHP SDK and the Browser SDK, please test it well and read the migration guides if applicable.
 
-If you are doing anything more than just have this plugin installed, check out the upgrade docs: https://github.com/getsentry/sentry-php/blob/master/UPGRADE-2.0.md
+If you are doing anything more than just have this plugin installed, check out the upgrade docs:
 
-This plugin also has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
+- PHP SDK: https://github.com/getsentry/sentry-php/blob/master/UPGRADE-2.0.md
+- Browser SDK: https://github.com/getsentry/sentry-javascript/blob/master/MIGRATION.md#upgrading-from-4x-to-5x
 
-* Update PHP SDK to version 2.0.1
+Becasue of the upgrade to the 2.x version of the PHP SDK this plugin now has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
+
+* Update PHP SDK to version 2.1.1
+* Update Sentry Browser to version 5.6.1
 
 = 2.8.0 =
 
