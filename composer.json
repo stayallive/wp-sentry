@@ -24,7 +24,17 @@
   },
   "require": {
     "php": "^7.1",
-    "sentry/sdk": "^2.0",
-    "composer/installers": "~1.0"
+    "sentry/sentry": "^2.1",
+    "composer/installers": "^1.0",
+    "php-http/curl-client": "^2.0",
+    "http-interop/http-factory-guzzle": "^1.0"
+  },
+  "config": {
+    "platform": {
+      "php": "7.1.0"
+    },
+    "sort-packages": true,
+    "preferred-install": "dist",
+    "optimize-autoloader": true
   }
 }
