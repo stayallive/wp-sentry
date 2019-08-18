@@ -52,6 +52,18 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 ---
 
+(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with. 
+
+If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
+
+When enabled the current logged in user and IP address will be added to the event.
+
+```php
+define( 'WP_SENTRY_DEFAULT_PII', true );
+```
+
+---
+
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
 ```php
@@ -107,7 +119,7 @@ function customize_sentry_user_context( array $user ) {
 add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 ```
 
-**Note:** _This filter fires on the WordPress `set_current_user` action._
+**Note:** _This filter fires on the WordPress `set_current_user` action and only if the `WP_SENTRY_DEFAULT_PII` constant is set to `true`._
 
 ### Specific to PHP tracker:
 

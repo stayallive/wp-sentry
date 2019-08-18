@@ -37,7 +37,9 @@ abstract class WP_Sentry_Tracker_Base {
 		$this->context = $this->get_default_context();
 
 		// Set the current user when available.
-		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		if ( defined( 'WP_SENTRY_DEFAULT_PII' ) && WP_SENTRY_DEFAULT_PII ) {
+			add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		}
 
 		// Bootstrap the tracker
 		$this->bootstrap();

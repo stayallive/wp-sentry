@@ -37,7 +37,10 @@ final class WP_Sentry_Php_Tracker {
 	 * WP_Sentry_Php_Tracker constructor.
 	 */
 	protected function __construct() {
-		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		if ( defined( 'WP_SENTRY_DEFAULT_PII' ) && WP_SENTRY_DEFAULT_PII ) {
+			add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		}
+
 		add_action( 'after_setup_theme', [ $this, 'on_after_setup_theme' ] );
 
 		// Force the initialization of the client immediately
@@ -158,9 +161,10 @@ final class WP_Sentry_Php_Tracker {
 	 */
 	public function get_default_options(): array {
 		$options = [
-			'dsn'         => $this->get_dsn(),
-			'release'     => WP_SENTRY_VERSION,
-			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
+			'dsn'              => $this->get_dsn(),
+			'release'          => WP_SENTRY_VERSION,
+			'environment'      => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
+			'send_default_pii' => defined( 'WP_SENTRY_DEFAULT_PII' ) ? WP_SENTRY_DEFAULT_PII : false,
 		];
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
