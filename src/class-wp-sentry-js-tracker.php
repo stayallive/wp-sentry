@@ -68,7 +68,7 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 		}
 
 		$options = array_merge( $options, [
-			'context' => $context
+			'context' => $context,
 		] );
 
 		if ( has_filter( 'wp_sentry_public_options' ) ) {
@@ -80,17 +80,28 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 
 	/**
 	 * Get sentry default options.
+	 *
 	 * @return array
 	 */
 	public function get_default_options() {
 		return [
 			'release'     => WP_SENTRY_VERSION,
 			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
-			'tags'        => [
+		];
+	}
+
+	/**
+	 * Get sentry default context.
+	 *
+	 * @return array
+	 */
+	public function get_default_context() {
+		return array_merge( parent::get_default_context(), [
+			'tags' => [
 				'wordpress' => get_bloginfo( 'version' ),
 				'language'  => get_bloginfo( 'language' ),
 			],
-		];
+		] );
 	}
 
 	/**
@@ -101,16 +112,16 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	public function on_enqueue_scripts() {
 		wp_enqueue_script(
 			'wp-sentry-browser',
-			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/sentry-browser-4.6.6.min.js',
+			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/sentry-browser-5.6.1.min.js',
 			[],
-			'4.6.6'
+			'5.6.1'
 		);
 
 		wp_localize_script(
 			'wp-sentry-browser',
 			'wp_sentry',
 			[
-				'dsn'     => $this->get_dsn(),
+				'dsn' => $this->get_dsn(),
 			] + $this->get_options()
 		);
 	}

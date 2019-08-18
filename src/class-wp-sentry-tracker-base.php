@@ -24,11 +24,7 @@ abstract class WP_Sentry_Tracker_Base {
 	 *
 	 * @var array
 	 */
-	private $context = [
-		'user'  => null,
-		'tags'  => [],
-		'extra' => [],
-	];
+	private $context;
 
 	/**
 	 * Class constructor.
@@ -36,6 +32,9 @@ abstract class WP_Sentry_Tracker_Base {
 	protected function __construct() {
 		// Set the default options.
 		$this->set_options( $this->get_default_options() );
+
+		// Set the default context.
+		$this->context = $this->get_default_context();
 
 		// Set the current user when available.
 		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
@@ -130,6 +129,19 @@ abstract class WP_Sentry_Tracker_Base {
 	 */
 	public function get_default_options() {
 		return [];
+	}
+
+	/**
+	 * Get sentry default context.
+	 *
+	 * @return array
+	 */
+	public function get_default_context() {
+		return [
+			'user'  => null,
+			'tags'  => [],
+			'extra' => [],
+		];
 	}
 
 	/**
