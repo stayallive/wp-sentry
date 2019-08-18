@@ -251,6 +251,29 @@ function customize_sentry_public_options( array $options ) {
 add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
 ```
 
+#### `wp_sentry_public_context` (array)
+
+You can use this filter to customize/override the Sentry context, you can modify the `user`, `tags` and `extra` context.
+
+> **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
+
+Example usage:
+
+```php
+/**
+ * Customize public sentry context.
+ *
+ * @param array $context The current sentry public context.
+ *
+ * @return array
+ */
+function customize_sentry_public_context( array $context ) {
+    $context['tags']['my-custom-tag'] = 'tag-value';
+
+    return $context;
+}
+add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
+```
 
 ## High volume of notices
 
