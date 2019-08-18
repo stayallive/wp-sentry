@@ -3,7 +3,29 @@
 /**
  * WordPress Sentry Javascript Tracker.
  */
-final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
+final class WP_Sentry_Js_Tracker {
+	use WP_Sentry_Resolve_User;
+
+	/**
+	 * Holds the sentry dsn.
+	 *
+	 * @var string
+	 */
+	private $dsn = '';
+
+	/**
+	 * Holds the sentry options.
+	 *
+	 * @var array
+	 */
+	private $options;
+
+	/**
+	 * Holds the sentry context.
+	 *
+	 * @var array
+	 */
+	private $context;
 
 	/**
 	 * Holds the class instance.
@@ -22,9 +44,20 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Class constructor.
 	 */
-	protected function bootstrap() {
+	protected function __construct() {
+		// Set the default options.
+		$this->options = $this->get_default_options();
+
+		// Set the default context.
+		$this->context = $this->get_default_context();
+
+		// Set the current user when available.
+		if ( defined( 'WP_SENTRY_DEFAULT_PII' ) && WP_SENTRY_DEFAULT_PII ) {
+			add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		}
+
 		// Register on front-end using the highest priority.
 		add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );
 
@@ -41,7 +74,7 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return string
 	 */
 	public function get_dsn() {
-		$dsn = parent::get_dsn();
+		$dsn = $this->dsn;
 
 		if ( has_filter( 'wp_sentry_public_dsn' ) ) {
 			$dsn = (string) apply_filters( 'wp_sentry_public_dsn', $dsn );
@@ -56,10 +89,14 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return array
 	 */
 	public function get_options() {
-		$options = parent::get_options();
+		$options = $this->options;
 
 		// Cleanup context for JS.
-		$context = $this->get_context();
+		$context = $this->context;
+
+		if ( has_filter( 'wp_sentry_public_context' ) ) {
+			$context = (array) apply_filters( 'wp_sentry_public_context', $context );
+		}
 
 		foreach ( $context as $key => $value ) {
 			if ( empty( $context[ $key ] ) ) {
@@ -67,9 +104,7 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 			}
 		}
 
-		$options = array_merge( $options, [
-			'context' => $context,
-		] );
+		$options['content'] = $context;
 
 		if ( has_filter( 'wp_sentry_public_options' ) ) {
 			$options = (array) apply_filters( 'wp_sentry_public_options', $options );
@@ -96,12 +131,14 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 	 * @return array
 	 */
 	public function get_default_context() {
-		return array_merge( parent::get_default_context(), [
-			'tags' => [
+		return [
+			'user'  => null,
+			'tags'  => [
 				'wordpress' => get_bloginfo( 'version' ),
 				'language'  => get_bloginfo( 'language' ),
 			],
-		] );
+			'extra' => [],
+		];
 	}
 
 	/**
@@ -124,6 +161,15 @@ final class WP_Sentry_Js_Tracker extends WP_Sentry_Tracker_Base {
 				'dsn' => $this->get_dsn(),
 			] + $this->get_options()
 		);
+	}
+
+	/**
+	 * Target of set_current_user action.
+	 *
+	 * @access private
+	 */
+	public function on_set_current_user() {
+		$this->context['user'] = $this->get_current_user_info();
 	}
 
 }

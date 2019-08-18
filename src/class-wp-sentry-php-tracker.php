@@ -9,6 +9,7 @@ use Sentry\State\HubInterface;
  * WordPress Sentry PHP Tracker.
  */
 final class WP_Sentry_Php_Tracker {
+	use WP_Sentry_Resolve_User;
 
 	/**
 	 * Holds an instance to the sentry client.
@@ -51,28 +52,8 @@ final class WP_Sentry_Php_Tracker {
 	 * Handle the `set_current_user` WP action.
 	 */
 	public function on_set_current_user(): void {
-		$current_user = wp_get_current_user();
-
-		// Determine whether the user is logged in assign their details.
-		$user_context = $current_user instanceof WP_User && $current_user->exists() ? [
-			'id'       => $current_user->ID,
-			'name'     => $current_user->display_name,
-			'email'    => $current_user->user_email,
-			'username' => $current_user->user_login,
-		] : [
-			'id'   => 0,
-			'name' => 'anonymous',
-		];
-
-		// Filter the user context so that plugins that manage users on their own
-		// can provide alternate user context. ie. members plugin
-		if ( has_filter( 'wp_sentry_user_context' ) ) {
-			$user_context = apply_filters( 'wp_sentry_user_context', $user_context );
-		}
-
-		// Finally assign the user context to the client.
-		$this->get_client()->configureScope( static function ( Scope $scope ) use ( $user_context ) {
-			$scope->setUser( $user_context );
+		$this->get_client()->configureScope( function ( Scope $scope ) {
+			$scope->setUser( $this->get_current_user_info() );
 		} );
 	}
 
@@ -191,4 +172,5 @@ final class WP_Sentry_Php_Tracker {
 			}
 		} );
 	}
+
 }
