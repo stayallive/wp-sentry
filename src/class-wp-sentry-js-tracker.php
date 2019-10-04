@@ -54,7 +54,7 @@ final class WP_Sentry_Js_Tracker {
 		$this->context = $this->get_default_context();
 
 		// Set the current user when available.
-		if ( defined( 'WP_SENTRY_DEFAULT_PII' ) && WP_SENTRY_DEFAULT_PII ) {
+		if ( defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII ) {
 			add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
 		}
 

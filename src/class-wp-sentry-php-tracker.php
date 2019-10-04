@@ -1,5 +1,6 @@
 <?php
 
+use Sentry\SentrySdk;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Sentry\ClientBuilder;
@@ -38,7 +39,7 @@ final class WP_Sentry_Php_Tracker {
 	 * WP_Sentry_Php_Tracker constructor.
 	 */
 	protected function __construct() {
-		if ( defined( 'WP_SENTRY_DEFAULT_PII' ) && WP_SENTRY_DEFAULT_PII ) {
+		if ( defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII ) {
 			add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
 		}
 
@@ -104,7 +105,7 @@ final class WP_Sentry_Php_Tracker {
 			$this->initializeClient();
 		}
 
-		return Hub::getCurrent();
+		return SentrySdk::getCurrentHub();
 	}
 
 	/**
@@ -130,7 +131,7 @@ final class WP_Sentry_Php_Tracker {
 			'dsn'              => $this->get_dsn(),
 			'release'          => WP_SENTRY_VERSION,
 			'environment'      => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
-			'send_default_pii' => defined( 'WP_SENTRY_DEFAULT_PII' ) ? WP_SENTRY_DEFAULT_PII : false,
+			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) ? WP_SENTRY_SEND_DEFAULT_PII : false,
 		];
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
@@ -149,13 +150,15 @@ final class WP_Sentry_Php_Tracker {
 		$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
 		$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
 
-		Hub::setCurrent( new Hub( $this->client = $clientBuilder->getClient() ) );
+		$hub = new Hub( $this->client = $clientBuilder->getClient() );
 
-		Hub::getCurrent()->configureScope( function ( Scope $scope ) {
+		$hub->configureScope( function ( Scope $scope ) {
 			foreach ( $this->get_default_tags() as $tag => $value ) {
 				$scope->setTag( $tag, $value );
 			}
 		} );
+
+		SentrySdk::setCurrentHub( $hub );
 	}
 
 }

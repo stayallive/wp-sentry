@@ -59,7 +59,7 @@ If possible, it’s recommended to turn on this feature and use the server side 
 When enabled the current logged in user and IP address will be added to the event.
 
 ```php
-define( 'WP_SENTRY_DEFAULT_PII', true );
+define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
 ```
 
 ---
@@ -119,7 +119,7 @@ function customize_sentry_user_context( array $user ) {
 add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 ```
 
-**Note:** _This filter fires on the WordPress `set_current_user` action and only if the `WP_SENTRY_DEFAULT_PII` constant is set to `true`._
+**Note:** _This filter fires on the WordPress `set_current_user` action and only if the `WP_SENTRY_SEND_DEFAULT_PII` constant is set to `true`._
 
 ### Specific to PHP tracker:
 

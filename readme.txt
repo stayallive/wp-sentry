@@ -38,7 +38,7 @@ If possible, it’s recommended to turn on this feature and use the server side 
 
 When enabled the current logged in user and IP address will be added to the event.
 
-`define( 'WP_SENTRY_DEFAULT_PII', true );`
+`define( 'WP_SENTRY_SEND_DEFAULT_PII', true );`
 
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
 
