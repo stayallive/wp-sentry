@@ -62,9 +62,9 @@ For more information have a look at the README.md file: https://github.com/staya
 == Changelog ==
 = 3.0.0 =
 
-Note: This is a *breaking release* for both the PHP SDK and the Browser SDK, please test it well and read the migration guides if applicable.
+Note: This is a *breaking release* for both the PHP SDK and the Browser SDK, please test it well and read the migration guides if applicable before upgrading!
 
-If you are doing anything more than just have this plugin installed, check out the upgrade docs:
+If you are doing anything more than just have this plugin installed and a DSN defined on your wp-config.php, check out the upgrade docs:
 
 - PHP SDK: https://github.com/getsentry/sentry-php/blob/master/UPGRADE-2.0.md
 - Browser SDK: https://github.com/getsentry/sentry-javascript/blob/master/MIGRATION.md#upgrading-from-4x-to-5x
