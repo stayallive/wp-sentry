@@ -24,7 +24,7 @@
   },
   "require": {
     "php": "^7.1",
-    "sentry/sentry": "^2.1",
+    "sentry/sentry": "^2.2",
     "composer/installers": "^1.0",
     "php-http/curl-client": "^2.0",
     "http-interop/http-factory-guzzle": "^1.0"

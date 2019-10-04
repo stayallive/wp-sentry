@@ -71,7 +71,7 @@ If you are doing anything more than just have this plugin installed, check out t
 
 Becasue of the upgrade to the 2.x version of the PHP SDK this plugin now has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
 
-* Update PHP SDK to version 2.1.1
+* Update PHP SDK to version 2.2.1
 * Update Sentry Browser to version 5.6.3
 
 = 2.8.0 =
