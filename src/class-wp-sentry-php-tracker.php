@@ -95,21 +95,6 @@ final class WP_Sentry_Php_Tracker {
 	}
 
 	/**
-	 * Get the options.
-	 *
-	 * @return array
-	 */
-	public function get_options(): array {
-		$options = $this->get_default_options();
-
-		if ( has_filter( 'wp_sentry_options' ) ) {
-			$options = (array) apply_filters( 'wp_sentry_options', $options );
-		}
-
-		return $options;
-	}
-
-	/**
 	 * Get the sentry client.
 	 *
 	 * @return \Sentry\State\HubInterface
@@ -159,7 +144,7 @@ final class WP_Sentry_Php_Tracker {
 	 * Initialize the Sentry client and register it with the Hub.
 	 */
 	private function initializeClient(): void {
-		$clientBuilder = ClientBuilder::create( $this->get_options() );
+		$clientBuilder = ClientBuilder::create( $this->get_default_options() );
 
 		$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
 		$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
