@@ -2,8 +2,8 @@
 
 set -e
 
-export SVN_URL="https://plugins.svn.wordpress.org/wp-sentry-integration/"
-export TMP_DIR="/tmp/wordpress-wp-sentry-plugin-svn"
+SVN_URL="https://plugins.svn.wordpress.org/wp-sentry-integration/"
+TMP_DIR="/tmp/wordpress-wp-sentry-plugin-svn"
 
 # If there is no release version ask for it
 if [[ -z "${RELEASE_VERSION}" ]]; then
@@ -41,6 +41,7 @@ composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 # Cleanup the old dir if it is there
 rm -rf /tmp/wordpress-wp-sentry-plugin-svn
 
+echo ""
 echo " > Checking out the SVN repository... (this might take a while)"
 
 svn co -q ${SVN_URL} ${TMP_DIR}
@@ -51,7 +52,7 @@ rsync -Rrd --delete --delete-excluded --exclude-from 'release-exclude.txt' ./ ${
 
 cd ${TMP_DIR}/
 
-svn status | grep '^!' | awk '{print $2}' | xargs svn delete
+svn status | grep '^!' | awk '{print $2}' | xargs svn delete || true
 svn add --force * --auto-props --parents --depth infinity -q
 
 svn status
