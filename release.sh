@@ -2,8 +2,8 @@
 
 set -e
 
-SVN_URL="https://plugins.svn.wordpress.org/wp-sentry-integration/"
-TMP_DIR="/tmp/wordpress-wp-sentry-plugin-svn"
+export SVN_URL="https://plugins.svn.wordpress.org/wp-sentry-integration/"
+export TMP_DIR="/tmp/wordpress-wp-sentry-plugin-svn"
 
 # If there is no release version ask for it
 if [[ -z "${RELEASE_VERSION}" ]]; then
