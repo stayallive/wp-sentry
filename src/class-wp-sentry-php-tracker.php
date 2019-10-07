@@ -138,6 +138,10 @@ final class WP_Sentry_Php_Tracker {
 			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
 		}
 
+		$options['project_root'] = defined( 'WP_SENTRY_PROJECT_ROOT' )
+			? WP_SENTRY_PROJECT_ROOT
+			: ABSPATH;
+
 		return $options;
 	}
 
