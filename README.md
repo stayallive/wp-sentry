@@ -91,7 +91,7 @@ define( 'WP_SENTRY_ENV', 'production' );
 
 This plugin provides the following filters to plugin/theme developers.
 
-Please note that some filters are fired when the Sentry trackers are initialized so they won't fire if you define them in you theme or in a plugin that loads after WP Sentry does.
+Please note that some filters are fired when the Sentry trackers are initialized so they won't fire if you define them in your theme or in a plugin that loads after WP Sentry does.
 
 ### Common to PHP & JavaScript trackers
 
