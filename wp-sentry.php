@@ -63,7 +63,7 @@ if ( ! class_exists( WP_Sentry_Version::class ) ) {
 
 // Define the default version.
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
-	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) );
+	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
 }
 
 // Load the PHP tracker if we have a private DSN
