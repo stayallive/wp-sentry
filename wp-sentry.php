@@ -75,7 +75,9 @@ if ( defined( 'WP_SENTRY_DSN' ) ) {
 			return WP_SENTRY_DSN;
 		}, 1, 0 );
 
-		WP_Sentry_Php_Tracker::get_instance();
+		$tracker = WP_Sentry_Php_Tracker::get_instance();
+
+		WP_Sentry_Admin_Page::get_instance()->tracker = $tracker;
 	}
 }
 
