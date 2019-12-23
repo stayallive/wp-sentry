@@ -149,9 +149,9 @@ final class WP_Sentry_Js_Tracker {
 	public function on_enqueue_scripts() {
 		wp_enqueue_script(
 			'wp-sentry-browser',
-			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/sentry-browser-5.9.0.min.js',
+			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/sentry-browser-5.10.2.min.js',
 			[],
-			'5.9.0'
+			'5.10.2'
 		);
 
 		wp_localize_script(
