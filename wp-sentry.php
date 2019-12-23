@@ -75,9 +75,7 @@ if ( defined( 'WP_SENTRY_DSN' ) ) {
 			return WP_SENTRY_DSN;
 		}, 1, 0 );
 
-		$tracker = WP_Sentry_Php_Tracker::get_instance();
-
-		WP_Sentry_Admin_Page::get_instance()->tracker = $tracker;
+		WP_Sentry_Php_Tracker::get_instance();
 	}
 }
 
@@ -92,6 +90,11 @@ if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 
 		WP_Sentry_Js_Tracker::get_instance();
 	}
+}
+
+// Load the admin page when needed
+if ( is_admin() ) {
+	WP_Sentry_Admin_Page::get_instance();
 }
 
 // Register a "safe" function to call Sentry functions safer in your own code,
