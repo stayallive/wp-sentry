@@ -48,7 +48,7 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v3.2.0' );`
+`define( 'WP_SENTRY_VERSION', 'v3.3.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -60,6 +60,11 @@ This plugin provides filters to plugin/theme developers.
 For more information have a look at the README.md file: https://github.com/stayallive/wp-sentry/blob/master/README.md#filters.
 
 == Changelog ==
+= 3.3.0 =
+
+- Update PHP SDK to version 2.3.1
+- Update Sentry Browser to version 5.12.4
+
 = 3.2.0 =
 
 - Add admin page (Tools > WP Sentry) to test if the Sentry integration is enabled and working (props @federicobond)
