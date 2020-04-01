@@ -1,7 +1,8 @@
 .*
 *.md
 docs
-vendor
-release.sh
-scope-vendor.sh
-release-exclude.txt
+/vendor
+/release.sh
+/php-scoper.phar
+/scope-vendor.sh
+/release-exclude.txt
