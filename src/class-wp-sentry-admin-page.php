@@ -81,14 +81,22 @@ final class WP_Sentry_Admin_Page {
         <div class="wrap">
             <h1>WP Sentry</h1>
 
+            <div class="notice notice-success is-dismissible hidden" id="sentry-test-event-js-success">
+                <p><?php echo translate( 'JavaScript test event sent successfully, with ID: <code id="sentry-test-event-js-id"></code>!', 'wp-sentry' ); ?></p>
+            </div>
+
+            <div class="notice notice-error is-dismissible hidden" id="sentry-test-event-js-error">
+                <p><?php esc_html_e( 'JavaScript failed to send test event. Check your configuration to make sure your DSN is set correctly.', 'wp-sentry' ); ?></p>
+            </div>
+
 			<?php if ( $test_event_sent ): ?>
 				<?php if ( $test_event_id !== null ): ?>
                     <div class="notice notice-success is-dismissible">
-                        <p><?php echo translate( "Test event sent successfully, with ID: <code>{$test_event_id}</code>!", 'wp-sentry' ); ?></p>
+                        <p><?php echo translate( "PHP test event sent successfully, with ID: <code>{$test_event_id}</code>!", 'wp-sentry' ); ?></p>
                     </div>
 				<?php else: ?>
                     <div class="notice notice-error is-dismissible">
-                        <p><?php esc_html_e( 'Failed to send test event. Check your configuration to make sure your DSN is set correctly.', 'wp-sentry' ); ?></p>
+                        <p><?php esc_html_e( 'PHP failed to send test event. Check your configuration to make sure your DSN is set correctly.', 'wp-sentry' ); ?></p>
                     </div>
 				<?php endif; ?>
 			<?php endif; ?>
@@ -100,7 +108,7 @@ final class WP_Sentry_Admin_Page {
                     <td>
                         <fieldset>
                             <label for="wp-sentry-php-enabled" title="<?php echo $uses_scoped_autoloader ? 'Using scoped vendor (plugin build)' : 'Using regular vendor (composer)'; ?>">
-                                <input name="wp-sentry-php-enabled" type="checkbox" id="wp-sentry-php-enabled" value="0" <?php echo $enabled_for_php ? 'checked="checked"' : '' ?> readonly>
+                                <input name="wp-sentry-php-enabled" type="checkbox" id="wp-sentry-php-enabled" value="0" <?php echo $enabled_for_php ? 'checked="checked"' : '' ?> readonly disabled>
 								<?php esc_html_e( 'PHP', 'wp-sentry' ); ?>
                             </label>
                         </fieldset>
@@ -113,8 +121,8 @@ final class WP_Sentry_Admin_Page {
 
                         <fieldset>
                             <label for="wp-sentry-js-enabled">
-                                <input name="wp-sentry-js-enabled" type="checkbox" id="wp-sentry-js-enabled" value="0" <?php echo $enabled_for_js ? 'checked="checked"' : '' ?> readonly>
-								<?php esc_html_e( 'Browser', 'wp-sentry' ); ?>
+                                <input name="wp-sentry-js-enabled" type="checkbox" id="wp-sentry-js-enabled" value="0" <?php echo $enabled_for_js ? 'checked="checked"' : '' ?> readonly disabled>
+								<?php esc_html_e( 'JavaScript', 'wp-sentry' ); ?>
                             </label>
                         </fieldset>
 						<?php if ( ! $enabled_for_js ): ?>
@@ -151,23 +159,58 @@ final class WP_Sentry_Admin_Page {
 
                 <tr>
                     <th>
-                        <label for="wp-sentry-send-test-event"><?php esc_html_e( 'Test integration', 'wp-sentry' ); ?></label>
+                        <label><?php esc_html_e( 'Test integration', 'wp-sentry' ); ?></label>
                     </th>
                     <td>
                         <form method="post">
-                            <input type="submit" name="wp-sentry-send-test-event" class="button" value="<?php esc_html_e( 'Send test event', 'wp-sentry' ) ?>" <?php echo $enabled_for_php ? '' : 'disabled'; ?>>
+                            <input type="submit" name="wp-sentry-send-test-event-php" class="button" value="<?php esc_html_e( 'Send PHP test event', 'wp-sentry' ) ?>" <?php echo $enabled_for_php ? '' : 'disabled'; ?>>
+                            <input type="button" id="wp-sentry-send-test-event-js" class="button" value="<?php esc_html_e( 'Send JavaScript test event', 'wp-sentry' ) ?>" <?php echo $enabled_for_js ? '' : 'disabled'; ?>>
                         </form>
-						<?php if ( ! $enabled_for_php ): ?>
+						<?php if ( ! $enabled_for_php || ! $enabled_for_js ): ?>
                             <p class="description">
-								<?php echo translate( 'The PHP tracker must be activated to send a test event.', 'wp-sentry' ); ?>
+								<?php echo translate( 'The tracker must be enabled to send a test event.', 'wp-sentry' ); ?>
                             </p>
 						<?php endif; ?>
                     </td>
                 </tr>
                 </tbody>
             </table>
-
         </div>
+
+        <script>
+            (function () {
+                var testEventButton = document.getElementById('wp-sentry-send-test-event-js');
+
+                testEventButton.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    if (testEventButton.classList.contains('disabled')) {
+                        return;
+                    }
+
+                    testEventButton.classList.add('disabled');
+
+                    console.log('=> Sending a test message to Sentry...');
+
+                    if (typeof Sentry === 'object' && typeof Sentry.captureMessage === 'function') {
+                        var eventId = Sentry.captureMessage('This is a test message sent from the Sentry WP JavaScript integration.');
+
+                        console.log(' > Sent message with event ID:', eventId);
+
+                        if (typeof eventId === 'string' && eventId.length > 1) {
+                            document.getElementById('sentry-test-event-js-id').textContent = eventId;
+                            document.getElementById('sentry-test-event-js-success').classList.remove('hidden');
+
+                            return;
+                        }
+                    }
+
+                    console.error('!> Failed to sent a test message to Sentry');
+
+                    document.getElementById('sentry-test-event-js-error').classList.remove('hidden');
+                });
+            })();
+        </script>
 	<?php }
 
 	/**
@@ -181,7 +224,7 @@ final class WP_Sentry_Admin_Page {
 	private function generateTestException( string $command, array $arg ): ?Exception {
 		// Do something silly
 		try {
-			throw new Exception( 'This is a test exception sent from the Sentry WP SDK.' );
+			throw new Exception( 'This is a test exception sent from the Sentry WP PHP integration.' );
 		} catch ( Exception $ex ) {
 			return $ex;
 		}
