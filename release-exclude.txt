@@ -1,6 +1,7 @@
 .*
 *.md
 docs
+vendor
 release.sh
-vendor/bin
+scope-vendor.sh
 release-exclude.txt

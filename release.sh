@@ -32,11 +32,7 @@ echo "   Using temporary folder: ${TMP_DIR}"
 echo "-----------------------------------------------------"
 echo ""
 
-echo " > Making sure composer vendor files are on the locked version"
-echo ""
-
-# Install the dependencies (as defined in the composer.lock) first so we can package them up
-composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+./scope-vendor.sh
 
 # Cleanup the old dir if it is there
 rm -rf /tmp/wordpress-wp-sentry-plugin-svn

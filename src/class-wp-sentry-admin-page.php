@@ -75,6 +75,8 @@ final class WP_Sentry_Admin_Page {
 
 		$options = WP_Sentry_Php_Tracker::get_instance()->get_default_options();
 
+		$uses_scoped_autoloader = defined( 'WP_SENTRY_SCOPED_AUTOLOADER' ) && WP_SENTRY_SCOPED_AUTOLOADER;
+
 		?>
         <div class="wrap">
             <h1>WP Sentry</h1>
@@ -97,7 +99,7 @@ final class WP_Sentry_Admin_Page {
                     <th><?php esc_html_e( 'Enabled', 'wp-sentry' ); ?></th>
                     <td>
                         <fieldset>
-                            <label for="wp-sentry-php-enabled">
+                            <label for="wp-sentry-php-enabled" title="<?php echo $uses_scoped_autoloader ? 'Using scoped vendor (plugin build)' : 'Using regular vendor (composer)'; ?>">
                                 <input name="wp-sentry-php-enabled" type="checkbox" id="wp-sentry-php-enabled" value="0" <?php echo $enabled_for_php ? 'checked="checked"' : '' ?> readonly>
 								<?php esc_html_e( 'PHP', 'wp-sentry' ); ?>
                             </label>
@@ -130,7 +132,7 @@ final class WP_Sentry_Admin_Page {
                     <td>
                         <input type="text" class="regular-text code" readonly name="wp-sentry-release" value="<?php echo esc_html( $options['release'] ); ?>"/>
                         <p class="description">
-		                    <?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>.', 'wp-sentry' ); ?>
+							<?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>.', 'wp-sentry' ); ?>
                         </p>
                     </td>
                 </tr>
@@ -142,7 +144,7 @@ final class WP_Sentry_Admin_Page {
                     <td>
                         <input type="text" class="regular-text code" readonly name="wp-sentry-environment" value="<?php echo esc_html( $options['environment'] ); ?>"/>
                         <p class="description">
-		                    <?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code>.', 'wp-sentry' ); ?>
+							<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code>.', 'wp-sentry' ); ?>
                         </p>
                     </td>
                 </tr>

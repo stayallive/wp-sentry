@@ -58,7 +58,14 @@ define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( static function () {
 
 // Load dependencies
 if ( ! class_exists( WP_Sentry_Version::class ) ) {
-	require_once __DIR__ . '/vendor/autoload.php';
+	$scopedAutoloader = __DIR__ . '/build/vendor/scoper-autoload.php';
+
+	// If ther is a scoped autoloader we use that version, otherwise we use the normal autoloader
+	require_once $scopedAutoloaderExists = file_exists( $scopedAutoloader )
+		? $scopedAutoloader
+		: __DIR__ . '/vendor/autoload.php';
+
+	define( 'WP_SENTRY_SCOPED_AUTOLOADER', $scopedAutoloaderExists );
 }
 
 // Define the default version.

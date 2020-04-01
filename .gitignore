@@ -1,2 +1,4 @@
-vendor/
-.idea
+/build
+/vendor
+/.idea
+/php-scoper.phar
