@@ -18,7 +18,14 @@ php php-scoper.phar add-prefix -s -q --force
 
 echo " > Patching composer.json for scoped autoloader"
 
-sed -i '' 's/src\\\//..\/src\//g' ./build/composer.json
+sed -i -e 's/src\\\//..\/src\//g' ./build/composer.json
+
+# This is fixing OS X sed and unix sed being slightly different
+# OS X sed generates a composer.json-e file we don't need
+# For more info: https://unix.stackexchange.com/a/131940
+if [[ -e ./build/composer.json-e ]]; then
+  rm ./build/composer.json-e
+fi
 
 echo " > Dumping new composer autoloader for scoped vendor"
 echo ""
