@@ -32,7 +32,7 @@ echo "   Using temporary folder: ${TMP_DIR}"
 echo "-----------------------------------------------------"
 echo ""
 
-./scope-vendor.sh
+./bin/scope-vendor.sh
 
 # Cleanup the old dir if it is there
 rm -rf /tmp/wordpress-wp-sentry-plugin-svn

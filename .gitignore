@@ -1,4 +1,4 @@
 /build
 /vendor
 /.idea
-/php-scoper.phar
+/bin/php-scoper.phar

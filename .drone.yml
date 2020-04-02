@@ -10,7 +10,7 @@ steps:
     image: stayallive/php:7.3
     commands:
       - docker-php-ext-enable zip
-      - ./release.sh
+      - ./bin/release.sh
     environment:
       RELEASE_VERSION: ${DRONE_TAG##v}
       SVN_USERNAME:

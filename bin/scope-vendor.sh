@@ -1,8 +1,8 @@
-if [[ ! -e php-scoper.phar ]]; then
+if [[ ! -e bin/php-scoper.phar ]]; then
   echo " > Downloading php-scoper.phar"
   echo ""
 
-  curl -sSL -o php-scoper.phar https://github.com/humbug/php-scoper/releases/download/0.13.1/php-scoper.phar
+  curl -sSL -o bin/php-scoper.phar https://github.com/humbug/php-scoper/releases/download/0.13.1/php-scoper.phar
 fi
 
 echo " > Making sure composer vendor files are on the locked version"
@@ -14,7 +14,7 @@ composer install --no-dev --no-interaction --no-progress
 echo ""
 echo " > Scoping the PHP files to prevent conflicts with other plugins"
 
-php php-scoper.phar add-prefix -s -q --force
+php bin/php-scoper.phar add-prefix -s -q --force
 
 echo " > Patching composer.json for scoped autoloader"
 
@@ -30,6 +30,7 @@ fi
 echo " > Dumping new composer autoloader for scoped vendor"
 echo ""
 
-cd build && composer dump-autoload --classmap-authoritative --no-interaction && cd ../
+# Running this in a subshell to not mess with the current working directory
+(cd build && composer dump-autoload --classmap-authoritative --no-interaction)
 
-php scoper-fix.php
+php ./bin/scope-vendor-fix.php
