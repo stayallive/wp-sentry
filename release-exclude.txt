@@ -3,6 +3,8 @@
 docs
 /vendor
 /release.sh
+/scoper.inc.php
+/scoper-fix.php
 /php-scoper.phar
 /scope-vendor.sh
 /release-exclude.txt
