@@ -31,3 +31,5 @@ echo " > Dumping new composer autoloader for scoped vendor"
 echo ""
 
 cd build && composer dump-autoload --classmap-authoritative --no-interaction && cd ../
+
+php scoper-fix.php
