@@ -30,6 +30,10 @@ return [
 		'Sentry\*',
 	],
 
+	'files-whitelist' => [
+		'vendor/ralouphie/getallheaders/src/getallheaders.php',
+	],
+
 	'whitelist-global-classes'   => true,
 	'whitelist-global-constants' => true,
 	'whitelist-global-functions' => true,
