@@ -28,6 +28,7 @@ return [
 
 	'whitelist' => [
 		'Sentry\*',
+		'Monolog\*',
 	],
 
 	'files-whitelist' => [
