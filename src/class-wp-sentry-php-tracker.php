@@ -130,6 +130,7 @@ final class WP_Sentry_Php_Tracker {
 		$options = [
 			'dsn'              => $this->get_dsn(),
 			'release'          => WP_SENTRY_VERSION,
+			'prefixes'         => [ ABSPATH ],
 			'environment'      => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) ? WP_SENTRY_SEND_DEFAULT_PII : false,
 		];
