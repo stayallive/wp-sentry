@@ -54,7 +54,7 @@ final class WP_Sentry_Php_Tracker {
 	 */
 	public function on_set_current_user(): void {
 		$this->get_client()->configureScope( function ( Scope $scope ) {
-			$scope->setUser( $this->get_current_user_info() );
+			$scope->setUser( $this->get_current_user_info(), true );
 		} );
 	}
 
@@ -138,9 +138,10 @@ final class WP_Sentry_Php_Tracker {
 			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
 		}
 
-		$options['project_root'] = defined( 'WP_SENTRY_PROJECT_ROOT' )
-			? WP_SENTRY_PROJECT_ROOT
-			: ABSPATH;
+		$options['in_app_exclude'] = [
+			ABSPATH . 'wp-admin',
+			ABSPATH . 'wp-includes',
+		];
 
 		return $options;
 	}
