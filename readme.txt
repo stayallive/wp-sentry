@@ -48,7 +48,7 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v3.5.0' );`
+`define( 'WP_SENTRY_VERSION', 'v3.5.1' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
@@ -60,6 +60,10 @@ This plugin provides filters to plugin/theme developers.
 For more information have a look at the README.md file: https://github.com/stayallive/wp-sentry/blob/master/README.md#filters.
 
 == Changelog ==
+= 3.5.1 =
+
+- Fix scope data (user context & tags etc.) being lost when set before the `after_setup_theme` hook
+
 = 3.5.0 =
 
 - Remove undocumented `WP_SENTRY_PROJECT_ROOT` option
