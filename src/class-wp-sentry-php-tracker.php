@@ -13,7 +13,7 @@ final class WP_Sentry_Php_Tracker {
 	use WP_Sentry_Resolve_User;
 
 	/**
-	 * Holds an instance to the sentry client.
+	 * Holds an instance to the Sentry client.
 	 *
 	 * @var \Sentry\ClientInterface
 	 */
@@ -39,7 +39,7 @@ final class WP_Sentry_Php_Tracker {
 	 * @return \WP_Sentry_Php_Tracker
 	 */
 	public static function get_instance(): WP_Sentry_Php_Tracker {
-		return self::$instance ?: self::$instance = new self();
+		return self::$instance ?: self::$instance = new self;
 	}
 
 	/**

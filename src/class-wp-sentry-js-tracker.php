@@ -40,7 +40,7 @@ final class WP_Sentry_Js_Tracker {
 	 * @return WP_Sentry_Js_Tracker
 	 */
 	public static function get_instance() {
-		return self::$instance ?: self::$instance = new self();
+		return self::$instance ?: self::$instance = new self;
 	}
 
 	/**
