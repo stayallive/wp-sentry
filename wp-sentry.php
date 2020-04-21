@@ -78,10 +78,6 @@ if ( defined( 'WP_SENTRY_DSN' ) ) {
 	$sentry_dsn = WP_SENTRY_DSN;
 
 	if ( ! empty( $sentry_dsn ) ) {
-		add_filter( 'wp_sentry_dsn', static function () {
-			return WP_SENTRY_DSN;
-		}, 1, 0 );
-
 		WP_Sentry_Php_Tracker::get_instance();
 	}
 }

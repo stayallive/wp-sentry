@@ -20,6 +20,13 @@ final class WP_Sentry_Php_Tracker {
 	protected $client;
 
 	/**
+	 * Holds the last DSN which was used to initialize the Sentry client.
+	 *
+	 * @var string
+	 */
+	protected $dsn;
+
+	/**
 	 * Holds the class instance.
 	 *
 	 * @var WP_Sentry_Php_Tracker
@@ -151,6 +158,15 @@ final class WP_Sentry_Php_Tracker {
 	 * Initialize the Sentry client and register it with the Hub.
 	 */
 	private function initializeClient(): void {
+		$dsn = $this->get_dsn();
+
+		// Do not re-initialize the client when the DSN has not changed
+		if ( $this->client !== null && $this->dsn === $dsn ) {
+			return;
+		}
+
+		$this->dsn = $this->get_dsn();
+
 		$clientBuilder = ClientBuilder::create( $this->get_default_options() );
 
 		$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
