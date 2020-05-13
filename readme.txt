@@ -13,14 +13,18 @@ A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Se
 == Description ==
 This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with its release tracking.
 
-It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
+It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
+
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.6.0/README.md) file._
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-**Note:** this plugin does not do anything by default and has no admin interface. A Sentry DSN must be configured.
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.6.0/README.md) file._
+
+**Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
 
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find in Sentry:
 
@@ -48,18 +52,20 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v3.5.1' );`
+`define( 'WP_SENTRY_VERSION', 'v3.6.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
-== Filters ==
-This plugin provides filters to plugin/theme developers.
-
-For more information have a look at the README.md file: https://github.com/stayallive/wp-sentry/blob/master/README.md#filters.
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.6.0/README.md) file._
 
 == Changelog ==
+= 3.6.0 =
+
+- Update Sentry Browser to version 5.15.5
+- Added a way to filter the Browser SDK options and/or disable loading the Browser SDK using JavaScript (https://github.com/stayallive/wp-sentry/blob/v3.6.0/README.md#advanced-client-side-hook)
+
 = 3.5.1 =
 
 - Fix scope data (user context & tags etc.) being lost when set before the `after_setup_theme` hook
