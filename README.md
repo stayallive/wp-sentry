@@ -275,6 +275,7 @@ function customize_sentry_public_context( array $context ) {
 add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
 ```
 
+
 ## High volume of notices
 
 Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin. 
@@ -343,6 +344,25 @@ define( 'WP_SENTRY_MU_LOADED', true );
 Now `wp-sentry-integration` will load always and before all other plugins.
 
 **Note**: We advise you leave the original `wp-sentry-integration` in the `/wp-content/plugins` folder to still have updates come in through the WordPress updater. However enabling or disabling does nothing if the above script is active (since it will always be enabled).
+
+
+## Advanced: Client side hook
+
+When using the Sentry Browser integration it is possible to do some work in the client browser before Sentry is initialized to change options and/or prevent the Browser SDK from initializing at all.
+
+You do this by defining a `wp_sentry_hook` JavaScript function before the Sentry Browser JavaScript file is included (keep this function small and easy since any errors that occur in there are not tracked by the Browser SDK).
+
+A quick example on how you would disable the Browser SDK using `wp_add_inline_script`:
+
+```php
+add_action( 'wp_enqueue_scripts', function () {
+    wp_add_inline_script( 'wp-sentry-browser', 'function wp_sentry_hook(options) { return someCheckInYourCode() ? true : false; }', 'before' );
+} );
+```
+
+When the `wp_sentry_hook` function returns `false` the initialization of the Sentry Brower SDK will be stopped. Any other return value will be ignored.
+
+To modify the options you can modify the object passed as the first argument of the `wp_sentry_hook`, this object will later be passed to `Sentry.init` to initialize the Browser SDK.
 
 
 ## Security Vulnerabilities
