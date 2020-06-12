@@ -1,0 +1,70 @@
+name: WordPress
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Release WP plugin
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
+      - name: Create WP release
+        run: |
+          # Extract the release version from the GitHub ref
+          RELEASE_VERSION=${GITHUB_REF##*/v}
+
+          # Run the release script which builds the vendor folder and uploads a new tag to SVN
+          ./bin/release.sh
+
+          # Copy the released tag from the WordPress SVN dir to the root
+          cp -R "/tmp/wordpress-wp-sentry-plugin-svn/tags/$RELEASE_VERSION" wp-sentry-integration
+
+          # Zip up the plugin to be uploaded as GH release asset later
+          zip -r wp-sentry-integration-plugin.zip ./wp-sentry-integration/
+        env:
+          SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+          SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+      - name: Extract changelog
+        id: changelog
+        run: |
+          # Extract the release version from the GitHub ref
+          RELEASE_VERSION=${GITHUB_REF##*/v}
+
+          # Extract the changelog from the readme.txt
+          CHANGELOG=`cat readme.txt | sed -n "/^= $RELEASE_VERSION =$/,/^= /p" | sed '1d;$d' | sed '/^[[:space:]]*$/d'`
+
+          # Convert a multiline string to single lines (https://github.community/t/set-output-truncates-multiline-strings/16852/5)
+          CHANGELOG="${CHANGELOG//'%'/'%25'}"
+          CHANGELOG="${CHANGELOG//$'\n'/'%0A'}"
+          CHANGELOG="${CHANGELOG//$'\r'/'%0D'}"
+
+          # Export the changelog as output variable
+          echo "::set-output name=CHANGELOG::$CHANGELOG"
+      - name: Create GH release
+        id: create_gh_release
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: ${{ steps.changelog.outputs.CHANGELOG }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload GH release asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ steps.create_gh_release.outputs.upload_url }}
+          asset_path: ./wp-sentry-integration-plugin.zip
+          asset_name: wp-sentry-integration-plugin.zip
+          asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
