@@ -82,7 +82,7 @@ if ( defined( 'WP_SENTRY_DSN' ) ) {
 	}
 }
 
-// Load the Javascript tracker if we have a public DSN
+// Load the JavaScript tracker if we have a public DSN
 if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 	$sentry_public_dsn = WP_SENTRY_PUBLIC_DSN;
 

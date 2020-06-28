@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WordPress Sentry Javascript Tracker.
+ * WordPress Sentry JavaScript Tracker.
  */
 final class WP_Sentry_Js_Tracker {
 	use WP_Sentry_Resolve_User;
