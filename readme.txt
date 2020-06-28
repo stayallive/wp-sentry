@@ -15,14 +15,14 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.7.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.8.0/README.md) file._
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.7.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.8.0/README.md) file._
 
 **Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
 
@@ -56,15 +56,23 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v3.7.0' );`
+`define( 'WP_SENTRY_VERSION', 'v3.8.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.7.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v3.8.0/README.md) file._
 
 == Changelog ==
+= 3.8.0 =
+
+- Update Sentry Browser to version 5.18.1
+- Admin test page will now show for users with the `activate_plugins` capability (instead of `install_plugins`) to support sites that have `install_plugins` disabled globally
+- Rename `public/sentry-browser-<Sentry Browser version>.min.js` to `public/wp-sentry-browser.min.js`, this change should have no user impact unless you manually include that file
+- Renamed `WP_SENTRY_DSN` to `WP_SENTRY_PHP_DSN`, both will be supported but the latter is preferred because of it's more descriptive name
+- Renamed `WP_SENTRY_PUBLIC_DSN` to `WP_SENTRY_BROWSER_DSN`, both will be supported but the latter is preferred because of it's more descriptive name
+
 = 3.7.0 =
 
 - Update PHP SDK to version 2.4.0
