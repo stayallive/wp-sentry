@@ -114,7 +114,7 @@ final class WP_Sentry_Admin_Page {
                         </fieldset>
 						<?php if ( ! $enabled_for_php ): ?>
                             <p class="description">
-								<?php echo translate( 'To enable make sure <code>WP_SENTRY_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
+								<?php echo translate( 'To enable make sure <code>WP_SENTRY_PHP_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
                             </p>
                             <br>
 						<?php endif; ?>
@@ -127,7 +127,7 @@ final class WP_Sentry_Admin_Page {
                         </fieldset>
 						<?php if ( ! $enabled_for_js ): ?>
                             <p class="description">
-								<?php echo translate( 'To enable make sure <code>WP_SENTRY_PUBLIC_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
+								<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
                             </p>
 						<?php endif; ?>
                     </td>

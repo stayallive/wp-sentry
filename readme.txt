@@ -26,11 +26,13 @@ _For more information and documentation have a look at the [README.md](https://g
 
 **Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find in Sentry:
+(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
-`define( 'WP_SENTRY_DSN', 'PHP_DSN' );`
+`define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );`
 
 **Note:** Do not set this constant to disable the PHP tracker.
+
+**Note:** This constant was previously called `WP_SENTRY_DSN` and is still supported.
 
 (Optionally) set the error types the PHP tracker will track:
 
@@ -44,11 +46,13 @@ When enabled the current logged in user and IP address will be added to the even
 
 `define( 'WP_SENTRY_SEND_DEFAULT_PII', true );`
 
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
+(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
-`define( 'WP_SENTRY_PUBLIC_DSN', 'JS_DSN' );`
+`define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );`
 
 **Note:** Do not set this constant to disable the JavaScript tracker.
+
+**Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 

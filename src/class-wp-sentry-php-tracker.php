@@ -93,7 +93,11 @@ final class WP_Sentry_Php_Tracker {
 	 * @return string|null
 	 */
 	public function get_dsn(): ?string {
-		$dsn = defined( 'WP_SENTRY_DSN' ) ? WP_SENTRY_DSN : null;
+		$dsn = defined( 'WP_SENTRY_PHP_DSN' ) ? WP_SENTRY_PHP_DSN : null;
+
+		if ( $dsn === null ) {
+			$dsn = defined( 'WP_SENTRY_DSN' ) ? WP_SENTRY_DSN : null;
+		}
 
 		if ( has_filter( 'wp_sentry_dsn' ) ) {
 			$dsn = (string) apply_filters( 'wp_sentry_dsn', $dsn );

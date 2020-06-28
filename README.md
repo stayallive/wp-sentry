@@ -34,13 +34,14 @@ Please note that version `3.x` is the most recent version of the wp-sentry plugi
 
 ## Configuration
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find in Sentry:
-
+(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 ```php
-define( 'WP_SENTRY_DSN', 'PHP_DSN' );
+define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
 ```
 
 **Note:** Do not set this constant to disable the PHP tracker.
+
+**Note:** This constant was previously called `WP_SENTRY_DSN` and is still supported.
 
 ---
 
@@ -64,13 +65,14 @@ define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
 
 ---
 
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual public DSN that you find in Sentry (**never use your private DSN**):
-
+(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 ```php
-define( 'WP_SENTRY_PUBLIC_DSN', 'JS_DSN' );
+define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 ```
 
 **Note:** Do not set this constant to disable the JavaScript tracker.
+
+**Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
 
 ---
 
@@ -133,7 +135,7 @@ Example usage:
 /**
  * Customize sentry dsn.
  *
- * @param string $dsn The current sentry public dsn.
+ * @param string $dsn The current sentry DSN.
  *
  * @return string
  */
@@ -143,7 +145,7 @@ function customize_sentry_dsn( $dsn ) {
 add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 ```
 
-**Note:** _This filter fires on the WordPress `after_setup_theme` action. It is discouraged to use this and instead define the DSN in the `wp-config.php` using the `WP_SENTRY_DSN` constant_
+**Note:** _This filter fires on the WordPress `after_setup_theme` action. It is discouraged to use this and instead define the DSN in the `wp-config.php` using the `WP_SENTRY_PHP_DSN` constant_
 
 ---
 

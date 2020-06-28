@@ -73,22 +73,26 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
 }
 
-// Load the PHP tracker if we have a private DSN
-if ( defined( 'WP_SENTRY_DSN' ) ) {
-	$sentry_dsn = WP_SENTRY_DSN;
+// Load the PHP tracker if we have a PHP DSN
+if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) ) {
+	$sentry_dsn = defined( 'WP_SENTRY_PHP_DSN' )
+		? WP_SENTRY_PHP_DSN
+		: WP_SENTRY_DSN;
 
 	if ( ! empty( $sentry_dsn ) ) {
 		WP_Sentry_Php_Tracker::get_instance();
 	}
 }
 
-// Load the JavaScript tracker if we have a public DSN
-if ( defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
-	$sentry_public_dsn = WP_SENTRY_PUBLIC_DSN;
+// Load the JavaScript tracker if we have a browser/public DSN
+if ( defined( 'WP_SENTRY_BROWSER_DSN' ) || defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
+	$sentry_public_dsn = defined( 'WP_SENTRY_BROWSER_DSN' )
+		? WP_SENTRY_BROWSER_DSN
+		: WP_SENTRY_PUBLIC_DSN;
 
 	if ( ! empty( $sentry_public_dsn ) ) {
-		add_filter( 'wp_sentry_public_dsn', static function () {
-			return WP_SENTRY_PUBLIC_DSN;
+		add_filter( 'wp_sentry_public_dsn', static function () use ( $sentry_public_dsn ) {
+			return $sentry_public_dsn;
 		}, 1, 0 );
 
 		WP_Sentry_Js_Tracker::get_instance();
