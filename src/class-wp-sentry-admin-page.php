@@ -35,7 +35,7 @@ final class WP_Sentry_Admin_Page {
 		add_management_page(
 			'WP Sentry test',
 			'WP Sentry test',
-			'install_plugins',
+			'activate_plugins',
 			'wp-sentry',
 			[ $this, 'render_admin_page' ]
 		);
