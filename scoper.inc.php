@@ -31,9 +31,19 @@ return [
 		'Monolog\*',
 	],
 
-	'files-whitelist' => [
-		'vendor/ralouphie/getallheaders/src/getallheaders.php',
-	],
+	'files-whitelist' => array_merge(
+		[
+			'vendor/ralouphie/getallheaders/src/getallheaders.php',
+		],
+		array_keys(
+			iterator_to_array(
+				Finder::create()
+				      ->files()
+				      ->name( '*.php' )
+				      ->in( 'vendor/symfony/polyfill-*/Resources/stubs' )
+			)
+		)
+	),
 
 	'whitelist-global-classes'   => true,
 	'whitelist-global-constants' => true,
