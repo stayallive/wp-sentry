@@ -19,7 +19,7 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 }
 
 // Make sure the PHP version is at least 7.1.
-if ( defined( 'PHP_VERSION_ID' ) && PHP_VERSION_ID < 70100 ) {
+if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70100 ) {
 	if ( is_admin() ) {
 		function wp_sentry_php_version_notice() { ?>
             <div class="error below-h2">
