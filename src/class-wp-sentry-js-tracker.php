@@ -4,7 +4,7 @@
  * WordPress Sentry JavaScript Tracker.
  */
 final class WP_Sentry_Js_Tracker {
-	use WP_Sentry_Resolve_User;
+	use WP_Sentry_Resolve_User, WP_Sentry_Resolve_Environment;
 
 	/**
 	 * Holds the sentry dsn.
@@ -121,7 +121,7 @@ final class WP_Sentry_Js_Tracker {
 	public function get_default_options() {
 		return [
 			'release'     => WP_SENTRY_VERSION,
-			'environment' => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
+			'environment' => $this->get_environment(),
 		];
 	}
 

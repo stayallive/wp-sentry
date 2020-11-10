@@ -152,7 +152,7 @@ final class WP_Sentry_Admin_Page {
                     <td>
                         <input type="text" class="regular-text code" readonly name="wp-sentry-environment" value="<?php echo esc_html( $options['environment'] ); ?>"/>
                         <p class="description">
-							<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code>.', 'wp-sentry' ); ?>
+							<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code> or <code>WP_ENVIRONMENT_TYPE</code> (WordPress 5.5+).', 'wp-sentry' ); ?>
                         </p>
                     </td>
                 </tr>

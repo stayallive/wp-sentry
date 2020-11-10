@@ -10,7 +10,7 @@ use Sentry\State\HubInterface;
  * WordPress Sentry PHP Tracker.
  */
 final class WP_Sentry_Php_Tracker {
-	use WP_Sentry_Resolve_User;
+	use WP_Sentry_Resolve_User, WP_Sentry_Resolve_Environment;
 
 	/**
 	 * Holds an instance to the Sentry client.
@@ -142,7 +142,7 @@ final class WP_Sentry_Php_Tracker {
 			'dsn'              => $this->get_dsn(),
 			'release'          => WP_SENTRY_VERSION,
 			'prefixes'         => [ ABSPATH ],
-			'environment'      => defined( 'WP_SENTRY_ENV' ) ? WP_SENTRY_ENV : 'unspecified',
+			'environment'      => $this->get_environment(),
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) ? WP_SENTRY_SEND_DEFAULT_PII : false,
 		];
 
