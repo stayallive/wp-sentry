@@ -17,7 +17,7 @@ jobs:
         with:
           php-version: '7.3'
       - name: Extract release version
-        run: echo "::set-env name=RELEASE_VERSION::${GITHUB_REF##*/v}"
+        run: echo "RELEASE_VERSION=${GITHUB_REF##*/v}" >> $GITHUB_ENV
       - name: Create WP release
         run: |
           # Run the release script which builds the vendor folder and uploads a new tag to SVN
