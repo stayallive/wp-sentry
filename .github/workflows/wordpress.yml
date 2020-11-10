@@ -16,6 +16,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.3'
+          tools: composer:v1
       - name: Extract release version
         run: echo "RELEASE_VERSION=${GITHUB_REF##*/v}" >> $GITHUB_ENV
       - name: Create WP release
