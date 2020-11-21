@@ -62,7 +62,13 @@ When enabled the current logged in user and IP address will be added to the even
 ```php
 define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
 ```
+---
 
+(Optionally) Set tracing sample rate to track performance.
+
+```php
+define( 'WP_SENTRY_TRACES_SAMPLE_RATE', 0.2 );
+```
 ---
 
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
