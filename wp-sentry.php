@@ -11,6 +11,7 @@
  */
 
 // Exit if accessed directly.
+
 defined( 'ABSPATH' ) || exit;
 
 // If the plugin was already loaded as a mu-plugin do not load again.
@@ -19,13 +20,13 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 }
 
 // Make sure the PHP version is at least 7.1.
-if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70100 ) {
+if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 	if ( is_admin() ) {
 		function wp_sentry_php_version_notice() { ?>
             <div class="error below-h2">
                 <p>
 					<?php printf(
-						'The WordPress Sentry plugin requires at least PHP 7.1. You have %s. WordPress Sentry will not be active unless this is resolved!',
+						'The WordPress Sentry plugin requires at least PHP 7.2. You have %s. WordPress Sentry will not be active unless this is resolved!',
 						PHP_VERSION
 					); ?>
                 </p>
@@ -130,4 +131,23 @@ if ( ! function_exists( 'wp_sentry_safe' ) ) {
 		}
 	}
 
+}
+
+if ( defined( 'WP_SENTRY_TRACES_SAMPLE_RATE' ) ) {
+	add_action( 'plugins_loaded', function () {
+		$transactionContext = new \Sentry\Tracing\TransactionContext();
+		$transactionContext->setName( $_SERVER['REQUEST_URI'] );
+		$transactionContext->setOp( 'http.server' );
+		$transactionContext->setData( [
+				'url' => $_SERVER['REQUEST_URI'],
+				'method' => strtoupper( $_SERVER['REQUEST_METHOD'] ),
+		] );
+		$transactionContext->setStartTimestamp( $_SERVER['REQUEST_TIME_FLOAT'] ?? null );
+		$GLOBALS['SENTRY_TRANSACTION'] = \Sentry\startTransaction( $transactionContext );
+	} );
+	add_action( 'shutdown', function () {
+		if ( $GLOBALS['SENTRY_TRANSACTION'] instanceof \Sentry\Tracing\Transaction ) {
+			$GLOBALS['SENTRY_TRANSACTION']->finish();
+		}
+	} );
 }

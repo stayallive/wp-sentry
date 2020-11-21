@@ -143,6 +143,7 @@ final class WP_Sentry_Php_Tracker {
 			'release'          => WP_SENTRY_VERSION,
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
+			'traces_sample_rate' => defined('WP_SENTRY_TRACES_SAMPLE_RATE') ? WP_SENTRY_TRACES_SAMPLE_RATE : 0,
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) ? WP_SENTRY_SEND_DEFAULT_PII : false,
 		];
 
