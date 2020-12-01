@@ -19,7 +19,7 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 	return;
 }
 
-// Make sure the PHP version is at least 7.1.
+// Make sure the PHP version is at least 7.2.
 if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 	if ( is_admin() ) {
 		function wp_sentry_php_version_notice() { ?>
@@ -140,13 +140,13 @@ if ( defined( 'WP_SENTRY_TRACES_SAMPLE_RATE' ) ) {
 		$transactionContext->setOp( 'http.server' );
 		$transactionContext->setData( [
 				'url' => $_SERVER['REQUEST_URI'],
-				'method' => strtoupper( $_SERVER['REQUEST_METHOD'] ),
+				'method' => strtoupper( $_SERVER['REQUEST_METHOD'] ?? '' ),
 		] );
 		$transactionContext->setStartTimestamp( $_SERVER['REQUEST_TIME_FLOAT'] ?? null );
 		$GLOBALS['SENTRY_TRANSACTION'] = \Sentry\startTransaction( $transactionContext );
 	} );
 	add_action( 'shutdown', function () {
-		if ( $GLOBALS['SENTRY_TRANSACTION'] instanceof \Sentry\Tracing\Transaction ) {
+		if ( isset( $GLOBALS['SENTRY_TRANSACTION'] ) && $GLOBALS['SENTRY_TRANSACTION'] instanceof \Sentry\Tracing\Transaction ) {
 			$GLOBALS['SENTRY_TRANSACTION']->finish();
 		}
 	} );
