@@ -120,8 +120,9 @@ final class WP_Sentry_Js_Tracker {
 	 */
 	public function get_default_options() {
 		return [
-			'release'     => WP_SENTRY_VERSION,
-			'environment' => $this->get_environment(),
+			'release'          => WP_SENTRY_VERSION,
+			'environment'      => $this->get_environment(),
+			'tracesSampleRate' => defined( 'WP_SENTRY_JS_TRACES_SAMPLE_RATE' ) ? WP_SENTRY_JS_TRACES_SAMPLE_RATE : 0,
 		];
 	}
 
@@ -147,9 +148,13 @@ final class WP_Sentry_Js_Tracker {
 	 * @access private
 	 */
 	public function on_enqueue_scripts() {
+		$browser = defined( 'WP_SENTRY_JS_TRACES_SAMPLE_RATE' ) && 0 < WP_SENTRY_JS_TRACES_SAMPLE_RATE
+			? 'wp-sentry-tracing.min.js'
+			: 'wp-sentry-browser.min.js';
+
 		wp_enqueue_script(
 			'wp-sentry-browser',
-			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.min.js',
+			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/' . $browser,
 			[],
 			WP_Sentry_Version::SDK_VERSION
 		);

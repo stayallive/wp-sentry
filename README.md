@@ -53,7 +53,7 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 ---
 
-(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with. 
+(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with.
 
 If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
 
@@ -73,6 +73,13 @@ define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 **Note:** Do not set this constant to disable the JavaScript tracker.
 
 **Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
+
+---
+
+(Optionally) enable JavaScript performance sampling by defining tracing sample rate:
+```php
+define( 'WP_SENTRY_JS_TRACES_SAMPLE_RATE', 0.1 );
+```
 
 ---
 
@@ -236,7 +243,7 @@ Example usage:
  *
  * Note: Items prefixed with `regex:` in blacklistUrls and whitelistUrls option arrays
  * will be translated into pure RegExp.
- * 
+ *
  * @param array $options The current sentry public options.
  *
  * @return array
@@ -280,7 +287,7 @@ add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
 
 ## High volume of notices
 
-Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin. 
+Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin.
 
 This can cause a high volume of events and even slower page loads because of those events being transmitted to Sentry.
 
@@ -331,7 +338,7 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * Author URI: https://alex.bouma.dev
  * License: MIT
  */
- 
+
 $wp_sentry = __DIR__ . '/../plugins/wp-sentry-integration/wp-sentry.php';
 
 if ( ! file_exists( $wp_sentry ) ) {
