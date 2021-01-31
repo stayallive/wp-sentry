@@ -1,3 +1,5 @@
+set -e
+
 if [[ ! -e bin/php-scoper.phar ]]; then
   echo " > Downloading php-scoper.phar"
   echo ""
