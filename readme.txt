@@ -3,7 +3,7 @@ Contributors: stayallive
 Tags: sentry, errors, tracking
 Requires at least: 4.4
 Tested up to: 5.5
-Requires PHP: 7.1
+Requires PHP: 7.2
 Stable tag: trunk
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md

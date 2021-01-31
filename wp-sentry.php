@@ -18,14 +18,14 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
 	return;
 }
 
-// Make sure the PHP version is at least 7.1.
-if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70100 ) {
+// Make sure the PHP version is at least 7.2.
+if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 	if ( is_admin() ) {
 		function wp_sentry_php_version_notice() { ?>
             <div class="error below-h2">
                 <p>
 					<?php printf(
-						'The WordPress Sentry plugin requires at least PHP 7.1. You have %s. WordPress Sentry will not be active unless this is resolved!',
+						'The WordPress Sentry plugin requires at least PHP 7.2. You have %s. WordPress Sentry will not be active unless this is resolved!',
 						PHP_VERSION
 					); ?>
                 </p>
