@@ -13,7 +13,6 @@ echo "=> Fixing autoloading issues with GuzzleHttp caused by php-scoper...\n";
 
 $scoper_path = __DIR__ . '/../build/vendor/composer';
 
-
 $static_loader_path = "{$scoper_path}/autoload_static.php";
 
 echo " > Fixing {$static_loader_path}\n";

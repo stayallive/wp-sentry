@@ -2,7 +2,7 @@ if [[ ! -e bin/php-scoper.phar ]]; then
   echo " > Downloading php-scoper.phar"
   echo ""
 
-  curl -sSL -o bin/php-scoper.phar https://github.com/humbug/php-scoper/releases/download/0.13.1/php-scoper.phar
+  curl -sSL -o bin/php-scoper.phar https://github.com/humbug/php-scoper/releases/download/0.14.0/php-scoper.phar
 fi
 
 echo " > Making sure composer vendor files are on the locked version"

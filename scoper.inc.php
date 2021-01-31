@@ -4,6 +4,12 @@ declare( strict_types=1 );
 
 use Isolated\Symfony\Component\Finder\Finder;
 
+$polyfillsBootstrap = Finder::create()
+                            ->files()
+                            ->in( __DIR__ . '/vendor/symfony/polyfill-*' )
+                            ->name( 'bootstrap.php' )
+                            ->name( 'bootstrap80.php' );
+
 return [
 	'prefix' => 'WPSentry\\ScopedVendor',
 
@@ -27,13 +33,19 @@ return [
 	],
 
 	'whitelist' => [
-		'Sentry\*',
-		'Monolog\*',
+		'Sentry\\*',
+		'Monolog\\*',
+		'Symfony\\Polyfill\\*',
 	],
 
-	'files-whitelist' => [
+	'files-whitelist' => array_merge( [
 		'vendor/ralouphie/getallheaders/src/getallheaders.php',
-	],
+	], array_map(
+		static function ( $file ) {
+			return $file->getPathName();
+		},
+		iterator_to_array( $polyfillsBootstrap )
+	) ),
 
 	'whitelist-global-classes'   => true,
 	'whitelist-global-constants' => true,
