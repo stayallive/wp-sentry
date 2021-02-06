@@ -76,6 +76,15 @@ define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 
 ---
 
+(Optionally) enable JavaScript performance tracing by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+```php
+define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 );
+```
+
+**Note:** Do not set this constant or set it to `0.0` to disable the JavaScript performance tracing.
+
+---
+
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
