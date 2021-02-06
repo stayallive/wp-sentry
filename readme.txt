@@ -65,6 +65,12 @@ When enabled the current logged in user and IP address will be added to the even
 _For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.0.1/README.md) file._
 
 == Changelog ==
+= 4.1.0 =
+
+* Add `WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE` option to enable browser performance tracing
+* Update PHP SDK to version 3.1.4
+* Update Sentry Browser to version 6.1.0
+
 = 4.0.1 =
 
 Rereleased 4.0.0 to fix issue with missing dependencies folder, see 4.0.0 changelog for changes!
