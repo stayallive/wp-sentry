@@ -65,6 +65,10 @@ When enabled the current logged in user and IP address will be added to the even
 _For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.0.1/README.md) file._
 
 == Changelog ==
+= 4.1.1 =
+
+* Allow overwriting the integrations array using the JavaScript `wp_sentry_hook` callback
+
 = 4.1.0 =
 
 * Add `WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE` option to enable browser performance tracing
