@@ -53,7 +53,7 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 ---
 
-(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with. 
+(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with.
 
 If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
 
@@ -245,7 +245,7 @@ Example usage:
  *
  * Note: Items prefixed with `regex:` in blacklistUrls and whitelistUrls option arrays
  * will be translated into pure RegExp.
- * 
+ *
  * @param array $options The current sentry public options.
  *
  * @return array
@@ -289,7 +289,7 @@ add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
 
 ## High volume of notices
 
-Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin. 
+Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin.
 
 This can cause a high volume of events and even slower page loads because of those events being transmitted to Sentry.
 
@@ -321,6 +321,20 @@ try {
 }
 ```
 
+If you need to attach extra data only for the handled exception, you could add [Structured Context](https://docs.sentry.io/platforms/php/enriching-events/context/#structured-context):
+
+```php
+if (function_exists('wp_sentry_safe')) {
+    wp_sentry_safe(function (\Sentry\State\HubInterface $client) use ($e) {
+        $client->withScope(function (\Sentry\State\Scope $scope) use ($client, $e) {
+            $scope->setExtra('user_data', $e->getData());
+            $client->captureException($e);
+        });
+    });
+}
+```
+
+If you need to add data to the scope in every case use `configureScope` in [wp_sentry_scope filter](#wp_sentry_scope-void).
 
 ## Capturing plugin errors
 
@@ -340,7 +354,7 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * Author URI: https://alex.bouma.dev
  * License: MIT
  */
- 
+
 $wp_sentry = __DIR__ . '/../plugins/wp-sentry-integration/wp-sentry.php';
 
 if ( ! file_exists( $wp_sentry ) ) {
