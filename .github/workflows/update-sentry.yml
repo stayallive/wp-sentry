@@ -29,7 +29,7 @@ jobs:
           node-version: 14.x
       - name: Check Update and Install
         run: |
-          ncu -u
+          ./node_modules/.bin/ncu -u
           yarn
       - name: Combine File
         run: |
