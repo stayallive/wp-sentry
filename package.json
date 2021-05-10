@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "scripts": {
         "prod": "npm run production",
-        "production": "mix --production",
+        "production": "gulp",
         "preversion": "ncu -u"
     },
     "devDependencies": {
