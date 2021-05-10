@@ -2,3 +2,4 @@
 /vendor
 /.idea
 /bin/php-scoper.phar
+/node_modules
