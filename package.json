@@ -1,0 +1,14 @@
+{
+    "private": true,
+    "version": "0.0.1",
+    "scripts": {
+        "prod": "npm run production",
+        "production": "mix --production",
+        "preversion": "ncu -u"
+    },
+    "devDependencies": {
+        "npm-check-updates": "^11.5.10",
+        "@sentry/browser": "^6.3.5",
+        "@sentry/tracing": "^6.3.5"
+    }
+}
