@@ -291,7 +291,7 @@ add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
 
 ## High volume of notices
 
-Many plugin in the WordPress ecosystem generate notices that are captured by the Senty plugin.
+Many plugin in the WordPress ecosystem generate notices that are captured by the Sentry plugin.
 
 This can cause a high volume of events and even slower page loads because of those events being transmitted to Sentry.
 
