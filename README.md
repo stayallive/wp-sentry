@@ -162,7 +162,7 @@ add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
 
 #### `wp_sentry_scope` (void)
 
-You can use this filter to customize the Sentry [scope](https://docs.sentry.io/enriching-error-data/context/?platform=php).
+You can use this filter to customize the Sentry [scope](https://docs.sentry.io/platforms/php/enriching-events/context/).
 
 Example usage:
 
@@ -186,7 +186,7 @@ add_filter( 'wp_sentry_scope', 'customize_sentry_scope' );
 
 #### `wp_sentry_options` (array)
 
-You can use this filter to customize the Sentry [options](https://docs.sentry.io/error-reporting/configuration/?platform=php).
+You can use this filter to customize the Sentry [options](https://docs.sentry.io/platforms/php/configuration/options/).
 
 Example usage:
 
@@ -235,7 +235,7 @@ add_filter( 'wp_sentry_public_dsn', 'customize_public_sentry_dsn' );
 
 #### `wp_sentry_public_options` (array)
 
-You can use this filter to customize/override the Sentry [options](https://docs.sentry.io/error-reporting/configuration/?platform=browser#common-options) used to initialize the JS tracker.
+You can use this filter to customize/override the Sentry [options](https://docs.sentry.io/platforms/javascript/configuration/options/) used to initialize the JS tracker.
 
 > **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
 
