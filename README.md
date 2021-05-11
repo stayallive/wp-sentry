@@ -194,9 +194,9 @@ Example usage:
 /**
  * Customize sentry options.
  *
- * @param array $options The current sentry options.
+ * @param \Sentry\Options $options The current sentry options.
  *
- * @return array
+ * @return void
  */
 function customize_sentry_options( \Sentry\Options $options ) {
     // Only sample 90% of the events
