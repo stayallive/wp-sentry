@@ -2,13 +2,11 @@
 
 A (unofficial) [WordPress plugin](https://wordpress.org/plugins/wp-sentry-integration/) to report PHP and JavaScript errors to [Sentry](https://sentry.io).
 
-
 ## What?
 
 This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to [Sentry](https://sentry.io) and integrates with its release tracking.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
-
 
 ## Requirements & Sentry PHP SDK
 
@@ -24,7 +22,6 @@ Please note that version `4.x` is the most recent version of the wp-sentry plugi
 - Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/3.x) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/2.x) version of the official Sentry PHP SDK.
 - Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
 
-
 ## Usage
 
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
@@ -33,10 +30,10 @@ Please note that version `4.x` is the most recent version of the wp-sentry plugi
 
 **Note:** this plugin does not do anything by default and has no admin interface. A DSN must be configured first.
 
-
 ## Configuration
 
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
+
 ```php
 define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
 ```
@@ -68,6 +65,7 @@ define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
 ---
 
 (Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
+
 ```php
 define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 ```
@@ -79,6 +77,7 @@ define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 ---
 
 (Optionally) enable JavaScript performance tracing by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+
 ```php
 define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 );
 ```
@@ -98,7 +97,6 @@ define( 'WP_SENTRY_VERSION', 'v4.3.0' );
 ```php
 define( 'WP_SENTRY_ENV', 'production' );
 ```
-
 
 ## Filters
 
@@ -184,7 +182,7 @@ add_filter( 'wp_sentry_scope', 'customize_sentry_scope' );
 
 ---
 
-#### `wp_sentry_options` (array)
+#### `wp_sentry_options`
 
 You can use this filter to customize the Sentry [options](https://docs.sentry.io/platforms/php/configuration/options/).
 
@@ -288,8 +286,9 @@ function customize_sentry_public_context( array $context ) {
 add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
 ```
 
+## Advanced usages
 
-## High volume of notices
+### High volume of notices
 
 Many plugin in the WordPress ecosystem generate notices that are captured by the Sentry plugin.
 
@@ -301,8 +300,7 @@ The prevent this you can set the following in your `wp-config.php` to filter out
 define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_NOTICE );
 ```
 
-
-## Capturing handled exceptions
+### Capturing handled exceptions
 
 The best thing to do with an exception is to capture it yourself, however you might still want to know about it.
 
@@ -326,6 +324,8 @@ try {
 If you need to attach extra data only for the handled exception, you could add [Structured Context](https://docs.sentry.io/platforms/php/enriching-events/context/#structured-context):
 
 ```php
+$e = new Exception('Some exception I want to capture with extra data.');
+
 if (function_exists('wp_sentry_safe')) {
     wp_sentry_safe(function (\Sentry\State\HubInterface $client) use ($e) {
         $client->withScope(function (\Sentry\State\Scope $scope) use ($client, $e) {
@@ -338,7 +338,7 @@ if (function_exists('wp_sentry_safe')) {
 
 If you need to add data to the scope in every case use `configureScope` in [wp_sentry_scope filter](#wp_sentry_scope-void).
 
-## Capturing plugin errors
+### Capturing plugin errors
 
 Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occuring in plugins that load before it.
 
@@ -372,8 +372,57 @@ Now `wp-sentry-integration` will load always and before all other plugins.
 
 **Note**: We advise you leave the original `wp-sentry-integration` in the `/wp-content/plugins` folder to still have updates come in through the WordPress updater. However enabling or disabling does nothing if the above script is active (since it will always be enabled).
 
+### Capturing errors only from certain theme and/or plugin
 
-## Advanced: Client side hook
+This is an example on how to use the `before_send` callback of the Sentry SDK to only capture errors occuring in a certain theme or plugin.
+
+See also the filter docs: [wp_sentry_option](##wp_sentry_options).
+
+```php
+add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
+	$options->setBeforeSendCallback( function ( \Sentry\Event $event ) {
+		$exceptions = $event->getExceptions();
+
+		// No exceptions in the event? Send the event to Sentry, it's most likely a log message
+		if ( empty( $exceptions ) ) {
+			return $event;
+		}
+
+		$stacktrace = $exceptions[0]->getStacktrace();
+
+		// No stacktrace in the first exception? Send it to Sentry just to be safe then
+		if ( $stacktrace === null ) {
+			return $event;
+		}
+
+		// Little helper and fallback for PHP versions without the str_contains function
+		$strContainsHelper = function ( $haystack, $needle ) {
+			if ( function_exists( 'str_contains' ) ) {
+				return str_contains( $haystack, $needle );
+			}
+
+			return $needle !== '' && mb_strpos( $haystack, $needle ) !== false;
+		};
+
+		foreach ( $stacktrace->getFrames() as $frame ) {
+			// Check the the frame happened inside our theme or plugin
+			// Change THEME_NAME and PLUGIN_NAME to whatever is required
+			// And / or modify this `if` statement to detect other variables
+			if ( $strContainsHelper( $frame->getFile(), 'themes/THEME_NAME' )
+			     || $strContainsHelper( $frame->getFile(), 'plugins/PLUGIN_NAME' )
+			) {
+				// Send the event to Sentry
+				return $event;
+			}
+		}
+
+		// Stacktrace contained no frames in our theme and/or plugin? We send nothing to Sentry
+		return null;
+	} );
+} );
+```
+
+### Client side hook
 
 When using the Sentry Browser integration it is possible to do some work in the client browser before Sentry is initialized to change options and/or prevent the Browser SDK from initializing at all.
 
@@ -391,11 +440,9 @@ When the `wp_sentry_hook` function returns `false` the initialization of the Sen
 
 To modify the options you can modify the object passed as the first argument of the `wp_sentry_hook`, this object will later be passed to `Sentry.init` to initialize the Browser SDK.
 
-
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
-
 
 ## License
 
