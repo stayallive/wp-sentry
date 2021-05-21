@@ -376,7 +376,7 @@ Now `wp-sentry-integration` will load always and before all other plugins.
 
 This is an example on how to use the `before_send` callback of the Sentry SDK to only capture errors occuring in a certain theme or plugin.
 
-See also the filter docs: [wp_sentry_option](##wp_sentry_options).
+See also the filter docs: [wp_sentry_option](#wp_sentry_options).
 
 ```php
 add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
