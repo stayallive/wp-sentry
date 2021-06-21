@@ -1249,16 +1249,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.3.0",
+            "version": "3.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "3bb122f9fc2bc43a4646e37db79eaf115b35b047"
+                "reference": "fafef24c1bc242e614a1afd9533d5dcb7e9c42fe"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/3bb122f9fc2bc43a4646e37db79eaf115b35b047",
-                "reference": "3bb122f9fc2bc43a4646e37db79eaf115b35b047",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/fafef24c1bc242e614a1afd9533d5dcb7e9c42fe",
+                "reference": "fafef24c1bc242e614a1afd9533d5dcb7e9c42fe",
                 "shasum": ""
             },
             "require": {
@@ -1337,7 +1337,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.3.0"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.3.1"
             },
             "funding": [
                 {
@@ -1349,7 +1349,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-05-25T18:32:24+00:00"
+            "time": "2021-06-19T11:37:25+00:00"
         },
         {
             "name": "symfony/options-resolver",
