@@ -7,13 +7,6 @@ final class WP_Sentry_Js_Tracker {
 	use WP_Sentry_Resolve_User, WP_Sentry_Resolve_Environment;
 
 	/**
-	 * Holds the sentry dsn.
-	 *
-	 * @var string
-	 */
-	private $dsn = '';
-
-	/**
 	 * Holds the sentry options.
 	 *
 	 * @var array
@@ -73,8 +66,12 @@ final class WP_Sentry_Js_Tracker {
 	 *
 	 * @return string
 	 */
-	public function get_dsn() {
-		$dsn = $this->dsn;
+	public function get_dsn(): ?string {
+		$dsn = defined( 'WP_SENTRY_BROWSER_DSN' ) ? WP_SENTRY_BROWSER_DSN : null;
+
+		if ( $dsn === null ) {
+			$dsn = defined( 'WP_SENTRY_PUBLIC_DSN' ) ? WP_SENTRY_PUBLIC_DSN : null;
+		}
 
 		if ( has_filter( 'wp_sentry_public_dsn' ) ) {
 			$dsn = (string) apply_filters( 'wp_sentry_public_dsn', $dsn );

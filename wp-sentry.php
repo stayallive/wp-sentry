@@ -90,11 +90,6 @@ if ( defined( 'WP_SENTRY_BROWSER_DSN' ) || defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 		? WP_SENTRY_BROWSER_DSN
 		: WP_SENTRY_PUBLIC_DSN;
 
-	if ( ! empty( $sentry_public_dsn ) ) {
-		add_filter( 'wp_sentry_public_dsn', static function () use ( $sentry_public_dsn ) {
-			return $sentry_public_dsn;
-		}, 1, 0 );
-
 	if ( ! empty( $sentry_js_tracker_dsn ) ) {
 		WP_Sentry_Js_Tracker::get_instance();
 	}
