@@ -1,7 +1,6 @@
 <?php
 
 trait WP_Sentry_Resolve_Environment {
-
 	/**
 	 * Retrieve the current environment name from user config or WordPress API.
 	 *
@@ -16,5 +15,4 @@ trait WP_Sentry_Resolve_Environment {
 
 		return $environment ?? 'unspecified';
 	}
-
 }

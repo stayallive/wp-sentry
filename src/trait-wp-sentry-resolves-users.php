@@ -1,7 +1,6 @@
 <?php
 
 trait WP_Sentry_Resolve_User {
-
 	/**
 	 * Retrieve the current user info from WordPress.
 	 *
@@ -29,5 +28,4 @@ trait WP_Sentry_Resolve_User {
 
 		return $user_context;
 	}
-
 }

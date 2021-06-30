@@ -186,5 +186,4 @@ final class WP_Sentry_Php_Tracker {
 
 		SentrySdk::setCurrentHub( $hub );
 	}
-
 }

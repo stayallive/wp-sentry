@@ -99,7 +99,7 @@ final class WP_Sentry_Js_Tracker {
 		}
 
 		foreach ( $context as $key => $value ) {
-			if ( empty( $context[ $key ] ) ) {
+			if ( empty( $value ) ) {
 				unset( $context[ $key ] );
 			}
 		}
@@ -178,5 +178,4 @@ final class WP_Sentry_Js_Tracker {
 	public function on_set_current_user() {
 		$this->context['user'] = $this->get_current_user_info();
 	}
-
 }

@@ -4,7 +4,6 @@
  * WordPress Sentry Admin Page.
  */
 final class WP_Sentry_Admin_Page {
-
 	/**
 	 * Holds the class instance.
 	 *
@@ -229,5 +228,4 @@ final class WP_Sentry_Admin_Page {
 			return $ex;
 		}
 	}
-
 }
