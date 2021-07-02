@@ -25,12 +25,17 @@ final class WP_Sentry_Admin_Page {
 	 */
 	protected function __construct() {
 		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+		add_action( 'network_admin_menu', [ $this, 'network_admin_menu' ] );
 	}
 
 	/**
 	 * Setup the admin menu page.
 	 */
 	public function admin_menu(): void {
+		if ( is_plugin_active_for_network( plugin_basename( WP_SENTRY_PLUGIN_FILE ) ) ) {
+			return;
+		}
+
 		add_management_page(
 			'WP Sentry test',
 			'WP Sentry test',
@@ -38,6 +43,42 @@ final class WP_Sentry_Admin_Page {
 			'wp-sentry',
 			[ $this, 'render_admin_page' ]
 		);
+	}
+
+	/**
+	 * Setup the network admin menu page.
+	 */
+	public function network_admin_menu(): void {
+		if ( ! is_plugin_active_for_network( plugin_basename( WP_SENTRY_PLUGIN_FILE ) ) ) {
+			return;
+		}
+
+		global $submenu;
+
+		// Network admin has no tools section so we add it ourselfs
+		add_menu_page(
+			'',
+			'Tools',
+			'activate_plugins',
+			'wp-sentry-tools-menu',
+			'',
+			'dashicons-admin-tools',
+			22
+		);
+
+		add_submenu_page(
+			'wp-sentry-tools-menu',
+			'WP Sentry test',
+			'WP Sentry test',
+			'activate_plugins',
+			'wp-sentry',
+			[ $this, 'render_admin_page' ]
+		);
+
+		// Remove the submenu item crate by `add_menu_page` that links to `wp-sentry-tools-menu` which does not exist
+		if ( ! empty( $submenu['wp-sentry-tools-menu'][0] ) && $submenu['wp-sentry-tools-menu'][0][2] === 'wp-sentry-tools-menu' ) {
+			unset( $submenu['wp-sentry-tools-menu'][0] );
+		}
 	}
 
 	/**
