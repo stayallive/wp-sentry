@@ -87,7 +87,7 @@ final class WP_Sentry_Admin_Page {
 	 * @return string|null
 	 */
 	private function send_test_event(): ?string {
-		$exception = $this->generateTestException( 'command name', [ 'foo' => 'bar' ] );
+		$exception = $this->generateTestException( 'wp sentry test', [ 'foo' => 'bar' ] );
 
 		$tracker = WP_Sentry_Php_Tracker::get_instance();
 
@@ -96,6 +96,22 @@ final class WP_Sentry_Admin_Page {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Generate a test exception to send to Sentry.
+	 *
+	 * @param string $command
+	 * @param array  $arg
+	 *
+	 * @return \Exception
+	 */
+	private function generateTestException( string $command, array $arg ): ?Exception {
+		try {
+			throw new Exception( 'This is a test exception sent from the Sentry WP PHP integration.' );
+		} catch ( Exception $ex ) {
+			return $ex;
+		}
 	}
 
 	/**
@@ -252,21 +268,4 @@ final class WP_Sentry_Admin_Page {
             })();
         </script>
 	<?php }
-
-	/**
-	 * Generate a test exception to send to Sentry.
-	 *
-	 * @param string $command
-	 * @param array  $arg
-	 *
-	 * @return \Exception
-	 */
-	private function generateTestException( string $command, array $arg ): ?Exception {
-		// Do something silly
-		try {
-			throw new Exception( 'This is a test exception sent from the Sentry WP PHP integration.' );
-		} catch ( Exception $ex ) {
-			return $ex;
-		}
-	}
 }
