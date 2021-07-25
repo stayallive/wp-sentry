@@ -115,19 +115,11 @@ You can use this filter to extend the Sentry user context for both PHP and JS tr
 Example usage:
 
 ```php
-/**
- * Customize sentry user context.
- *
- * @param array $user The current sentry user context.
- *
- * @return array
- */
-function customize_sentry_user_context( array $user ) {
-    return array_merge( $user, array(
-        'a-custom-user-meta-key' => 'custom value',
-    ));
-}
-add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
+add_filter( 'wp_sentry_user_context', function ( array $user ) {
+	return array_merge( $user, array(
+		'a-custom-user-meta-key' => 'custom value',
+	));
+} );
 ```
 
 **Note:** _This filter fires on the WordPress `set_current_user` action and only if the `WP_SENTRY_SEND_DEFAULT_PII` constant is set to `true`._
@@ -138,20 +130,14 @@ add_filter( 'wp_sentry_user_context', 'customize_sentry_user_context' );
 
 You can use this filter to override the Sentry DSN used for the PHP tracker.
 
+> **WARNING:** This is not recommended, please set the DSN using the `WP_SENTRY_PHP_DSN` constant in your `wp-config.php`!
+
 Example usage:
 
 ```php
-/**
- * Customize sentry dsn.
- *
- * @param string $dsn The current sentry DSN.
- *
- * @return string
- */
-function customize_sentry_dsn( $dsn ) {
-    return 'https://<key>:<secret>@sentry.io/<project>';
-}
-add_filter( 'wp_sentry_dsn', 'customize_sentry_dsn' );
+add_filter( 'wp_sentry_dsn', function ( $dsn ) {
+	return 'https://<key>:<secret>@sentry.io/<project>';
+} );
 ```
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action. It is discouraged to use this and instead define the DSN in the `wp-config.php` using the `WP_SENTRY_PHP_DSN` constant_
@@ -165,17 +151,11 @@ You can use this filter to customize the Sentry [scope](https://docs.sentry.io/p
 Example usage:
 
 ```php
-/**
- * Customize Sentry PHP SDK scope.
- *
- * @param \Sentry\State\Scope $scope
- *
- * @return void
- */
-function customize_sentry_scope( \Sentry\State\Scope $scope ) {
+add_filter( 'wp_sentry_scope', function ( \Sentry\State\Scope $scope ) {
 	$scope->setTag('my-custom-tag', 'tag-value');
-}
-add_filter( 'wp_sentry_scope', 'customize_sentry_scope' );
+
+	return $scope;
+} );
 ```
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action._
@@ -189,18 +169,12 @@ You can use this filter to customize the Sentry [options](https://docs.sentry.io
 Example usage:
 
 ```php
-/**
- * Customize sentry options.
- *
- * @param \Sentry\Options $options The current sentry options.
- *
- * @return void
- */
-function customize_sentry_options( \Sentry\Options $options ) {
-    // Only sample 90% of the events
-    $options->setSampleRate(0.9);
-}
-add_filter( 'wp_sentry_options', 'customize_sentry_options' );
+add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
+	// Only sample 90% of the events
+	$options->setSampleRate(0.9);
+
+	return $options;
+} );
 ```
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action._
@@ -211,22 +185,14 @@ add_filter( 'wp_sentry_options', 'customize_sentry_options' );
 
 You can use this filter to override the Sentry DSN used for the JS tracker.
 
-> **WARNING:** This value is exposed to the public, so make sure you do not use your private DSN!
+> **WARNING:** This is not recommended, please set the DSN using the `WP_SENTRY_BROWSER_DSN` constant in your `wp-config.php`!
 
 Example usage:
 
 ```php
-/**
- * Customize public sentry dsn.
- *
- * @param string $dsn The current sentry public dsn.
- *
- * @return string
- */
-function customize_public_sentry_dsn( $dsn ) {
-    return 'https://<key>@sentry.io/<project>';
-}
-add_filter( 'wp_sentry_public_dsn', 'customize_public_sentry_dsn' );
+add_filter( 'wp_sentry_public_dsn', function ( $dsn ) {
+	return 'https://<key>@sentry.io/<project>';
+} );
 ```
 
 ---
@@ -240,27 +206,18 @@ You can use this filter to customize/override the Sentry [options](https://docs.
 Example usage:
 
 ```php
-/**
- * Customize public sentry options.
- *
- * Note: Items prefixed with `regex:` in blacklistUrls and whitelistUrls option arrays
- * will be translated into pure RegExp.
- *
- * @param array $options The current sentry public options.
- *
- * @return array
- */
-function customize_sentry_public_options( array $options ) {
-    return array_merge( $options, array(
-        'sampleRate' => '0.5',
-        'blacklistUrls' => array(
-            'https://github.com/',
-            'regex:\\w+\\.example\\.com',
-        ),
-    ));
-}
-add_filter( 'wp_sentry_public_options', 'customize_sentry_public_options' );
+add_filter( 'wp_sentry_public_options', function ( array $options ) {
+	return array_merge( $options, array(
+		'sampleRate' => '0.5',
+		'blacklistUrls' => array(
+			'https://github.com/',
+			'regex:\\w+\\.example\\.com',
+		),
+	));
+} );
 ```
+
+**Note:** _Items prefixed with `regex:` in blacklistUrls and whitelistUrls option arrays will be translated into pure RegExp._
 
 #### `wp_sentry_public_context` (array)
 
@@ -271,19 +228,11 @@ You can use this filter to customize/override the Sentry context, you can modify
 Example usage:
 
 ```php
-/**
- * Customize public sentry context.
- *
- * @param array $context The current sentry public context.
- *
- * @return array
- */
-function customize_sentry_public_context( array $context ) {
-    $context['tags']['my-custom-tag'] = 'tag-value';
+add_filter( 'wp_sentry_public_context', function ( array $context ) {
+	$context['tags']['my-custom-tag'] = 'tag-value';
 
-    return $context;
-}
-add_filter( 'wp_sentry_public_context', 'customize_sentry_public_context' );
+	return $context;
+} );
 ```
 
 ## Advanced usages
@@ -327,12 +276,12 @@ If you need to attach extra data only for the handled exception, you could add [
 $e = new Exception('Some exception I want to capture with extra data.');
 
 if (function_exists('wp_sentry_safe')) {
-    wp_sentry_safe(function (\Sentry\State\HubInterface $client) use ($e) {
-        $client->withScope(function (\Sentry\State\Scope $scope) use ($client, $e) {
-            $scope->setExtra('user_data', $e->getData());
-            $client->captureException($e);
-        });
-    });
+	wp_sentry_safe(function (\Sentry\State\HubInterface $client) use ($e) {
+		$client->withScope(function (\Sentry\State\Scope $scope) use ($client, $e) {
+			$scope->setExtra('user_data', $e->getData());
+			$client->captureException($e);
+		});
+	});
 }
 ```
 
@@ -409,7 +358,7 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 			// Change THEME_NAME and PLUGIN_NAME to whatever is required
 			// And / or modify this `if` statement to detect other variables
 			if ( $strContainsHelper( $frame->getFile(), 'themes/THEME_NAME' )
-			     || $strContainsHelper( $frame->getFile(), 'plugins/PLUGIN_NAME' )
+				 || $strContainsHelper( $frame->getFile(), 'plugins/PLUGIN_NAME' )
 			) {
 				// Send the event to Sentry
 				return $event;
@@ -419,6 +368,8 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 		// Stacktrace contained no frames in our theme and/or plugin? We send nothing to Sentry
 		return null;
 	} );
+
+	return $options;
 } );
 ```
 
@@ -432,7 +383,7 @@ A quick example on how you would disable the Browser SDK using `wp_add_inline_sc
 
 ```php
 add_action( 'wp_enqueue_scripts', function () {
-    wp_add_inline_script( 'wp-sentry-browser', 'function wp_sentry_hook(options) { return someCheckInYourCode() ? true : false; }', 'before' );
+	wp_add_inline_script( 'wp-sentry-browser', 'function wp_sentry_hook(options) { return someCheckInYourCode() ? true : false; }', 'before' );
 } );
 ```
 
