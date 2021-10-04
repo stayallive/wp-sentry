@@ -74,16 +74,16 @@
         },
         {
             "name": "composer/installers",
-            "version": "v1.11.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "ae03311f45dfe194412081526be2e003960df74b"
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/ae03311f45dfe194412081526be2e003960df74b",
-                "reference": "ae03311f45dfe194412081526be2e003960df74b",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
                 "shasum": ""
             },
             "require": {
@@ -182,6 +182,7 @@
                 "modx",
                 "moodle",
                 "osclass",
+                "pantheon",
                 "phpbb",
                 "piwik",
                 "ppi",
@@ -204,7 +205,7 @@
             ],
             "support": {
                 "issues": "https://github.com/composer/installers/issues",
-                "source": "https://github.com/composer/installers/tree/v1.11.0"
+                "source": "https://github.com/composer/installers/tree/v1.12.0"
             },
             "funding": [
                 {
@@ -220,20 +221,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-04-28T06:42:17+00:00"
+            "time": "2021-09-13T08:19:44+00:00"
         },
         {
             "name": "composer/package-versions-deprecated",
-            "version": "1.11.99.2",
+            "version": "1.11.99.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/package-versions-deprecated.git",
-                "reference": "c6522afe5540d5fc46675043d3ed5a45a740b27c"
+                "reference": "b174585d1fe49ceed21928a945138948cb394600"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/c6522afe5540d5fc46675043d3ed5a45a740b27c",
-                "reference": "c6522afe5540d5fc46675043d3ed5a45a740b27c",
+                "url": "https://api.github.com/repos/composer/package-versions-deprecated/zipball/b174585d1fe49ceed21928a945138948cb394600",
+                "reference": "b174585d1fe49ceed21928a945138948cb394600",
                 "shasum": ""
             },
             "require": {
@@ -277,7 +278,7 @@
             "description": "Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
             "support": {
                 "issues": "https://github.com/composer/package-versions-deprecated/issues",
-                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.2"
+                "source": "https://github.com/composer/package-versions-deprecated/tree/1.11.99.4"
             },
             "funding": [
                 {
@@ -293,7 +294,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-05-24T07:46:03+00:00"
+            "time": "2021-09-13T08:41:34+00:00"
         },
         {
             "name": "guzzlehttp/promises",
@@ -680,16 +681,16 @@
         },
         {
             "name": "php-http/discovery",
-            "version": "1.14.0",
+            "version": "1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/discovery.git",
-                "reference": "778f722e29250c1fac0bbdef2c122fa5d038c9eb"
+                "reference": "de90ab2b41d7d61609f504e031339776bc8c7223"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/discovery/zipball/778f722e29250c1fac0bbdef2c122fa5d038c9eb",
-                "reference": "778f722e29250c1fac0bbdef2c122fa5d038c9eb",
+                "url": "https://api.github.com/repos/php-http/discovery/zipball/de90ab2b41d7d61609f504e031339776bc8c7223",
+                "reference": "de90ab2b41d7d61609f504e031339776bc8c7223",
                 "shasum": ""
             },
             "require": {
@@ -742,9 +743,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/discovery/issues",
-                "source": "https://github.com/php-http/discovery/tree/1.14.0"
+                "source": "https://github.com/php-http/discovery/tree/1.14.1"
             },
-            "time": "2021-06-01T14:30:21+00:00"
+            "time": "2021-09-18T07:57:46+00:00"
         },
         {
             "name": "php-http/httplug",
@@ -810,16 +811,16 @@
         },
         {
             "name": "php-http/message",
-            "version": "1.11.2",
+            "version": "1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-http/message.git",
-                "reference": "295c82867d07261f2fa4b3a26677519fc6f7f5f6"
+                "reference": "39eb7548be982a81085fe5a6e2a44268cd586291"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-http/message/zipball/295c82867d07261f2fa4b3a26677519fc6f7f5f6",
-                "reference": "295c82867d07261f2fa4b3a26677519fc6f7f5f6",
+                "url": "https://api.github.com/repos/php-http/message/zipball/39eb7548be982a81085fe5a6e2a44268cd586291",
+                "reference": "39eb7548be982a81085fe5a6e2a44268cd586291",
                 "shasum": ""
             },
             "require": {
@@ -878,9 +879,9 @@
             ],
             "support": {
                 "issues": "https://github.com/php-http/message/issues",
-                "source": "https://github.com/php-http/message/tree/1.11.2"
+                "source": "https://github.com/php-http/message/tree/1.12.0"
             },
-            "time": "2021-08-03T11:52:11+00:00"
+            "time": "2021-08-29T09:13:12+00:00"
         },
         {
             "name": "php-http/message-factory",
@@ -1249,16 +1250,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "3.3.2",
+            "version": "3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "3d733139a3ba2d1d3a8011580e3acf0ba1d0dc9b"
+                "reference": "9a7b6d84ac8fa370397336028e760c71accac1dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/3d733139a3ba2d1d3a8011580e3acf0ba1d0dc9b",
-                "reference": "3d733139a3ba2d1d3a8011580e3acf0ba1d0dc9b",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/9a7b6d84ac8fa370397336028e760c71accac1dc",
+                "reference": "9a7b6d84ac8fa370397336028e760c71accac1dc",
                 "shasum": ""
             },
             "require": {
@@ -1337,7 +1338,7 @@
             ],
             "support": {
                 "issues": "https://github.com/getsentry/sentry-php/issues",
-                "source": "https://github.com/getsentry/sentry-php/tree/3.3.2"
+                "source": "https://github.com/getsentry/sentry-php/tree/3.3.3"
             },
             "funding": [
                 {
@@ -1349,20 +1350,20 @@
                     "type": "custom"
                 }
             ],
-            "time": "2021-07-19T08:09:34+00:00"
+            "time": "2021-10-04T11:20:34+00:00"
         },
         {
             "name": "symfony/options-resolver",
-            "version": "v4.4.27",
+            "version": "v4.4.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/options-resolver.git",
-                "reference": "66a3346190f9ddb8bcb160649ee452af3529a990"
+                "reference": "fa0b12a3a47ed25749d47d6b4f61412fd5ca1554"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/66a3346190f9ddb8bcb160649ee452af3529a990",
-                "reference": "66a3346190f9ddb8bcb160649ee452af3529a990",
+                "url": "https://api.github.com/repos/symfony/options-resolver/zipball/fa0b12a3a47ed25749d47d6b4f61412fd5ca1554",
+                "reference": "fa0b12a3a47ed25749d47d6b4f61412fd5ca1554",
                 "shasum": ""
             },
             "require": {
@@ -1400,7 +1401,7 @@
                 "options"
             ],
             "support": {
-                "source": "https://github.com/symfony/options-resolver/tree/v4.4.27"
+                "source": "https://github.com/symfony/options-resolver/tree/v4.4.30"
             },
             "funding": [
                 {
@@ -1416,7 +1417,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-07-23T15:41:52+00:00"
+            "time": "2021-08-04T20:31:23+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
@@ -1594,5 +1595,5 @@
     "platform-overrides": {
         "php": "7.2.0"
     },
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
