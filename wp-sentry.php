@@ -96,7 +96,7 @@ if ( defined( 'WP_SENTRY_BROWSER_DSN' ) || defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 }
 
 // Load the admin page when needed
-if ( is_admin() ) {
+if ( function_exists( 'is_admin' ) && is_admin() ) {
 	WP_Sentry_Admin_Page::get_instance();
 }
 
