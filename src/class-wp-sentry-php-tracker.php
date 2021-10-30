@@ -125,8 +125,11 @@ final class WP_Sentry_Php_Tracker {
 	 * @return array
 	 */
 	public function get_default_tags(): array {
+		// Include an unmodified $wp_version.
+		require ABSPATH . '/wp-includes/version.php';
+
 		return [
-			'wordpress' => get_bloginfo( 'version' ),
+			'wordpress' => $wp_version,
 			'language'  => get_bloginfo( 'language' ),
 			'php'       => phpversion(),
 		];
