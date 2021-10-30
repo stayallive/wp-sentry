@@ -130,7 +130,7 @@ final class WP_Sentry_Php_Tracker {
 
 		return [
 			'wordpress' => $wp_version,
-			'language'  => get_bloginfo( 'language' ),
+			'language'  => function_exists( 'get_bloginfo' ) ? get_bloginfo( 'language' ) : 'unknown',
 			'php'       => phpversion(),
 		];
 	}
