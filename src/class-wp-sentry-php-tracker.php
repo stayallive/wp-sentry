@@ -79,7 +79,7 @@ final class WP_Sentry_Php_Tracker {
 	 */
 	public function on_set_current_user(): void {
 		$this->get_client()->configureScope( function ( Scope $scope ) {
-			$scope->setUser( $this->get_current_user_info(), true );
+			$scope->setUser( $this->get_current_user_info() );
 		} );
 	}
 

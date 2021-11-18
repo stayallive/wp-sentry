@@ -6,8 +6,12 @@ trait WP_Sentry_Resolve_User {
 	 *
 	 * @return array
 	 */
-	protected function get_current_user_info(): array {
+	protected function get_current_user_info(): ?array {
 		$current_user = wp_get_current_user();
+
+		if ( $current_user === null ) {
+			return null;
+		}
 
 		// Determine whether the user is logged in assign their details.
 		$user_context = $current_user instanceof WP_User && $current_user->exists() ? [
