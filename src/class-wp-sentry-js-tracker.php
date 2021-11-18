@@ -116,10 +116,15 @@ final class WP_Sentry_Js_Tracker {
 	 * @return array
 	 */
 	public function get_default_options() {
-		return [
-			'release'     => WP_SENTRY_VERSION,
+		$options = [
 			'environment' => $this->get_environment(),
 		];
+
+		if ( defined( 'WP_SENTRY_VERSION' ) ) {
+			$options['release'] = WP_SENTRY_VERSION;
+		}
+
+		return $options;
 	}
 
 	/**

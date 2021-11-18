@@ -74,7 +74,7 @@ if ( ! class_exists( WP_Sentry_Version::class ) ) {
 }
 
 // Define the default version
-if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
+if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'wp_get_theme' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
 }
 

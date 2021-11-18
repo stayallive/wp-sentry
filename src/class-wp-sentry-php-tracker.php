@@ -165,11 +165,14 @@ final class WP_Sentry_Php_Tracker {
 	public function get_default_options(): array {
 		$options = [
 			'dsn'              => $this->get_dsn(),
-			'release'          => WP_SENTRY_VERSION,
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
 		];
+
+		if ( defined( 'WP_SENTRY_VERSION' ) ) {
+			$options['release'] = WP_SENTRY_VERSION;
+		}
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
 			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
