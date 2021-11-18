@@ -89,7 +89,7 @@ define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 );
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
-define( 'WP_SENTRY_VERSION', 'v4.9.0' );
+define( 'WP_SENTRY_VERSION', 'v4.10.0' );
 ```
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.

@@ -15,14 +15,14 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.9.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.10.0/README.md) file._
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.9.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.10.0/README.md) file._
 
 **Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
 
@@ -56,15 +56,20 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v4.9.0' );`
+`define( 'WP_SENTRY_VERSION', 'v4.10.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.9.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.10.0/README.md) file._
 
 == Changelog ==
+= 4.10.0 =
+
+* Allow loading the plugin from `wp-config.php` before WordPress is loaded ([see documentation](https://github.com/stayallive/wp-sentry#loading-sentry-before-wordpress)) (thanks @ocean90)
+* Add support for modifying the Sentry PHP SDK `ClientBuilder` builder ([see documentation](https://github.com/stayallive/wp-sentry#modifying-the-php-sdk-clientbuilder-or-options-before-initialization))
+
 = 4.9.0 =
 
 * Update Sentry Browser to version 6.15.0
