@@ -306,15 +306,14 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * License: MIT
  */
 
-$wp_sentry = __DIR__ . '/../plugins/wp-sentry-integration/wp-sentry.php';
+$wp_sentry = ABSPATH . '/plugins/wp-sentry-integration/wp-sentry.php';
 
+// Do not crash in case the plugin is not installed
 if ( ! file_exists( $wp_sentry ) ) {
 	return;
 }
 
 require $wp_sentry;
-
-define( 'WP_SENTRY_MU_LOADED', true );
 ```
 
 Now `wp-sentry-integration` will load always and before all other plugins.
