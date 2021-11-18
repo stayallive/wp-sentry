@@ -20,7 +20,7 @@ echo " > Fixing {$static_loader_path}\n";
 file_put_contents(
 	$static_loader_path,
 	preg_replace(
-		'/\'([A-Za-z0-9]*?)\' => __DIR__ \. ((?!.*?sentry\/sentry.*)|(?!.*?symfony\/polyfill-php[\d]{2}\/Resources\/stubs.*).*?),/',
+		'/\'([A-Za-z0-9]*?)\' => __DIR__ \. ((?!.*?(?:(?:sentry\/sentry)|(?:.*?symfony\/polyfill-php[\d]{2}\/Resources\/stubs.*)).*).*?),/',
 		'\'wp-sentry-$1\' => __DIR__ . $2,',
 		file_get_contents( $static_loader_path )
 	)
