@@ -287,6 +287,20 @@ if (function_exists('wp_sentry_safe')) {
 
 If you need to add data to the scope in every case use `configureScope` in [wp_sentry_scope filter](#wp_sentry_scope-void).
 
+### Loading Sentry before WordPress
+
+Since WP Sentry is a WordPress plugin it loads after WordPress and unless you are using a must-use plugin (see [Capturing plugin errors](#capturing-plugin-errors)) even after some other plugins loaded throwing errors which are not captured by Sentry.
+
+To remedy this you can opt to load the plugin from your `wp-config.php` file before WordPress is started.
+
+It's really simple to do this by adding the following snippet to your `wp-config.php` before the `/* That's all, stop editing! Happy blogging. */` comment:
+
+```php
+require_once ABSPATH . '/wp-content/plugins/wp-sentry-integration/wp-sentry.php';
+```
+
+Also make sure that any configuration options like `WP_SENTRY_PHP_DSN` are set before the snippet above otherwise they have no effect.
+
 ### Capturing plugin errors
 
 Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occuring in plugins that load before it.
