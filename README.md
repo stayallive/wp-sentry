@@ -391,6 +391,25 @@ When the `wp_sentry_hook` function returns `false` the initialization of the Sen
 
 To modify the options you can modify the object passed as the first argument of the `wp_sentry_hook`, this object will later be passed to `Sentry.init` to initialize the Browser SDK.
 
+### Modifying the PHP SDK `ClientBuilder` or options before initialization
+
+Because the PHP SDK is initialized as quick as possible to capture early errors, it's impossible to modify the options or the `ClientBuilder` before the initialization with WordPress hooks.
+
+There exists a way to modify the options and the `ClientBuilder` before the initialization of the PHP SDK by setting a callback using a constant called `WP_SENTRY_CLIENTBUILDER_CALLBACK`.
+
+The callback will be executed whenever the plugin creates a new `ClientBuilder` instance to create a new PHP SDK client.
+
+You would place the example below in your `wp-config.php` file to make sure it's available before the PHP SDK is initialized:
+
+```php
+function wp_sentry_clientbuilder_callback( \Sentry\ClientBuilder $builder ): void {
+    // For example, disabling the default integrations 
+	$builder->getOptions()->setDefaultIntegrations( false );
+}
+
+define( 'WP_SENTRY_CLIENTBUILDER_CALLBACK', 'wp_sentry_clientbuilder_callback' );
+```
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.

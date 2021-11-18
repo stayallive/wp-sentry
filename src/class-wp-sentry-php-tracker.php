@@ -173,6 +173,10 @@ final class WP_Sentry_Php_Tracker {
 
 		$clientBuilder = ClientBuilder::create( $this->get_default_options() );
 
+		if ( defined( 'WP_SENTRY_CLIENTBUILDER_CALLBACK' ) && is_callable( WP_SENTRY_CLIENTBUILDER_CALLBACK ) ) {
+			call_user_func( WP_SENTRY_CLIENTBUILDER_CALLBACK, $clientBuilder );
+		}
+
 		$clientBuilder->setSdkIdentifier( WP_Sentry_Version::SDK_IDENTIFIER );
 		$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
 
