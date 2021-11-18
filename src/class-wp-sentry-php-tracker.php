@@ -54,6 +54,24 @@ final class WP_Sentry_Php_Tracker {
 
 		// Force the initialization of the client immediately
 		$this->get_client();
+
+		add_action( 'init', [ $this, 'on_init' ] );
+	}
+
+	public function on_init(): void {
+		if ( $this->client === null ) {
+			return;
+		}
+
+		$hub = SentrySdk::getCurrentHub();
+
+		$hub->configureScope( function ( Scope $scope ) {
+			foreach ( $this->get_default_tags() as $tag => $value ) {
+				$scope->setTag( $tag, $value );
+			}
+		} );
+
+		SentrySdk::setCurrentHub( $hub );
 	}
 
 	/**
@@ -125,11 +143,18 @@ final class WP_Sentry_Php_Tracker {
 	 * @return array
 	 */
 	public function get_default_tags(): array {
-		return [
-			'wordpress' => get_bloginfo( 'version' ),
-			'language'  => get_bloginfo( 'language' ),
-			'php'       => phpversion(),
+		require ABSPATH . '/wp-includes/version.php';
+
+		/** @noinspection IssetArgumentExistenceInspection */
+		$tags = [
+			'wordpress' => $wp_version ?? 'unknown',
 		];
+
+		if ( function_exists( 'get_bloginfo' ) ) {
+			$tags['language'] = get_bloginfo( 'language' );
+		}
+
+		return $tags;
 	}
 
 	/**
@@ -143,7 +168,7 @@ final class WP_Sentry_Php_Tracker {
 			'release'          => WP_SENTRY_VERSION,
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
-			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) ? WP_SENTRY_SEND_DEFAULT_PII : false,
+			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
 		];
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {

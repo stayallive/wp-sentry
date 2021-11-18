@@ -10,15 +10,22 @@
  * License: MIT
  */
 
-// Exit if accessed directly.
+// Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
-// If the plugin was already loaded as a mu-plugin do not load again.
-if ( defined( 'WP_SENTRY_MU_LOADED' ) ) {
+// If the plugin was already loaded as a mu-plugin or from somewhere else do not load again
+if ( defined( 'WP_SENTRY_MU_LOADED' ) || defined( 'WP_SENTRY_LOADED' ) ) {
 	return;
 }
 
-// Make sure the PHP version is at least 7.2.
+define( 'WP_SENTRY_LOADED', true );
+
+// Load the WordPress plugin API early so hooks can be used even if Sentry is loaded before WordPress
+if ( ! function_exists( 'add_action' ) ) {
+	require_once ABSPATH . '/wp-includes/plugin.php';
+}
+
+// Make sure the PHP version is at least 7.2
 if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 	if ( is_admin() ) {
 		function wp_sentry_php_version_notice() { ?>
@@ -38,7 +45,7 @@ if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 	return;
 }
 
-// Resolve the sentry plugin file.
+// Resolve the sentry plugin file
 define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( static function () {
 	global $wp_plugin_paths;
 
@@ -68,7 +75,7 @@ if ( ! class_exists( WP_Sentry_Version::class ) ) {
 	define( 'WP_SENTRY_SCOPED_AUTOLOADER', $scopedAutoloaderExists );
 }
 
-// Define the default version.
+// Define the default version
 if ( ! defined( 'WP_SENTRY_VERSION' ) ) {
 	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
 }
@@ -95,10 +102,8 @@ if ( defined( 'WP_SENTRY_BROWSER_DSN' ) || defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 	}
 }
 
-// Load the admin page when needed
-if ( is_admin() ) {
-	WP_Sentry_Admin_Page::get_instance();
-}
+// Load the admin page
+WP_Sentry_Admin_Page::get_instance();
 
 /**
  * Register a "safe" function to call Sentry functions safer in your own code,
