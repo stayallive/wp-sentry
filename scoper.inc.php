@@ -6,6 +6,7 @@ use Isolated\Symfony\Component\Finder\Finder;
 
 $symfonyPolyfills = ( static function (): array {
 	$files = [];
+
 	foreach (
 		Finder::create()
 		      ->files()
@@ -14,6 +15,15 @@ $symfonyPolyfills = ( static function (): array {
 		      ->name( 'bootstrap80.php' ) as $bootstrap
 	) {
 		$files[] = $bootstrap->getPathName();
+	}
+
+	foreach (
+		Finder::create()
+		      ->files()
+		      ->in( __DIR__ . '/vendor/symfony/polyfill-*/Resources/stubs' )
+		      ->name( '*' ) as $stub
+	) {
+		$files[] = $stub->getPathName();
 	}
 
 	return $files;
