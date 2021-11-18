@@ -24,8 +24,14 @@ final class WP_Sentry_Admin_Page {
 	 * WP_Sentry_Admin_Page constructor.
 	 */
 	protected function __construct() {
-		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
-		add_action( 'network_admin_menu', [ $this, 'network_admin_menu' ] );
+		add_action( 'init', function () {
+			if ( ! is_admin() ) {
+				return;
+			}
+
+			add_action( 'admin_menu', [ $this, 'admin_menu' ] );
+			add_action( 'network_admin_menu', [ $this, 'network_admin_menu' ] );
+		} );
 	}
 
 	/**
