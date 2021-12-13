@@ -62,9 +62,18 @@ When enabled the current logged in user and IP address will be added to the even
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
+(Optionally) lazy load sentry after first unhandled error
+
+`define( 'WP_SENTRY_LAZYLOAD', true );`
+
 _For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.10.3/README.md) file._
 
 == Changelog ==
+= 4.11.0 =
+
+* Update Sentry Browser to version 6.16.1
+* Add lazy loading option WP_SENTRY_LAZYLOAD ([see documentation](https://docs.sentry.io/platforms/javascript/install/lazy-load-sentry/))
+
 = 4.10.3 =
 
 * Fix possible composer autoloader conflict with Sentry SDK helpers file

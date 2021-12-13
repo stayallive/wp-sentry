@@ -132,11 +132,24 @@ final class WP_Sentry_Js_Tracker {
 			? (float) WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE
 			: 0.0;
 
+		$bundle_js = ($traces_sample_rate > 0) ? 'wp-sentry-browser-tracing.min.js' : 'wp-sentry-browser.min.js';
+		$bundle_url = plugin_dir_url(WP_SENTRY_PLUGIN_FILE) . 'public/' . $bundle_js;
+
+		$options = array_replace_recursive($this->get_options(), [
+			'dsn'              => $this->get_dsn(),
+			'tracesSampleRate' => $traces_sample_rate,
+		]);
+
+
+		if (defined( 'WP_SENTRY_LAZYLOAD' ) && WP_SENTRY_LAZYLOAD) {
+			$options['lazyload'] = true;
+			$options['lazyloadSdkBundleUrl'] = $bundle_url;
+			$bundle_url = plugin_dir_url(WP_SENTRY_PLUGIN_FILE) . 'public/wp-sentry-browser-lazyload.js';
+		}
+
 		wp_enqueue_script(
 			'wp-sentry-browser',
-			$traces_sample_rate > 0
-				? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing.min.js'
-				: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.min.js',
+			$bundle_url,
 			[],
 			WP_Sentry_Version::SDK_VERSION
 		);
@@ -144,10 +157,14 @@ final class WP_Sentry_Js_Tracker {
 		wp_localize_script(
 			'wp-sentry-browser',
 			'wp_sentry',
-			[
-				'dsn'              => $this->get_dsn(),
-				'tracesSampleRate' => $traces_sample_rate,
-			] + $this->get_options()
+			$options
+		);
+
+		wp_enqueue_script(
+			'wp-sentry-browser-onload',
+			plugin_dir_url(WP_SENTRY_PLUGIN_FILE) . 'public/wp-sentry-browser-onload.js',
+			['wp-sentry-browser'],
+			WP_Sentry_Version::SDK_VERSION
 		);
 	}
 }
