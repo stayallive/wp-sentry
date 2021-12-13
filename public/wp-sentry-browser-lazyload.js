@@ -214,6 +214,6 @@
         });
     }
 
-})(window, document, 'script', 'onerror', 'onunhandledrejection', 'Sentry', wp_sentry.key, wp_sentry.sdkBundleUrl, {
+})(window, document, 'script', 'onerror', 'onunhandledrejection', 'Sentry', wp_sentry.lazyloadKey, wp_sentry.lazyloadSdkBundleUrl, {
     dsn: wp_sentry.dsn
 });

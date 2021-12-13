@@ -143,8 +143,9 @@ final class WP_Sentry_Js_Tracker {
 
 		if (defined( 'WP_SENTRY_LAZYLOAD' ) && WP_SENTRY_LAZYLOAD) {
 			$options['lazyload'] = true;
+			$options['lazyloadKey'] = plugin_dir_url(WP_SENTRY_PLUGIN_FILE) . 'public/wp-sentry-browser-lazyload.js';
 			$options['lazyloadSdkBundleUrl'] = $bundle_url;
-			$bundle_url = plugin_dir_url(WP_SENTRY_PLUGIN_FILE) . 'public/wp-sentry-browser-lazyload.js';
+			$bundle_url = $options['lazyloadKey'];
 		}
 
 		wp_enqueue_script(
