@@ -22,7 +22,8 @@ define( 'WP_SENTRY_LOADED', true );
 
 // Load the WordPress plugin API early so hooks can be used even if Sentry is loaded before WordPress
 if ( ! function_exists( 'add_action' ) ) {
-	require_once ABSPATH . 'wp-includes/plugin.php';
+	$wp_includes = defined( 'WPINC' ) ? WPINC : 'wp-includes';
+	require_once ABSPATH . $wp_includes . '/plugin.php';
 }
 
 // Make sure the PHP version is at least 7.2
