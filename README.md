@@ -296,7 +296,7 @@ To remedy this you can opt to load the plugin from your `wp-config.php` file bef
 It's really simple to do this by adding the following snippet to your `wp-config.php` before the `/* That's all, stop editing! Happy blogging. */` comment:
 
 ```php
-require_once ABSPATH . '/wp-content/plugins/wp-sentry-integration/wp-sentry.php';
+require_once ABSPATH . 'wp-content/plugins/wp-sentry-integration/wp-sentry.php';
 ```
 
 Also make sure that any configuration options like `WP_SENTRY_PHP_DSN` are set before the snippet above otherwise they have no effect.
@@ -320,7 +320,7 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * License: MIT
  */
 
-$wp_sentry = ABSPATH . '/plugins/wp-sentry-integration/wp-sentry.php';
+$wp_sentry = ABSPATH . 'plugins/wp-sentry-integration/wp-sentry.php';
 
 // Do not crash in case the plugin is not installed
 if ( ! file_exists( $wp_sentry ) ) {

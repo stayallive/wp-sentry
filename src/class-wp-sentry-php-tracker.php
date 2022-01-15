@@ -143,7 +143,7 @@ final class WP_Sentry_Php_Tracker {
 	 * @return array
 	 */
 	public function get_default_tags(): array {
-		require ABSPATH . '/wp-includes/version.php';
+		require ABSPATH . 'wp-includes/version.php';
 
 		/** @noinspection IssetArgumentExistenceInspection */
 		$tags = [
