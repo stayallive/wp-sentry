@@ -20,9 +20,12 @@ if ( defined( 'WP_SENTRY_MU_LOADED' ) || defined( 'WP_SENTRY_LOADED' ) ) {
 
 define( 'WP_SENTRY_LOADED', true );
 
+define( 'WP_SENTRY_WPINC', ABSPATH . ( defined( 'WPINC' ) ? WPINC : 'wp-includes' ) );
+define( 'WP_SENTRY_WPADMIN', ABSPATH . 'wp-admin' );
+
 // Load the WordPress plugin API early so hooks can be used even if Sentry is loaded before WordPress
 if ( ! function_exists( 'add_action' ) ) {
-	require_once ABSPATH . 'wp-includes/plugin.php';
+	require_once WP_SENTRY_WPINC . '/plugin.php';
 }
 
 // Make sure the PHP version is at least 7.2
