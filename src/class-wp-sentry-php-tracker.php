@@ -143,7 +143,7 @@ final class WP_Sentry_Php_Tracker {
 	 * @return array
 	 */
 	public function get_default_tags(): array {
-		require ABSPATH . 'wp-includes/version.php';
+		require WP_SENTRY_WPINC . '/version.php';
 
 		/** @noinspection IssetArgumentExistenceInspection */
 		$tags = [
@@ -179,8 +179,8 @@ final class WP_Sentry_Php_Tracker {
 		}
 
 		$options['in_app_exclude'] = [
-			ABSPATH . 'wp-admin',
-			ABSPATH . 'wp-includes',
+			WP_SENTRY_WPADMIN, // <base>/wp-admin
+			WP_SENTRY_WPINC,   // <base>/wp-includes
 		];
 
 		return $options;
