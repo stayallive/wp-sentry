@@ -168,11 +168,8 @@ final class WP_Sentry_Php_Tracker {
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
+			'release'          => defined( 'WP_SENTRY_VERSION' ) ? WP_SENTRY_VERSION : '',
 		];
-
-		if ( defined( 'WP_SENTRY_VERSION' ) ) {
-			$options['release'] = WP_SENTRY_VERSION;
-		}
 
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
 			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
