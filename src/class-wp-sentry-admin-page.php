@@ -200,7 +200,7 @@ final class WP_Sentry_Admin_Page {
                         <label for="wp-sentry-release"><?php esc_html_e( 'Release (version)', 'wp-sentry' ); ?></label>
                     </th>
                     <td>
-                        <input type="text" class="regular-text code" readonly name="wp-sentry-release" value="<?php echo esc_html( $options['release'] ); ?>"/>
+                        <input type="text" class="regular-text code" readonly name="wp-sentry-release" value="<?php echo esc_html( $options['release'] ?? '' ); ?>"/>
                         <p class="description">
 							<?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>.', 'wp-sentry' ); ?>
                         </p>
@@ -212,7 +212,7 @@ final class WP_Sentry_Admin_Page {
                         <label for="wp-sentry-environment"><?php esc_html_e( 'Environment', 'wp-sentry' ); ?></label>
                     </th>
                     <td>
-                        <input type="text" class="regular-text code" readonly name="wp-sentry-environment" value="<?php echo esc_html( $options['environment'] ); ?>"/>
+                        <input type="text" class="regular-text code" readonly name="wp-sentry-environment" value="<?php echo esc_html( $options['environment'] ?? '' ); ?>"/>
                         <p class="description">
 							<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code> or <code>WP_ENVIRONMENT_TYPE</code> (WordPress 5.5+).', 'wp-sentry' ); ?>
                         </p>
