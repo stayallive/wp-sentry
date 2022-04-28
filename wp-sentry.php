@@ -92,6 +92,11 @@ if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) ) {
 	}
 }
 
+// Load the SQL tracker if query log is enabled
+if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
+	WP_Sentry_Sql_Tracker::get_instance();
+}
+
 // Load the JavaScript tracker if we have a browser/public DSN
 if ( defined( 'WP_SENTRY_BROWSER_DSN' ) || defined( 'WP_SENTRY_PUBLIC_DSN' ) ) {
 	$sentry_js_tracker_dsn = defined( 'WP_SENTRY_BROWSER_DSN' )
