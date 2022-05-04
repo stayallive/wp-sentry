@@ -32,6 +32,11 @@ Please note that version `4.x` is the most recent version of the wp-sentry plugi
 
 ## Configuration
 
+**Note:** Please make sure to define constants in `wp-config.php` before this line:
+```php
+require_once ABSPATH . 'wp-settings.php';
+```
+
 (Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
 ```php
