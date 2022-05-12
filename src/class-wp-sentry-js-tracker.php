@@ -75,7 +75,7 @@ final class WP_Sentry_Js_Tracker {
 
 		$options = $this->get_default_options();
 
-		$options['content'] = $context;
+		$options['context'] = $context;
 
 		if ( has_filter( 'wp_sentry_public_options' ) ) {
 			$options = (array) apply_filters( 'wp_sentry_public_options', $options );
