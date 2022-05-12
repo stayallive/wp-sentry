@@ -101,7 +101,7 @@ define( 'WP_SENTRY_ENV', 'production' );
 (Optionally) track SQL queries.
 
 ```php
-define( 'SAVEQUERIES', true );
+define( 'WP_SENTRY_TRACK_SQL', true );
 ```
 
 ## Filters

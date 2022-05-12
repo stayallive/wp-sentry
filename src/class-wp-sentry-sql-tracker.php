@@ -29,11 +29,40 @@ final class WP_Sentry_Sql_Tracker {
 	 * WP_Sentry_Sql_Tracker constructor.
 	 */
 	protected function __construct() {
-		add_action( 'log_query_custom_data', [ $this, 'filter_log_query_custom_data' ], 10, 5 );
+		if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
+			add_action( 'log_query_custom_data', [ $this, 'filter_log_query_custom_data' ], 10, 5 );
+		}
+		else {
+			add_filter( 'query', [ $this, 'filter_query' ], 10 );
+		}
+	}
+
+	/**
+	 * Filters the database query
+	 *
+	 * This filter is enabled if constant SAVEQUERIES is not defined, or if SAVEQUERIES is false.
+	 * Does not track query execution time.
+	 *
+	 * @param string $query Database query.
+	 *
+	 * @see wpdb::query()
+	 */
+	public function filter_query( $query ) {
+		SentrySdk::getCurrentHub()->addBreadcrumb( new Breadcrumb(
+			Breadcrumb::LEVEL_INFO,
+			Breadcrumb::TYPE_DEFAULT,
+			'sql.query',
+			$query
+		) );
+
+		return $query;
 	}
 
 	/**
 	 * Filter for "log_query_custom_data"
+	 *
+	 * This filter is enabled if constant SAVEQUERIES is defined, and if SAVEQUERIES is true.
+	 * Tracks query execution time.
 	 *
 	 * @param array $query_data Custom query data.
 	 * @param string $query The query's SQL.
@@ -42,7 +71,6 @@ final class WP_Sentry_Sql_Tracker {
 	 * @param float $query_start Unix timestamp of the time at the start of the query.
 	 *
 	 * @see wpdb::log_query()
-	 *
 	 */
 	public function filter_log_query_custom_data( $query_data, $query, $query_time, $query_callstack, $query_start ): void {
 		SentrySdk::getCurrentHub()->addBreadcrumb( new Breadcrumb(

@@ -93,7 +93,7 @@ if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) ) {
 }
 
 // Load the SQL tracker if query log is enabled
-if ( defined( 'SAVEQUERIES' ) && SAVEQUERIES ) {
+if ( defined( 'WP_SENTRY_TRACK_SQL' ) && WP_SENTRY_TRACK_SQL ) {
 	WP_Sentry_Sql_Tracker::get_instance();
 }
 
