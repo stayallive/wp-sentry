@@ -320,7 +320,7 @@ You can remedy this by loading WordPress Sentry as a must-use plugin by creating
  * License: MIT
  */
 
-$wp_sentry = ABSPATH . 'plugins/wp-sentry-integration/wp-sentry.php';
+$wp_sentry = WP_CONTENT_DIR . '/plugins/wp-sentry-integration/wp-sentry.php';
 
 // Do not crash in case the plugin is not installed
 if ( ! file_exists( $wp_sentry ) ) {
