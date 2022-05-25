@@ -76,11 +76,6 @@ if ( ! class_exists( WP_Sentry_Version::class ) ) {
 	define( 'WP_SENTRY_SCOPED_AUTOLOADER', $scopedAutoloaderExists );
 }
 
-// Define the default version
-if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'wp_get_theme' ) ) {
-	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
-}
-
 // Load the PHP tracker if we have a PHP DSN
 if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) ) {
 	$sentry_php_tracker_dsn = defined( 'WP_SENTRY_PHP_DSN' )
