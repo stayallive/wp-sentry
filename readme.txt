@@ -15,14 +15,14 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.18.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v5.0.0/README.md) file._
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.18.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v5.0.0/README.md) file._
 
 **Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
 
@@ -56,15 +56,26 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v4.18.0' );`
+`define( 'WP_SENTRY_VERSION', 'v5.0.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v4.18.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v5.0.0/README.md) file._
 
 == Changelog ==
+= 5.0.0 =
+
+Note: This is a *breaking release* for the Browser/JavaScript SDK, please test it well and read the migration guides if applicable before upgrading!
+Note: The v7 version of the JavaScript SDK requires a [self-hosted](https://develop.sentry.dev/self-hosted/) version of Sentry 20.6.0 or higher. If you are using a version of self-hosted Sentry (aka onpremise) older than 20.6.0 then you will need to [upgrade](https://develop.sentry.dev/self-hosted/releases/).
+
+Version 7 of the Sentry JavaScript SDK brings a variety of features and fixes including bundle size and performance improvements, brand new integrations, support for the attachments API, and key bug fixes.
+This release does not change or remove any top level public API methods (captureException, captureMessage), and only requires changes to certain configuration options or custom clients/integrations/transports.
+For detailed overview of all the changes, please see the [v7 migration guide](https://github.com/getsentry/sentry-javascript/blob/7.0.0/MIGRATION.md#upgrading-from-6x-to-7x).
+
+* Update Sentry Browser to version 7.1.1
+
 = 4.18.0 =
 
 * Update PHP SDK to version 3.5.0

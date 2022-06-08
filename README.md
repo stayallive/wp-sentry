@@ -16,11 +16,11 @@ This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not
 - Version `2.2.*` of this plugin will be the last to support PHP `5.4`.
 - Version `3.11.*` of this plugin will be the last to support PHP `7.1`.
 
-Please note that version `4.x` is the most recent version of the wp-sentry plugin and only supports PHP `7.2` and up. If you need PHP `5.4-7.1` support check out version `2.x` or `3.x` but do keep in mind there are a lot of differences in the Sentry PHP SDK used.
+Please note that version `5.x` is the most recent version of the wp-sentry plugin and only supports PHP `7.2` and up. If you need PHP `5.4-7.1` support check out version `2.x` or `3.x` but do keep in mind there are a lot of differences in the Sentry PHP SDK used.
 
 - Version [`2.x`](https://github.com/stayallive/wp-sentry/tree/2.x) of the wp-sentry plugin uses the [`1.x`](https://github.com/getsentry/sentry-php/tree/1.x) version of the official Sentry PHP SDK.
 - Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/3.x) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/2.x) version of the official Sentry PHP SDK.
-- Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
+- Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/4.x) & [`5.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
 
 ## Usage
 
@@ -89,7 +89,7 @@ define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 );
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
-define( 'WP_SENTRY_VERSION', 'v4.18.0' );
+define( 'WP_SENTRY_VERSION', 'v5.0.0' );
 ```
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
