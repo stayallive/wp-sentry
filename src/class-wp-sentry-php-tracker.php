@@ -101,7 +101,11 @@ final class WP_Sentry_Php_Tracker {
 
 		// Apply the filter to configure any options
 		if ( has_filter( 'wp_sentry_options' ) ) {
-			apply_filters( 'wp_sentry_options', $this->get_client()->getClient()->getOptions() );
+			$sentryClient = $this->get_client()->getClient();
+
+			if ( $sentryClient !== null ) {
+				apply_filters( 'wp_sentry_options', $sentryClient->getOptions() );
+			}
 		}
 	}
 
