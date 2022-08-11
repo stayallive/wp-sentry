@@ -296,7 +296,8 @@ To remedy this you can opt to load the plugin from your `wp-config.php` file bef
 It's really simple to do this by adding the following snippet to your `wp-config.php` before the `/* That's all, stop editing! Happy blogging. */` comment:
 
 ```php
-require_once ABSPATH . 'wp-content/plugins/wp-sentry-integration/wp-sentry.php';
+// It's possible your WordPress installation is different, check to make sure this path is correct for your installation
+require_once __DIR__ . '/wp-content/plugins/wp-sentry-integration/wp-sentry.php';
 ```
 
 Also make sure that any configuration options like `WP_SENTRY_PHP_DSN` are set before the snippet above otherwise they have no effect.
