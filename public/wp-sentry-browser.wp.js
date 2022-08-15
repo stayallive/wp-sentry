@@ -19,11 +19,11 @@
             }
         };
 
-        if (typeof wp_sentry.whitelistUrls === 'object') {
-            regexListUrls(wp_sentry.whitelistUrls);
+        if (typeof wp_sentry.allowUrls === 'object') {
+            regexListUrls(wp_sentry.allowUrls);
         }
-        if (typeof wp_sentry.blacklistUrls === 'object') {
-            regexListUrls(wp_sentry.blacklistUrls);
+        if (typeof wp_sentry.denyUrls === 'object') {
+            regexListUrls(wp_sentry.denyUrls);
         }
 
         if (typeof wp_sentry_hook === 'function') {

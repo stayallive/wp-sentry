@@ -209,7 +209,7 @@ Example usage:
 add_filter( 'wp_sentry_public_options', function ( array $options ) {
 	return array_merge( $options, array(
 		'sampleRate' => '0.5',
-		'blacklistUrls' => array(
+		'denyUrls' => array(
 			'https://github.com/',
 			'regex:\\w+\\.example\\.com',
 		),
@@ -217,7 +217,7 @@ add_filter( 'wp_sentry_public_options', function ( array $options ) {
 } );
 ```
 
-**Note:** _Items prefixed with `regex:` in blacklistUrls and whitelistUrls option arrays will be translated into pure RegExp._
+**Note:** _Items prefixed with `regex:` in denyUrls and allowUrls option arrays will be translated into pure RegExp._
 
 #### `wp_sentry_public_context` (array)
 
@@ -417,7 +417,7 @@ You would place the example below in your `wp-config.php` file to make sure it's
 
 ```php
 function wp_sentry_clientbuilder_callback( \Sentry\ClientBuilder $builder ): void {
-    // For example, disabling the default integrations 
+    // For example, disabling the default integrations
 	$builder->getOptions()->setDefaultIntegrations( false );
 }
 
