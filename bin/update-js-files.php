@@ -10,14 +10,6 @@ if ( empty( $version ) ) {
 	return;
 }
 
-$browserRemote = 'https://browser.sentry-cdn.com/%s/bundle.es5.min.js';
-$browserTarget = __DIR__ . '/../public/wp-sentry-browser.min.js';
-$browserExtras = __DIR__ . '/../public/wp-sentry-browser.wp.js';
-
-$tracingRemote = 'https://browser.sentry-cdn.com/%s/bundle.tracing.es5.min.js';
-$tracingTarget = __DIR__ . '/../public/wp-sentry-browser-tracing.min.js';
-$tracingExtras = __DIR__ . '/../public/wp-sentry-browser-tracing.wp.js';
-
 function writeRemoteToTargetWithExtrasForVersion( string $remote, string $target, string $extras, string $version ): void {
 	$contents = file_get_contents( $remote = sprintf( $remote, $version ) );
 
@@ -35,5 +27,30 @@ function writeRemoteToTargetWithExtrasForVersion( string $remote, string $target
 	file_put_contents( $target, $contents );
 }
 
-writeRemoteToTargetWithExtrasForVersion( $browserRemote, $browserTarget, $browserExtras, $version );
-writeRemoteToTargetWithExtrasForVersion( $tracingRemote, $tracingTarget, $tracingExtras, $version );
+writeRemoteToTargetWithExtrasForVersion(
+	'https://browser.sentry-cdn.com/%s/bundle.min.js',
+	__DIR__ . '/../public/wp-sentry-browser.min.js',
+	__DIR__ . '/../public/wp-sentry-browser.wp.js',
+	$version
+);
+
+writeRemoteToTargetWithExtrasForVersion(
+	'https://browser.sentry-cdn.com/%s/bundle.es5.min.js',
+	__DIR__ . '/../public/wp-sentry-browser.es5.min.js',
+	__DIR__ . '/../public/wp-sentry-browser.wp.js',
+	$version
+);
+
+writeRemoteToTargetWithExtrasForVersion(
+	'https://browser.sentry-cdn.com/%s/bundle.tracing.min.js',
+	__DIR__ . '/../public/wp-sentry-browser-tracing.min.js',
+	__DIR__ . '/../public/wp-sentry-browser-tracing.wp.js',
+	$version
+);
+
+writeRemoteToTargetWithExtrasForVersion(
+	'https://browser.sentry-cdn.com/%s/bundle.tracing.es5.min.js',
+	__DIR__ . '/../public/wp-sentry-browser-tracing.es5.min.js',
+	__DIR__ . '/../public/wp-sentry-browser-tracing.wp.js',
+	$version
+);

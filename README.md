@@ -86,6 +86,16 @@ define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 );
 
 ---
 
+(Optionally) enable JavaScript ES5 compatible bundles, required if you need to support older browsers (for example IE11):
+
+```php
+define( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES', true );
+```
+
+**Note:** Enabling this also loads a external polyfill resource hosted by [Polyfill.io](https://polyfill.io/v3/) that is required.
+
+---
+
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php

@@ -132,14 +132,32 @@ final class WP_Sentry_Js_Tracker {
 			? (float) WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE
 			: 0.0;
 
-		wp_enqueue_script(
-			'wp-sentry-browser',
-			$traces_sample_rate > 0
-				? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing.min.js'
-				: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.min.js',
-			[],
-			WP_Sentry_Version::SDK_VERSION
-		);
+		if ( defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES ) {
+			wp_enqueue_script(
+				'wp-sentry-polyfill',
+				'https://polyfill.io/v3/polyfill.min.js?features=Promise%2CObject.assign%2CNumber.isNaN%2CArray.prototype.includes%2CString.prototype.startsWith',
+				[],
+				WP_Sentry_Version::SDK_VERSION
+			);
+
+			wp_enqueue_script(
+				'wp-sentry-browser',
+				$traces_sample_rate > 0
+					? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing.es5.min.js'
+					: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.es5.min.js',
+				[ 'wp-sentry-polyfill' ],
+				WP_Sentry_Version::SDK_VERSION
+			);
+		} else {
+			wp_enqueue_script(
+				'wp-sentry-browser',
+				$traces_sample_rate > 0
+					? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing.min.js'
+					: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.min.js',
+				[],
+				WP_Sentry_Version::SDK_VERSION
+			);
+		}
 
 		wp_localize_script(
 			'wp-sentry-browser',

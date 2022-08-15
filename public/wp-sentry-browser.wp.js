@@ -1,29 +1,21 @@
 ;(function () {
-    // Polyfill for IE and older browsers :)
-    // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith#Browser_compatibility
-    if (!String.prototype.startsWith) {
-        String.prototype.startsWith = function (searchString, position) {
-            position = position || 0;
-            return this.indexOf(searchString, position) === position;
-        };
-    }
-
     if (typeof wp_sentry === 'object') {
-        var regexListUrls = function (listUrls) {
-            for (var url in listUrls) {
-                if (listUrls.hasOwnProperty(url)) {
-                    if (listUrls[url].startsWith('regex:')) {
-                        listUrls[url] = new RegExp(listUrls[url].slice(6), 'i');
+        var regexUrlList = function (urlList) {
+            for (var url in urlList) {
+                if (urlList.hasOwnProperty(url)) {
+                    if (urlList[url].startsWith('regex:')) {
+                        urlList[url] = new RegExp(urlList[url].slice(6), 'i');
                     }
                 }
             }
         };
 
         if (typeof wp_sentry.allowUrls === 'object') {
-            regexListUrls(wp_sentry.allowUrls);
+            regexUrlList(wp_sentry.allowUrls);
         }
+
         if (typeof wp_sentry.denyUrls === 'object') {
-            regexListUrls(wp_sentry.denyUrls);
+            regexUrlList(wp_sentry.denyUrls);
         }
 
         if (typeof wp_sentry_hook === 'function') {
