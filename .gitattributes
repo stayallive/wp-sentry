@@ -1,9 +1,13 @@
 * text=auto
 
 # cleanup exported zip
-docs/* export-ignore
+bin export-ignore
+docs export-ignore
+.github export-ignore
 .gitignore export-ignore
 .gitattributes export-ignore
+scoper.inc.php export-ignore
+release-exclude.txt export-ignore
 
 # Make sure we are not marked as a JavaScript project
-public/sentry-browser-*.js linguist-vendored
+public/*.min.js linguist-vendored
