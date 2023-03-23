@@ -14,7 +14,7 @@ final class WP_Sentry_Admin_Page {
 	/**
 	 * Get the Sentry admin page instance.
 	 *
-	 * @return \WP_Sentry_Admin_Page
+	 * @return WP_Sentry_Admin_Page
 	 */
 	public static function get_instance(): WP_Sentry_Admin_Page {
 		return self::$instance ?: self::$instance = new self;
