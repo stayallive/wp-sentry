@@ -152,7 +152,24 @@ final class WP_Sentry_Admin_Page {
 			}
 		}
 
-		$enabled_for_js  = ! empty( WP_Sentry_Js_Tracker::get_instance()->get_dsn() );
+		$enabled_for_js = ! empty( WP_Sentry_Js_Tracker::get_instance()->get_dsn() );
+
+		$browser_traces_sample_rate = defined( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE
+			: 0.0;
+
+		$js_tracing_enabled = $enabled_for_js && $browser_traces_sample_rate > 0.0;
+
+		$browser_replays_session_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
+			: 0.0;
+
+		$browser_replays_on_error_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
+			: 0.0;
+
+		$js_session_replays_enabled = $enabled_for_js && ( $browser_replays_session_sample_rate > 0.0 || $browser_replays_on_error_sample_rate > 0.0 );
+
 		$enabled_for_php = ! empty( WP_Sentry_Php_Tracker::get_instance()->get_dsn() );
 
 		$options = WP_Sentry_Php_Tracker::get_instance()->get_default_options();
@@ -214,6 +231,39 @@ final class WP_Sentry_Admin_Page {
 						<?php endif; ?>
 					</td>
 				</tr>
+				<tr>
+					<th><?php esc_html_e( 'Performance Monitoring', 'wp-sentry' ); ?></th>
+					<td>
+						<fieldset>
+							<label>
+								<input name="wp-sentry-js-tracing-enabled" type="checkbox" id="wp-sentry-js-tracing-enabled" value="0" <?php echo $js_tracing_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+								<?php esc_html_e( 'JavaScript', 'wp-sentry' ); ?>
+							</label>
+						</fieldset>
+						<?php if ( ! ( $js_tracing_enabled ) ): ?>
+							<p class="description">
+								<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+							</p>
+						<?php endif; ?>
+					</td>
+				</tr>
+				<tr>
+					<th><?php esc_html_e( 'Session Replays', 'wp-sentry' ); ?></th>
+					<td>
+						<fieldset>
+							<label>
+								<input name="wp-sentry-js-session-replays-enabled" type="checkbox" id="wp-sentry-js-session-replays-enabled" value="0" <?php echo $js_session_replays_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+								<?php esc_html_e( 'JavaScript', 'wp-sentry' ); ?>
+							</label>
+						</fieldset>
+						<?php if ( ! ( $js_session_replays_enabled ) ): ?>
+							<p class="description">
+								<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE</code> or <code>WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+							</p>
+						<?php endif; ?>
+					</td>
+				</tr>
+
 				<tr>
 					<th>
 						<label for="wp-sentry-release"><?php esc_html_e( 'Release (version)', 'wp-sentry' ); ?></label>
