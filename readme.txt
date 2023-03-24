@@ -15,14 +15,14 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.9.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.10.0/README.md) file._
 
 == Installation ==
 1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
 2. Configure your DSN as explained below
 2. Activate the plugin through the WordPress admin interface
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.9.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.10.0/README.md) file._
 
 **Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
 
@@ -56,15 +56,22 @@ When enabled the current logged in user and IP address will be added to the even
 
 (Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
-`define( 'WP_SENTRY_VERSION', 'v6.9.0' );`
+`define( 'WP_SENTRY_VERSION', 'v6.10.0' );`
 
 (Optionally) define an environment of your site. Defaults to `unspecified`.
 
 `define( 'WP_SENTRY_ENV', 'production' );`
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.9.0/README.md) file._
+_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.10.0/README.md) file._
 
 == Changelog ==
+= 6.10.0 =
+
+* Add `WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE` and `WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE` options to enable browser session replays
+* Add `WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS` to configure options passed to `new Replays()` when browser session replays are enabled
+* Add `WP_SENTRY_BROWSER_TRACING_OPTIONS` to configure options passed to `new BrowserTracing()` when browser tracing is enabled
+* Allow regexes to be used in the `ignoreErrors` option of the browser SDK
+
 = 6.9.0 =
 
 * Update PHP SDK to version 3.16.0
