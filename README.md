@@ -79,10 +79,32 @@ define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 (Optionally) enable JavaScript performance tracing by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
 
 ```php
-define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 );
+// https://docs.sentry.io/platforms/javascript/performance/#configure-the-sample-rate
+define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 ); // tracesSampleRate
+
+// These options are passed directly to `new BrowserTracing({})`
+// define( 'WP_SENTRY_BROWSER_TRACING_OPTIONS', [] );
 ```
 
-**Note:** Do not set this constant or set it to `0.0` to disable the JavaScript performance tracing.
+**Note:** Do not set this constant or set the sample rate to `0.0` to disable the JavaScript performance tracing.
+
+---
+
+(Optionally) enable JavaScript Session Replay by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+
+```php
+// These options are injected into the `Sentry.init()` call
+// https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
+define( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE', 0.1 ); // replaysSessionSampleRate
+define( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE', 1.0 ); // replaysOnErrorSampleRate
+
+// These options are passed directly to `new Replay({})`
+// - https://docs.sentry.io/platforms/javascript/session-replay/configuration/#general-integration-configuration
+// - https://docs.sentry.io/platforms/javascript/session-replay/privacy/#privacy-configuration
+// define( 'WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS', [ 'maskAllText' => true ] );
+```
+
+**Note:** Do not set these constants or set the sample rates to `0.0` to disable the JavaScript Session Replay.
 
 ---
 
@@ -93,6 +115,8 @@ define( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES', true );
 ```
 
 **Note:** Enabling this also loads a external polyfill resource hosted by [Polyfill.io](https://polyfill.io/v3/) that is required.
+
+**Note:** Enabling this will disable Session Replay if enabled since it has no ES5 compatible bundles.
 
 ---
 
@@ -227,7 +251,7 @@ add_filter( 'wp_sentry_public_options', function ( array $options ) {
 } );
 ```
 
-**Note:** _Items prefixed with `regex:` in denyUrls and allowUrls option arrays will be translated into pure RegExp._
+**Note:** _Items prefixed with `regex:` in `denyUrls`, `allowUrls` and `ignoreErrors` option arrays will be translated into pure RegExp._
 
 #### `wp_sentry_public_context` (array)
 

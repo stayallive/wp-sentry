@@ -44,13 +44,27 @@ writeRemoteToTargetWithExtrasForVersion(
 writeRemoteToTargetWithExtrasForVersion(
 	'https://browser.sentry-cdn.com/%s/bundle.tracing.min.js',
 	__DIR__ . '/../public/wp-sentry-browser-tracing.min.js',
-	__DIR__ . '/../public/wp-sentry-browser-tracing.wp.js',
+	__DIR__ . '/../public/wp-sentry-browser.wp.js',
 	$version
 );
 
 writeRemoteToTargetWithExtrasForVersion(
 	'https://browser.sentry-cdn.com/%s/bundle.tracing.es5.min.js',
 	__DIR__ . '/../public/wp-sentry-browser-tracing.es5.min.js',
-	__DIR__ . '/../public/wp-sentry-browser-tracing.wp.js',
+	__DIR__ . '/../public/wp-sentry-browser.wp.js',
+	$version
+);
+
+writeRemoteToTargetWithExtrasForVersion(
+	'https://browser.sentry-cdn.com/%s/bundle.replay.min.js',
+	__DIR__ . '/../public/wp-sentry-browser-replay.min.js',
+	__DIR__ . '/../public/wp-sentry-browser.wp.js',
+	$version
+);
+
+writeRemoteToTargetWithExtrasForVersion(
+	'https://browser.sentry-cdn.com/%s/bundle.tracing.replay.min.js',
+	__DIR__ . '/../public/wp-sentry-browser-tracing-replay.min.js',
+	__DIR__ . '/../public/wp-sentry-browser.wp.js',
 	$version
 );

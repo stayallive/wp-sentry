@@ -128,9 +128,39 @@ final class WP_Sentry_Js_Tracker {
 	 * @access private
 	 */
 	public function on_enqueue_scripts(): void {
+		$options  = [];
+		$features = [ 'browser' ];
+
 		$traces_sample_rate = defined( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE' )
 			? (float) WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE
 			: 0.0;
+
+		if ( $traces_sample_rate > 0 ) {
+			$options['wpBrowserTracingOptions'] = defined( 'WP_SENTRY_BROWSER_TRACING_OPTIONS' ) ? WP_SENTRY_BROWSER_TRACING_OPTIONS : new stdClass;
+
+			$options['tracesSampleRate'] = $traces_sample_rate;
+
+			$features[] = 'tracing';
+		}
+
+		$replays_session_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
+			: 0.0;
+
+		$replays_on_error_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
+			: 0.0;
+
+		$use_es5_bundles = defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES;
+
+		if ( ! $use_es5_bundles && ( $replays_session_sample_rate > 0 || $replays_on_error_sample_rate > 0 ) ) {
+			$options['wpSessionReplayOptions'] = defined( 'WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS' ) ? WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS : new stdClass;
+
+			$options['replaysSessionSampleRate'] = $replays_session_sample_rate;
+			$options['replaysOnErrorSampleRate'] = $replays_on_error_sample_rate;
+
+			$features[] = 'replay';
+		}
 
 		if ( defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES ) {
 			wp_enqueue_script(
@@ -149,11 +179,11 @@ final class WP_Sentry_Js_Tracker {
 				WP_Sentry_Version::SDK_VERSION
 			);
 		} else {
+			$featuresString = implode( '-', $features );
+
 			wp_enqueue_script(
 				'wp-sentry-browser',
-				$traces_sample_rate > 0
-					? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing.min.js'
-					: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.min.js',
+				plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . "public/wp-sentry-{$featuresString}.min.js",
 				[],
 				WP_Sentry_Version::SDK_VERSION
 			);
@@ -162,10 +192,9 @@ final class WP_Sentry_Js_Tracker {
 		wp_localize_script(
 			'wp-sentry-browser',
 			'wp_sentry',
-			[
-				'dsn'              => $this->get_dsn(),
-				'tracesSampleRate' => $traces_sample_rate,
-			] + $this->get_options()
+			array_merge( $options, $this->get_options(), [
+				'dsn' => $this->get_dsn(),
+			] )
 		);
 	}
 }
