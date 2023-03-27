@@ -181,6 +181,17 @@ final class WP_Sentry_Php_Tracker {
 		if ( defined( 'WP_SENTRY_ERROR_TYPES' ) ) {
 			$options['error_types'] = WP_SENTRY_ERROR_TYPES;
 		}
+		
+		// Handle proxies.
+		$proxy = new WP_HTTP_Proxy();
+
+		if ( $proxy->is_enabled() && $proxy->send_through_proxy( $options['dsn'] ) ) {
+			$options['http_proxy'] = $proxy->host() . ':' . $proxy->port();
+
+			if ( $proxy->use_authentication() ) {
+				$options['http_proxy'] = $proxy->authentication() . '@' . $options['http_proxy'];
+			}
+		}
 
 		$options['in_app_exclude'] = [
 			WP_SENTRY_WPADMIN, // <base>/wp-admin
