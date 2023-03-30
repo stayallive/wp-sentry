@@ -458,6 +458,14 @@ function wp_sentry_clientbuilder_callback( \Sentry\ClientBuilder $builder ): voi
 define( 'WP_SENTRY_CLIENTBUILDER_CALLBACK', 'wp_sentry_clientbuilder_callback' );
 ```
 
+### HTTP proxy
+
+If you need to use a HTTP proxy to send events to Sentry you can setup the WordPress HTTP proxy support and this plugin will transfer those settings to the Sentry SDK.
+
+Read more about how to setup the WordPress Proxy constants here: https://developer.wordpress.org/reference/classes/wp_http_proxy/#description.
+
+If you are using an HTTP proxy in WordPress but don't want Sentry to use it you should configure `WP_PROXY_BYPASS_HOSTS` to include the Sentry domain.
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
