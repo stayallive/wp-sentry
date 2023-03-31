@@ -1,5 +1,6 @@
 ;(function () {
     if (typeof wp_sentry === 'object') {
+        var listsWithRegexes = ['allowUrls', 'denyUrls', 'ignoreErrors', 'ignoreTransactions'];
         var parseListWithRegexes = function (list) {
             for (var url in list) {
                 if (list.hasOwnProperty(url)) {
@@ -10,14 +11,10 @@
             }
         };
 
-        if (typeof wp_sentry.ignoreErrors === 'object') {
-            parseListWithRegexes(wp_sentry.ignoreErrors);
-        }
-        if (typeof wp_sentry.allowUrls === 'object') {
-            parseListWithRegexes(wp_sentry.allowUrls);
-        }
-        if (typeof wp_sentry.denyUrls === 'object') {
-            parseListWithRegexes(wp_sentry.denyUrls);
+        for (var i = 0; i < listsWithRegexes.length; i++) {
+            if (typeof wp_sentry[listsWithRegexes[i]] === 'object') {
+                parseListWithRegexes(wp_sentry[listsWithRegexes[i]]);
+            }
         }
 
         if (typeof wp_sentry_hook === 'function') {
