@@ -41,6 +41,7 @@
       "php": "7.2.0"
     },
     "allow-plugins": {
+      "php-http/discovery": false,
       "composer/installers": true,
       "composer/package-versions-deprecated": true
     },
