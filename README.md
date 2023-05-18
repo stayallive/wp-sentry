@@ -106,6 +106,8 @@ define( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE', 1.0 ); // replaysOnErr
 
 **Note:** Do not set these constants or set the sample rates to `0.0` to disable the JavaScript Session Replay.
 
+**Note:** This feature is not available if the ES5 bundles are enabled with `WP_SENTRY_BROWSER_USE_ES5_BUNDLES`.
+
 ---
 
 (Optionally) enable JavaScript ES5 compatible bundles, required if you need to support older browsers (for example IE11):
