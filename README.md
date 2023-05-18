@@ -68,6 +68,11 @@ define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
 
 ```php
 define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
+
+// You can _optionally_ enable or disable the JavaScript tracker in certain parts of your site with these constants:
+define('WP_SENTRY_BROWSER_ADMIN_ENABLED', true);    // Add the JavaScript tracker to the admin area. Default: true
+define('WP_SENTRY_BROWSER_LOGIN_ENABLED', true);    // Add the JavaScript tracker to the login page. Default: true
+define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracker to the front end. Default: true
 ```
 
 **Note:** Do not set this constant to disable the JavaScript tracker.

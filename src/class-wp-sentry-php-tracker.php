@@ -232,4 +232,8 @@ final class WP_Sentry_Php_Tracker {
 
 		SentrySdk::setCurrentHub( $hub );
 	}
+
+	public function enabled(): bool {
+		return ! empty( $this->get_dsn() );
+	}
 }

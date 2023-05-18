@@ -26,14 +26,15 @@ final class WP_Sentry_Js_Tracker {
 	 * Class constructor.
 	 */
 	protected function __construct() {
-		// Register on front-end using the highest priority.
-		add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );
+		add_action( 'admin_enqueue_scripts', [ $this, 'on_enqueue_admin_scripts' ], 0 );
 
-		// Register on admin using the highest priority.
-		add_action( 'admin_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );
+		if ( $this->enabled_on_login_page() ) {
+			add_action( 'login_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0 );
+		}
 
-		// Register on login using the highest priority.
-		add_action( 'login_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0, 1 );
+		if ( $this->enabled_on_frontend_pages() ) {
+			add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0 );
+		}
 	}
 
 	/**
@@ -123,11 +124,17 @@ final class WP_Sentry_Js_Tracker {
 	}
 
 	/**
-	 * Target of set_current_user action.
+	 * Enqueue Sentry SDK scripts.
 	 *
 	 * @access private
+	 *
+	 * @return void
 	 */
 	public function on_enqueue_scripts(): void {
+		if ( ! $this->enabled() ) {
+			return;
+		}
+
 		$options  = [];
 		$features = [ 'browser' ];
 
@@ -194,5 +201,55 @@ final class WP_Sentry_Js_Tracker {
 				'dsn' => $this->get_dsn(),
 			] )
 		);
+	}
+
+	/**
+	 * Enqueue Sentry SDK scripts for admin pages.
+	 *
+	 * @return void
+	 */
+	public function on_enqueue_admin_scripts(): void {
+		// Don't enqueue the scripts if we are disabled on admin pages unless we are on our own admin page
+		if ( ! $this->enabled_on_admin_pages() && ! WP_Sentry_Admin_Page::get_instance()->is_on_admin_page() ) {
+			return;
+		}
+
+		$this->on_enqueue_scripts();
+	}
+
+	public function enabled(): bool {
+		return ! empty( $this->get_dsn() );
+	}
+
+	public function tracing_enabled(): bool {
+		$sample_rate = defined( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE
+			: 0.0;
+
+		return $sample_rate > 0;
+	}
+
+	public function replays_enabled(): bool {
+		$sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
+			: 0.0;
+
+		$sample_rate_on_errors = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
+			: 0.0;
+
+		return $sample_rate > 0 || $sample_rate_on_errors > 0;
+	}
+
+	public function enabled_on_login_page(): bool {
+		return ! defined( 'WP_SENTRY_BROWSER_LOGIN_ENABLED' ) || WP_SENTRY_BROWSER_LOGIN_ENABLED;
+	}
+
+	public function enabled_on_admin_pages(): bool {
+		return ! defined( 'WP_SENTRY_BROWSER_ADMIN_ENABLED' ) || WP_SENTRY_BROWSER_ADMIN_ENABLED;
+	}
+
+	public function enabled_on_frontend_pages(): bool {
+		return ! defined( 'WP_SENTRY_BROWSER_FRONTEND_ENABLED' ) || WP_SENTRY_BROWSER_FRONTEND_ENABLED;
 	}
 }
