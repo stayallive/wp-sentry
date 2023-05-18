@@ -143,25 +143,6 @@ final class WP_Sentry_Js_Tracker {
 			$features[] = 'tracing';
 		}
 
-		$replays_session_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
-			? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
-			: 0.0;
-
-		$replays_on_error_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
-			? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
-			: 0.0;
-
-		$use_es5_bundles = defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES;
-
-		if ( ! $use_es5_bundles && ( $replays_session_sample_rate > 0 || $replays_on_error_sample_rate > 0 ) ) {
-			$options['wpSessionReplayOptions'] = defined( 'WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS' ) ? WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS : new stdClass;
-
-			$options['replaysSessionSampleRate'] = $replays_session_sample_rate;
-			$options['replaysOnErrorSampleRate'] = $replays_on_error_sample_rate;
-
-			$features[] = 'replay';
-		}
-
 		if ( defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES ) {
 			wp_enqueue_script(
 				'wp-sentry-polyfill',
@@ -179,6 +160,23 @@ final class WP_Sentry_Js_Tracker {
 				WP_Sentry_Version::SDK_VERSION
 			);
 		} else {
+			$replays_session_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
+				? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
+				: 0.0;
+
+			$replays_on_error_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
+				? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
+				: 0.0;
+
+			if ( $replays_session_sample_rate > 0 || $replays_on_error_sample_rate > 0 ) {
+				$options['wpSessionReplayOptions'] = defined( 'WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS' ) ? WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS : new stdClass;
+
+				$options['replaysSessionSampleRate'] = $replays_session_sample_rate;
+				$options['replaysOnErrorSampleRate'] = $replays_on_error_sample_rate;
+
+				$features[] = 'replay';
+			}
+
 			$featuresString = implode( '-', $features );
 
 			wp_enqueue_script(
