@@ -471,7 +471,7 @@ If you need to use a HTTP proxy to send events to Sentry you can setup the WordP
 
 Read more about how to setup the WordPress Proxy constants here: https://developer.wordpress.org/reference/classes/wp_http_proxy/#description.
 
-If you are using an HTTP proxy in WordPress but don't want Sentry to use it you should configure `WP_PROXY_BYPASS_HOSTS` to include the Sentry domain.
+There is one caveat, if you are using an HTTP proxy in WordPress but don't want Sentry to use it you should set `WP_SENTRY_PROXY_ENABLED` to `false` in your `wp-config.php`. Setting `WP_PROXY_BYPASS_HOSTS` will not work!
 
 ## Security Vulnerabilities
 

@@ -187,14 +187,10 @@ final class WP_Sentry_Php_Tracker {
 			WP_SENTRY_WPINC,   // <base>/wp-includes
 		];
 
-		if ( class_exists( WP_HTTP_Proxy::class ) ) {
-			$wpProxy = new WP_HTTP_Proxy;
-
-			if ( $wpProxy->is_enabled() && $wpProxy->send_through_proxy( $options['dsn'] ) ) {
-				$options['http_proxy'] = $wpProxy->use_authentication()
-					? sprintf( "%s@%s:%s", $wpProxy->authentication(), $wpProxy->host(), $wpProxy->port() )
-					: sprintf( "%s:%s", $wpProxy->host(), $wpProxy->port() );
-			}
+		if ( $this->is_wp_proxy_enabled() && $this->wp_proxy_enabled_for_us() ) {
+			$options['http_proxy'] = $this->is_wp_proxy_using_authentication()
+				? sprintf( "%s@%s:%s", $this->wp_proxy_authentication(), $this->wp_proxy_host(), $this->wp_proxy_port() )
+				: sprintf( "%s:%s", $this->wp_proxy_host(), $this->wp_proxy_port() );
 		}
 
 		return $options;
@@ -235,5 +231,53 @@ final class WP_Sentry_Php_Tracker {
 
 	public function enabled(): bool {
 		return ! empty( $this->get_dsn() );
+	}
+
+	private function is_wp_proxy_enabled(): bool {
+		return defined( 'WP_PROXY_HOST' ) && defined( 'WP_PROXY_PORT' );
+	}
+
+	private function is_wp_proxy_using_authentication(): bool {
+		return defined( 'WP_PROXY_USERNAME' ) && defined( 'WP_PROXY_PASSWORD' );
+	}
+
+	private function wp_proxy_authentication(): string {
+		return $this->wp_proxy_username() . ':' . $this->wp_proxy_password();
+	}
+
+	private function wp_proxy_host(): string {
+		if ( defined( 'WP_PROXY_HOST' ) ) {
+			return WP_PROXY_HOST;
+		}
+
+		return '';
+	}
+
+	private function wp_proxy_port(): string {
+		if ( defined( 'WP_PROXY_PORT' ) ) {
+			return WP_PROXY_PORT;
+		}
+
+		return '';
+	}
+
+	private function wp_proxy_username(): string {
+		if ( defined( 'WP_PROXY_USERNAME' ) ) {
+			return WP_PROXY_USERNAME;
+		}
+
+		return '';
+	}
+
+	private function wp_proxy_password(): string {
+		if ( defined( 'WP_PROXY_PASSWORD' ) ) {
+			return WP_PROXY_PASSWORD;
+		}
+
+		return '';
+	}
+
+	private function wp_proxy_enabled_for_us(): bool {
+		return ! defined( 'WP_SENTRY_PROXY_ENABLED' ) || WP_SENTRY_PROXY_ENABLED;
 	}
 }
