@@ -4,7 +4,7 @@
  * Plugin Name: WordPress Sentry
  * Plugin URI: https://github.com/stayallive/wp-sentry
  * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
- * Version: 6.22.1
+ * Version: 6.23.0
  * Author: Alex Bouma
  * Author URI: https://alex.bouma.dev
  * License: MIT
