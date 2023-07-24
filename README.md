@@ -139,6 +139,12 @@ define( 'WP_SENTRY_VERSION', 'v6.23.0' );
 define( 'WP_SENTRY_ENV', 'production' );
 ```
 
+(Optionally) track SQL queries.
+
+```php
+define( 'WP_SENTRY_TRACK_SQL', true );
+```
+
 ## Filters
 
 This plugin provides the following filters to plugin/theme developers.
