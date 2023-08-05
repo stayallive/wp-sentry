@@ -2,13 +2,15 @@
 
 A (unofficial) [WordPress plugin](https://wordpress.org/plugins/wp-sentry-integration/) to report PHP and JavaScript errors to [Sentry](https://sentry.io).
 
+
 ## What?
 
 This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to [Sentry](https://sentry.io) and integrates with its release tracking.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
 
-## Requirements & Sentry PHP SDK
+
+## Requirements
 
 This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not end of life (EOL) and no longer supported. For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
 
@@ -16,23 +18,52 @@ This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not
 - Version `2.2.*` of this plugin will be the last to support PHP `5.4`.
 - Version `3.11.*` of this plugin will be the last to support PHP `7.1`.
 
-Please note that version `5.x` is the most recent version of the wp-sentry plugin and only supports PHP `7.2` and up. If you need PHP `5.4-7.1` support check out version `2.x` or `3.x` but do keep in mind there are a lot of differences in the Sentry PHP SDK used.
+**Note:** Version `5.x` is the most recent version of the wp-sentry plugin and only supports PHP `7.2` and up. If you need PHP `5.4-7.1` support check out version `2.x` or `3.x` but do keep in mind there are a lot of differences in the Sentry PHP SDK used.
 
 - Version [`2.x`](https://github.com/stayallive/wp-sentry/tree/2.x) of the wp-sentry plugin uses the [`1.x`](https://github.com/getsentry/sentry-php/tree/1.x) version of the official Sentry PHP SDK.
 - Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/3.x) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/2.x) version of the official Sentry PHP SDK.
 - Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/4.x) & [`5.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
 
+
 ## Usage
 
-1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
-2. Configure your DSN as explained below
-2. Activate the plugin through the WordPress admin interface
+There are a couple of options to start using the plugin
 
-**Note:** this plugin does not do anything by default and has no admin interface. A DSN must be configured first.
+**Note:** This plugin does not do anything by default and only has a diagnostic admin interface to test if you have setup the DSN properly and send test events. Setting up the DSN is required.
+
+### WordPress plugin repository
+
+1. Install this plugin from the WordPress plugin repository: https://wordpress.org/plugins/wp-sentry-integration/
+2. Configure your DSN as explained in the [configuration](#configuration) section
+3. Activate the plugin through the WordPress admin interface or wp-cli
+
+### Manual plugin installation
+
+1. Download the plugin from the [releases page](https://github.com/stayallive/wp-sentry/releases)
+2. Extract it and place the folder in your `wp-content/plugins` folder
+3. Configure your DSN as explained in the [configuration](#configuration) section
+4. Activate the plugin through the WordPress admin interface or wp-cli
+
+### Using composer
+
+1. Run `composer require stayallive/wp-sentry` in your project
+2. Configure your DSN as explained in the [configuration](#configuration) section
+3. Activate the plugin through the WordPress admin interface or wp-cli
+
 
 ## Configuration
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
+To start using the plugin first setup the [DSN](#DSN) for either the PHP side or the Browser side or both.
+
+All other configuration options are optional but it's advised you read through them to see if any are applicable to you or are thing you'd like to configure.
+
+### DSN
+
+Sentry uses something called a [DSN](https://docs.sentry.io/product/sentry-basics/dsn-explainer/) to configure the SDK.
+
+#### `WP_SENTRY_PHP_DSN` (PHP)
+
+To track PHP errors add this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
 ```php
 define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
@@ -42,29 +73,9 @@ define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
 
 **Note:** This constant was previously called `WP_SENTRY_DSN` and is still supported.
 
----
+#### `WP_SENTRY_BROWSER_DSN` (Browser)
 
-(Optionally) set the error types the PHP tracker will track:
-
-```php
-define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );
-```
-
----
-
-(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with.
-
-If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
-
-When enabled the current logged in user and IP address will be added to the event.
-
-```php
-define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
-```
-
----
-
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
+To track JavaScript errors add this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
 ```php
 define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
@@ -79,9 +90,51 @@ define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracke
 
 **Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
 
----
+### Privacy
 
-(Optionally) enable JavaScript performance tracing by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+#### `WP_SENTRY_SEND_DEFAULT_PII`
+
+If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with.
+
+If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
+
+When enabled the current logged in user and IP address will be added to the event.
+
+```php
+define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
+```
+
+### Options
+
+#### `WP_SENTRY_VERSION`
+
+Define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
+
+```php
+define( 'WP_SENTRY_VERSION', 'v6.23.0' );
+```
+
+#### `WP_SENTRY_ENV`
+
+Define an environment of your site. Defaults to `unspecified`.
+
+```php
+define( 'WP_SENTRY_ENV', 'production' );
+```
+
+#### `WP_SENTRY_ERROR_TYPES` (PHP)
+
+Set the error types the PHP tracker will track:
+
+```php
+define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );
+```
+
+### Performance monitoring
+
+#### `WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE` (Browser)
+
+Enable JavaScript performance tracing by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
 
 ```php
 // https://docs.sentry.io/platforms/javascript/performance/#configure-the-sample-rate
@@ -93,9 +146,9 @@ define( 'WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE', 0.3 ); // tracesSampleRate
 
 **Note:** Do not set this constant or set the sample rate to `0.0` to disable the JavaScript performance tracing.
 
----
+#### `WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE` (Browser)
 
-(Optionally) enable JavaScript Session Replay by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+Enable JavaScript Session Replay by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
 
 ```php
 // These options are injected into the `Sentry.init()` call
@@ -113,9 +166,9 @@ define( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE', 1.0 ); // replaysOnErr
 
 **Note:** This feature is not available if the ES5 bundles are enabled with `WP_SENTRY_BROWSER_USE_ES5_BUNDLES`.
 
----
+#### `WP_SENTRY_BROWSER_USE_ES5_BUNDLES` (Browser)
 
-(Optionally) enable JavaScript ES5 compatible bundles, required if you need to support older browsers (for example IE11):
+Enable JavaScript ES5 compatible bundles, required if you need to support older browsers (for example IE11):
 
 ```php
 define( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES', true );
@@ -125,27 +178,14 @@ define( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES', true );
 
 **Note:** Enabling this will disable Session Replay if enabled since it has no ES5 compatible bundles.
 
----
-
-(Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
-
-```php
-define( 'WP_SENTRY_VERSION', 'v6.23.0' );
-```
-
-(Optionally) define an environment of your site. Defaults to `unspecified`.
-
-```php
-define( 'WP_SENTRY_ENV', 'production' );
-```
 
 ## Filters
 
 This plugin provides the following filters to plugin/theme developers.
 
-Please note that some filters are fired when the Sentry trackers are initialized so they won't fire if you define them in your theme or in a plugin that loads after WP Sentry does.
+**Note:** Some filters are fired when the Sentry trackers are initialised so they won't fire if you define them in your theme or in a plugin that loads after WP Sentry does.
 
-### Common to PHP & JavaScript trackers
+### Common to PHP & Browser
 
 #### `wp_sentry_user_context` (array)
 
@@ -165,7 +205,7 @@ add_filter( 'wp_sentry_user_context', function ( array $user ) {
 
 **Note:** _This filter fires on the WordPress `set_current_user` action and only if the `WP_SENTRY_SEND_DEFAULT_PII` constant is set to `true`._
 
-### Specific to PHP tracker:
+### Specific to PHP
 
 #### `wp_sentry_dsn` (string)
 
@@ -220,7 +260,7 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action._
 
-### Specific to JS tracker
+### Specific to Browser
 
 #### `wp_sentry_public_dsn` (string)
 
@@ -235,8 +275,6 @@ add_filter( 'wp_sentry_public_dsn', function ( $dsn ) {
 	return 'https://<key>@sentry.io/<project>';
 } );
 ```
-
----
 
 #### `wp_sentry_public_options` (array)
 
@@ -275,6 +313,7 @@ add_filter( 'wp_sentry_public_context', function ( array $context ) {
 	return $context;
 } );
 ```
+
 
 ## Advanced usages
 
@@ -374,7 +413,7 @@ require $wp_sentry;
 
 Now `wp-sentry-integration` will load always and before all other plugins.
 
-**Note**: We advise you leave the original `wp-sentry-integration` in the `/wp-content/plugins` folder to still have updates come in through the WordPress updater. However enabling or disabling does nothing if the above script is active (since it will always be enabled).
+**Note**: It is advised you leave the original `wp-sentry-integration` in the `/wp-content/plugins` folder to still have updates come in through the WordPress updater. However enabling or disabling does nothing if the above script is active (since it will always be enabled).
 
 ### Capturing errors only from certain theme and/or plugin
 
@@ -446,7 +485,7 @@ When the `wp_sentry_hook` function returns `false` the initialization of the Sen
 
 To modify the options you can modify the object passed as the first argument of the `wp_sentry_hook`, this object will later be passed to `Sentry.init` to initialize the Browser SDK.
 
-### Modifying the PHP SDK `ClientBuilder` or options before initialization
+### Modifying the PHP SDK `ClientBuilder` or options before initialisation
 
 Because the PHP SDK is initialized as quick as possible to capture early errors, it's impossible to modify the options or the `ClientBuilder` before the initialization with WordPress hooks.
 
@@ -473,9 +512,11 @@ Read more about how to setup the WordPress Proxy constants here: https://develop
 
 There is one caveat, if you are using an HTTP proxy in WordPress but don't want Sentry to use it you should set `WP_SENTRY_PROXY_ENABLED` to `false` in your `wp-config.php`. Setting `WP_PROXY_BYPASS_HOSTS` will not work!
 
+
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
+
 
 ## License
 
