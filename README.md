@@ -27,7 +27,7 @@ This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not
 
 ## Usage
 
-There are a couple of options to start using the plugin
+There are a couple of options to start using the plugin.
 
 **Note:** This plugin does not do anything by default and only has a diagnostic admin interface to test if you have setup the DSN properly and send test events. Setting up the DSN is required.
 
@@ -53,13 +53,15 @@ There are a couple of options to start using the plugin
 
 ## Configuration
 
-To start using the plugin first setup the [DSN](#DSN) for either the PHP side or the Browser side or both.
+To start using the plugin first setup the [DSN](#dsn) for either the PHP side or the Browser side or both.
 
 All other configuration options are optional but it's advised you read through them to see if any are applicable to you or are thing you'd like to configure.
 
+**Note:** When configuring constants in your `wp-config.php` do this **before** the `That's all, stop editing! Happy publishing.` line, otherwise they won't work!
+
 ### DSN
 
-Sentry uses something called a [DSN](https://docs.sentry.io/product/sentry-basics/dsn-explainer/) to configure the SDK.
+Sentry uses something called a DSN ([read more](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)) to configure the SDK.
 
 #### `WP_SENTRY_PHP_DSN` (PHP)
 
@@ -108,7 +110,9 @@ define( 'WP_SENTRY_SEND_DEFAULT_PII', true );
 
 #### `WP_SENTRY_VERSION`
 
-Define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
+Define a version of your site. By default the active theme version will be used or `unspecified` if theme version could not be resolved.
+
+This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
 define( 'WP_SENTRY_VERSION', 'v6.23.0' );
@@ -116,7 +120,9 @@ define( 'WP_SENTRY_VERSION', 'v6.23.0' );
 
 #### `WP_SENTRY_ENV`
 
-Define an environment of your site. Defaults to `unspecified`.
+Define an environment of your site. Defaults to the WordPress environment type from `wp_get_environment_type()` or `unspecified` if none configured.
+
+This is used for tracking on which environment of your site the error occurred.
 
 ```php
 define( 'WP_SENTRY_ENV', 'production' );
