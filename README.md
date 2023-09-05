@@ -133,8 +133,11 @@ define( 'WP_SENTRY_ENV', 'production' );
 Set the error types the PHP tracker will track:
 
 ```php
-define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );
+define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED & ~E_USER_NOTICE );
 ```
+
+**Note**: You can set any combination of error types you want, see the [PHP documentation](https://www.php.net/manual/en/errorfunc.constants.php) for more information.
+
 
 ### Performance monitoring
 
@@ -332,8 +335,10 @@ This can cause a high volume of events and even slower page loads because of tho
 The prevent this you can set the following in your `wp-config.php` to filter out errors of the notice type.
 
 ```php
-define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_NOTICE );
+define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_NOTICE & ~E_USER_NOTICE );
 ```
+
+**Note**: You can set any combination of error types you want, see the [PHP documentation](https://www.php.net/manual/en/errorfunc.constants.php) for more information.
 
 ### Capturing handled exceptions
 
