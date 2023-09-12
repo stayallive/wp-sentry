@@ -369,7 +369,7 @@ $e = new Exception('Some exception I want to capture with extra data.');
 if (function_exists('wp_sentry_safe')) {
 	wp_sentry_safe(function (\Sentry\State\HubInterface $client) use ($e) {
 		$client->withScope(function (\Sentry\State\Scope $scope) use ($client, $e) {
-			$scope->setExtra('user_data', $e->getData());
+			$scope->setContext('user_data', $e->getData());
 			$client->captureException($e);
 		});
 	});
