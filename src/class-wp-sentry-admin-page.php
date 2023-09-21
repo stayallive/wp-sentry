@@ -57,8 +57,8 @@ final class WP_Sentry_Admin_Page {
 		}
 
 		add_management_page(
-			'WP Sentry test',
-			'WP Sentry test',
+			'Sentry',
+			'Sentry',
 			'activate_plugins',
 			self::ADMIN_PAGE_SLUG,
 			[ $this, 'render_admin_page' ]
@@ -185,15 +185,46 @@ final class WP_Sentry_Admin_Page {
 
 		?>
 		<div class="wrap">
-			<h1>WP Sentry</h1>
+			<h1>Sentry</h1>
 
-			<div class="notice notice-success is-dismissible hidden" id="sentry-test-event-js-success">
-				<p><?php echo translate( 'JavaScript test sent successfully, event ID: <code id="sentry-test-event-js-id"></code>!', 'wp-sentry' ); ?></p>
-			</div>
+			<p>You are using version <?php echo WP_Sentry_Version::SDK_VERSION ?> of the WordPress Sentry plugin.</p>
 
-			<div class="notice notice-error is-dismissible hidden" id="sentry-test-event-js-error">
-				<p><?php esc_html_e( 'JavaScript failed to send test. Check your configuration to make sure your DSN is set correctly.', 'wp-sentry' ); ?></p>
-			</div>
+			<h2>Common</h2>
+
+			<p>Information listed below is used for both the PHP and Browser integration.</p>
+
+			<table class="form-table" role="presentation">
+				<tbody>
+					<tr>
+						<th>
+							<label for="wp-sentry-release"><?php esc_html_e( 'Release (version)', 'wp-sentry' ); ?></label>
+						</th>
+						<td>
+							<input id="wp-sentry-release" type="text" class="regular-text code" readonly name="wp-sentry-release" value="<?php echo esc_html( $options['release'] ?? '' ); ?>" placeholder="[no value set]"/>
+							<p class="description">
+								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>, when possible this value defaults to the active theme version.', 'wp-sentry' ); ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th>
+							<label for="wp-sentry-environment"><?php esc_html_e( 'Environment', 'wp-sentry' ); ?></label>
+						</th>
+						<td>
+							<input id="wp-sentry-environment" type="text" class="regular-text code" readonly name="wp-sentry-environment" value="<?php echo esc_html( $options['environment'] ?? '' ); ?>" placeholder="[no value set]"/>
+							<p class="description">
+								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code> or <code>WP_ENVIRONMENT_TYPE</code> (WordPress 5.5+).', 'wp-sentry' ); ?>
+							</p>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<hr>
+
+			<h2>PHP integration</h2>
+
+			<p>Information listed below is only applicable for the PHP integration.</p>
 
 			<?php if ( $test_event_sent ): ?>
 				<?php if ( $test_event_id !== null ): ?>
@@ -210,12 +241,12 @@ final class WP_Sentry_Admin_Page {
 			<table class="form-table" role="presentation">
 				<tbody>
 					<tr>
-						<th><?php esc_html_e( 'Enabled', 'wp-sentry' ); ?></th>
+						<th><?php esc_html_e( 'Integration', 'wp-sentry' ); ?></th>
 						<td>
 							<fieldset>
 								<label title="<?php echo $uses_scoped_autoloader ? 'Using scoped vendor (plugin build)' : 'Using regular vendor (composer)'; ?>">
 									<input name="wp-sentry-php-enabled" type="checkbox" id="wp-sentry-php-enabled" value="0" <?php echo $enabled_for_php ? 'checked="checked"' : '' ?> readonly disabled>
-									<?php esc_html_e( 'PHP', 'wp-sentry' ); ?>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
 								</label>
 							</fieldset>
 							<?php if ( ! $enabled_for_php ): ?>
@@ -224,76 +255,6 @@ final class WP_Sentry_Admin_Page {
 								</p>
 								<br>
 							<?php endif; ?>
-
-							<fieldset>
-								<label>
-									<input name="wp-sentry-js-enabled" type="checkbox" id="wp-sentry-js-enabled" value="0" <?php echo $enabled_for_js ? 'checked="checked"' : '' ?> readonly disabled>
-									<?php esc_html_e( 'JavaScript', 'wp-sentry' ); ?>
-									<?php if ( $js_tracing_enabled ): ?>
-										(<input name="wp-sentry-js-tracing-enabled-on-front" type="checkbox" id="wp-sentry-js-tracing-enabled-on-front" value="0" <?php echo $js_enabled_on_front ? 'checked="checked"' : '' ?> readonly disabled> front end, <input name="wp-sentry-js-tracing-enabled-on-admin" type="checkbox" id="wp-sentry-js-tracing-enabled-on-admin" value="0" <?php echo $js_enabled_on_admin ? 'checked="checked"' : '' ?> readonly disabled> admin, <input name="wp-sentry-js-tracing-enabled-on-login" type="checkbox" id="wp-sentry-js-tracing-enabled-on-login" value="0" <?php echo $js_enabled_on_login ? 'checked="checked"' : '' ?> readonly disabled> login)
-									<?php endif; ?>
-								</label>
-							</fieldset>
-							<?php if ( ! $enabled_for_js ): ?>
-								<p class="description">
-									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
-								</p>
-							<?php endif; ?>
-						</td>
-					</tr>
-					<tr>
-						<th><?php esc_html_e( 'Performance Monitoring', 'wp-sentry' ); ?></th>
-						<td>
-							<fieldset>
-								<label>
-									<input name="wp-sentry-js-tracing-enabled" type="checkbox" id="wp-sentry-js-tracing-enabled" value="0" <?php echo $js_tracing_enabled ? 'checked="checked"' : '' ?> readonly disabled>
-									<?php esc_html_e( 'JavaScript', 'wp-sentry' ); ?>
-								</label>
-							</fieldset>
-							<?php if ( ! ( $js_tracing_enabled ) ): ?>
-								<p class="description">
-									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
-								</p>
-							<?php endif; ?>
-						</td>
-					</tr>
-					<tr>
-						<th><?php esc_html_e( 'Session Replays', 'wp-sentry' ); ?></th>
-						<td>
-							<fieldset>
-								<label>
-									<input name="wp-sentry-js-session-replays-enabled" type="checkbox" id="wp-sentry-js-session-replays-enabled" value="0" <?php echo $js_replays_enabled ? 'checked="checked"' : '' ?> readonly disabled>
-									<?php esc_html_e( 'JavaScript', 'wp-sentry' ); ?>
-								</label>
-							</fieldset>
-							<?php if ( ! ( $js_replays_enabled ) ): ?>
-								<p class="description">
-									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE</code> or <code>WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
-								</p>
-							<?php endif; ?>
-						</td>
-					</tr>
-
-					<tr>
-						<th>
-							<label for="wp-sentry-release"><?php esc_html_e( 'Release (version)', 'wp-sentry' ); ?></label>
-						</th>
-						<td>
-							<input id="wp-sentry-release" type="text" class="regular-text code" readonly name="wp-sentry-release" value="<?php echo esc_html( $options['release'] ?? '' ); ?>" placeholder="[no value set]"/>
-							<p class="description">
-								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>.', 'wp-sentry' ); ?>
-							</p>
-						</td>
-					</tr>
-					<tr>
-						<th>
-							<label for="wp-sentry-environment"><?php esc_html_e( 'Environment', 'wp-sentry' ); ?></label>
-						</th>
-						<td>
-							<input id="wp-sentry-environment" type="text" class="regular-text code" readonly name="wp-sentry-environment" value="<?php echo esc_html( $options['environment'] ?? '' ); ?>" placeholder="[no value set]"/>
-							<p class="description">
-								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code> or <code>WP_ENVIRONMENT_TYPE</code> (WordPress 5.5+).', 'wp-sentry' ); ?>
-							</p>
 						</td>
 					</tr>
 					<tr>
@@ -312,24 +273,116 @@ final class WP_Sentry_Admin_Page {
 							<?php endif; ?>
 						</td>
 					</tr>
+				</tbody>
+			</table>
+
+			<hr>
+
+			<h2>Browser integration (JavaScript)</h2>
+
+			<p>Information listed below is only applicable for the Browser integration.</p>
+
+			<div class="notice notice-success is-dismissible hidden" id="sentry-test-event-js-success">
+				<p><?php echo translate( 'Browser test sent successfully, event ID: <code id="sentry-test-event-js-id"></code>!', 'wp-sentry' ); ?></p>
+			</div>
+
+			<div class="notice notice-error is-dismissible hidden" id="sentry-test-event-js-error">
+				<p><?php esc_html_e( 'Browser failed to send test. Check your configuration to make sure your DSN is set correctly.', 'wp-sentry' ); ?></p>
+			</div>
+
+			<table class="form-table" role="presentation">
+				<tbody>
+					<tr>
+						<th><?php esc_html_e( 'Integration', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-js-enabled" type="checkbox" id="wp-sentry-js-enabled" value="0" <?php echo $enabled_for_js ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+								</label>
+							</fieldset>
+							<p class="description">
+								<?php if ( ! $enabled_for_js ): ?>
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
+								<?php else: ?>
+									<label>
+										<input name="wp-sentry-js-tracing-enabled-on-front" type="checkbox" id="wp-sentry-js-tracing-enabled-on-front" value="0" <?php echo $js_enabled_on_front ? 'checked="checked"' : '' ?> readonly disabled> Enabled on front end
+									</label>
+									<br>
+									<label>
+										<input name="wp-sentry-js-tracing-enabled-on-admin" type="checkbox" id="wp-sentry-js-tracing-enabled-on-admin" value="0" <?php echo $js_enabled_on_admin ? 'checked="checked"' : '' ?> readonly disabled> Enabled in <code>wp-admin</code>
+									</label>
+									<br>
+									<label>
+										<input name="wp-sentry-js-tracing-enabled-on-login" type="checkbox" id="wp-sentry-js-tracing-enabled-on-login" value="0" <?php echo $js_enabled_on_login ? 'checked="checked"' : '' ?> readonly disabled> Enabled on login page
+									</label>
+								<?php endif; ?>
+							</p>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Performance Monitoring', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-js-tracing-enabled" type="checkbox" id="wp-sentry-js-tracing-enabled" value="0" <?php echo $js_tracing_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+								</label>
+							</fieldset>
+							<?php if ( ! ( $js_tracing_enabled ) ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Session Replays', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-js-session-replays-enabled" type="checkbox" id="wp-sentry-js-session-replays-enabled" value="0" <?php echo $js_replays_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+								</label>
+							</fieldset>
+							<?php if ( ! ( $js_replays_enabled ) ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE</code> or <code>WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
 					<tr>
 						<th>
-							<label><?php esc_html_e( 'Test JavaScript integration', 'wp-sentry' ); ?></label>
+							<label><?php esc_html_e( 'Test Browser integration', 'wp-sentry' ); ?></label>
 						</th>
 						<td>
 							<form method="post">
-								<input type="button" id="wp-sentry-send-test-event-js" class="button" value="<?php esc_html_e( 'Send JavaScript test event', 'wp-sentry' ) ?>" <?php echo $enabled_for_js ? '' : 'disabled'; ?>>
-								<input type="button" id="wp-sentry-send-test-error-js" class="button" value="<?php esc_html_e( 'Send JavaScript test error', 'wp-sentry' ) ?>" <?php echo $enabled_for_js ? '' : 'disabled'; ?>>
+								<input type="button" id="wp-sentry-send-test-event-js" class="button" value="<?php esc_html_e( 'Send Browser test event', 'wp-sentry' ) ?>" <?php echo $enabled_for_js ? '' : 'disabled'; ?>>
+								<input type="button" id="wp-sentry-send-test-error-js" class="button" value="<?php esc_html_e( 'Send Browser test error', 'wp-sentry' ) ?>" <?php echo $enabled_for_js ? '' : 'disabled'; ?>>
 							</form>
 							<?php if ( ! $enabled_for_js ): ?>
 								<p class="description">
-									<?php echo translate( 'The JavaScript integration must be enabled to send a test event.', 'wp-sentry' ); ?>
+									<?php echo translate( 'The Browser integration must be enabled to send a test event.', 'wp-sentry' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+
+			<hr>
+
+			<h2>Links</h2>
+
+			<ul>
+				<li>
+					<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION ?>#configuration" target="_blank">Documentation</a>
+				</li>
+				<li>
+					<a href="https://wordpress.org/plugins/wp-sentry-integration/" target="_blank">WordPress plugin repository</a>
+				</li>
+			</ul>
 		</div>
 
 		<script>
@@ -349,7 +402,7 @@ final class WP_Sentry_Admin_Page {
                     console.log('=> Sending a test message to Sentry...');
 
                     if (typeof Sentry === 'object' && typeof Sentry.captureMessage === 'function') {
-                        var eventId = Sentry.captureMessage('This is a test message sent from the Sentry WP JavaScript integration.');
+                        var eventId = Sentry.captureMessage('This is a test message sent from the Sentry WP Browser integration.');
 
                         console.log(' > Sent message with event ID:', eventId);
 
