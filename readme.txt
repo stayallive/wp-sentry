@@ -1,68 +1,62 @@
 === WordPress Sentry ===
 Contributors: stayallive
-Tags: sentry, errors, tracking
+Donate link: https://github.com/sponsors/stayallive
+Tags: sentry, log, logging, error-handler, error-monitoring
 Requires at least: 4.4
 Tested up to: 6.3
 Requires PHP: 7.2
 Stable tag: trunk
 License: MIT
-License URI: https://github.com/stayallive/wp-sentry/blob/master/LICENSE.md
+License URI: https://github.com/stayallive/wp-sentry/blob/v6.25.0/LICENSE.md
 
-A (unofficial) WordPress plugin to report PHP errors and JavaScript errors to Sentry.
+A (unofficial) WordPress plugin to report PHP errors and Browser (JavaScript) errors to Sentry.
 
 == Description ==
-This plugin can report PHP errors (optionally) and JavaScript errors (optionally) to Sentry and integrates with its release tracking.
+This plugin can report PHP errors and Browser (JavaScript) errors to Sentry.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.25.0/README.md) file._
+_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v6.25.0#readme)._
 
 == Installation ==
-1. Install this plugin by cloning or copying this repository to your `wp-contents/plugins` folder
-2. Configure your DSN as explained below
-2. Activate the plugin through the WordPress admin interface
+It is recommended to use the plugins interface in WordPress to install this plugin.
 
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.25.0/README.md) file._
+If manual installation is required, please make sure that the plugin files are in a folder named "wp-sentry-integration" in the WordPress plugins folder, usually "wp-content/plugins".
 
-**Note:** this plugin does not do anything by default and has only a admin interface to test the integration. A Sentry DSN must be configured in your `wp-config.php`.
+To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v6.25.0#dsn) for either the PHP side or the Browser side or both.
 
-(Optionally) track PHP errors by adding this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
+All other configuration options are optional but it's advised you read through them to see if any are applicable to you or are thing you'd like to configure.
 
-`define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );`
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v6.25.0#configuration). The following are the basics._
+
+**Note:** When configuring constants in your `wp-config.php` do this **before** the `That's all, stop editing! Happy publishing.` line, otherwise they won't work!
+
+**Note:** this plugin does not do anything by default and has only a admin interface to test the integration and view it's configuration. A Sentry DSN must be configured in your `wp-config.php`.
+
+Sentry uses something called a DSN ([read more](https://docs.sentry.io/product/sentry-basics/dsn-explainer/)) to configure the SDK.
+
+To track PHP errors add this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
+
+```php
+define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
+```
 
 **Note:** Do not set this constant to disable the PHP tracker.
 
-**Note:** This constant was previously called `WP_SENTRY_DSN` and is still supported.
+To track Browser (JavaScript) errors add this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
-(Optionally) set the error types the PHP tracker will track:
+```php
+define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 
-`define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEPRECATED );`
+// You can _optionally_ enable or disable the JavaScript tracker in certain parts of your site with these constants:
+define('WP_SENTRY_BROWSER_ADMIN_ENABLED', true);    // Add the JavaScript tracker to the admin area. Default: true
+define('WP_SENTRY_BROWSER_LOGIN_ENABLED', true);    // Add the JavaScript tracker to the login page. Default: true
+define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracker to the front end. Default: true
+```
 
-(Optionally) If this flag is enabled, certain personally identifiable information is added by active integrations. Without this flag they are never added to the event, to begin with.
+**Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
-If possible, it’s recommended to turn on this feature and use the server side PII stripping to remove the values instead.
-
-When enabled the current logged in user and IP address will be added to the event.
-
-`define( 'WP_SENTRY_SEND_DEFAULT_PII', true );`
-
-(Optionally) track JavaScript errors by adding this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
-
-`define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );`
-
-**Note:** Do not set this constant to disable the JavaScript tracker.
-
-**Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
-
-(Optionally) define a version of your site; by default the theme version will be used. This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
-
-`define( 'WP_SENTRY_VERSION', 'v6.25.0' );`
-
-(Optionally) define an environment of your site. Defaults to `unspecified`.
-
-`define( 'WP_SENTRY_ENV', 'production' );`
-
-_For more information and documentation have a look at the [README.md](https://github.com/stayallive/wp-sentry/blob/v6.25.0/README.md) file._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v6.25.0#configuration). The above are the basics._
 
 == Changelog ==
 = 6.25.0 =
