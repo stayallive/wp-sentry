@@ -88,8 +88,8 @@ final class WP_Sentry_Admin_Page {
 
 		add_submenu_page(
 			'wp-sentry-tools-menu',
-			'WP Sentry test',
-			'WP Sentry test',
+			'Sentry',
+			'Sentry',
 			'activate_plugins',
 			self::ADMIN_PAGE_SLUG,
 			[ $this, 'render_admin_page' ]
