@@ -7,7 +7,7 @@ Tested up to: 6.3
 Requires PHP: 7.2
 Stable tag: trunk
 License: MIT
-License URI: https://github.com/stayallive/wp-sentry/blob/v6.26.0/LICENSE.md
+License URI: https://github.com/stayallive/wp-sentry/blob/v6.27.0/LICENSE.md
 
 A (unofficial) WordPress plugin to report PHP errors and Browser (JavaScript) errors to Sentry.
 
@@ -16,18 +16,18 @@ This plugin can report PHP errors and Browser (JavaScript) errors to Sentry.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v6.26.0#readme)._
+_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v6.27.0#readme)._
 
 == Installation ==
 It is recommended to use the plugins interface in WordPress to install this plugin.
 
 If manual installation is required, please make sure that the plugin files are in a folder named "wp-sentry-integration" in the WordPress plugins folder, usually "wp-content/plugins".
 
-To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v6.26.0#dsn) for either the PHP side or the Browser side or both.
+To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v6.27.0#dsn) for either the PHP side or the Browser side or both.
 
 All other configuration options are optional but it's advised you read through them to see if any are applicable to you or are thing you'd like to configure.
 
-_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v6.26.0#configuration). The following are the basics._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v6.27.0#configuration). The following are the basics._
 
 **Note:** When configuring constants in your `wp-config.php` do this **before** the `That's all, stop editing! Happy publishing.` line, otherwise they won't work!
 
@@ -56,9 +56,13 @@ define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracke
 
 **Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
-_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v6.26.0#configuration). The above are the basics._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v6.27.0#configuration). The above are the basics._
 
 == Changelog ==
+= 6.27.0 =
+
+* Update Sentry Browser to version 7.74.0
+
 = 6.26.0 =
 
 * Update Sentry Browser to version 7.73.0
