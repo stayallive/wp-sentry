@@ -168,11 +168,11 @@ final class WP_Sentry_Admin_Page {
 
 		$js_tracker = WP_Sentry_Js_Tracker::get_instance();
 
-		$enabled_for_js         = $js_tracker->enabled();
-		$js_tracing_enabled     = $enabled_for_js && $js_tracker->tracing_enabled();
-		$js_replays_enabled     = $enabled_for_js && $js_tracker->replays_enabled();
-		$js_enabled_on_admin    = $js_tracker->enabled_on_admin_pages();
-		$js_enabled_on_login    = $js_tracker->enabled_on_login_page();
+		$enabled_for_js      = $js_tracker->enabled();
+		$js_tracing_enabled  = $enabled_for_js && $js_tracker->tracing_enabled();
+		$js_replays_enabled  = $enabled_for_js && $js_tracker->replays_enabled();
+		$js_enabled_on_admin = $js_tracker->enabled_on_admin_pages();
+		$js_enabled_on_login = $js_tracker->enabled_on_login_page();
 		$js_enabled_on_front = $js_tracker->enabled_on_frontend_pages();
 
 		$php_tracker = WP_Sentry_Php_Tracker::get_instance();
@@ -180,6 +180,8 @@ final class WP_Sentry_Admin_Page {
 		$enabled_for_php = $php_tracker->enabled();
 
 		$options = $php_tracker->get_default_options();
+
+		$sends_default_pii = defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII;
 
 		$uses_scoped_autoloader = defined( 'WP_SENTRY_SCOPED_AUTOLOADER' ) && WP_SENTRY_SCOPED_AUTOLOADER;
 
@@ -215,6 +217,23 @@ final class WP_Sentry_Admin_Page {
 							<p class="description">
 								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_ENV</code> or <code>WP_ENVIRONMENT_TYPE</code> (WordPress 5.5+).', 'wp-sentry' ); ?>
 							</p>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Identify Users', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-identify-users-enabled" type="checkbox" id="wp-sentry-identify-users-enabled" value="0" <?php echo $sends_default_pii ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+								</label>
+							</fieldset>
+							<?php if ( ! $sends_default_pii ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_SEND_DEFAULT_PII</code> is set to true.', 'wp-sentry' ); ?>
+								</p>
+								<br>
+							<?php endif; ?>
 						</td>
 					</tr>
 				</tbody>
