@@ -31,14 +31,14 @@ if ( ! function_exists( 'add_action' ) ) {
 // Make sure the PHP version is at least 7.2
 if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 	function wp_sentry_php_version_notice() { ?>
-        <div class="error below-h2">
-            <p>
+		<div class="error below-h2">
+			<p>
 				<?php printf(
 					'The WordPress Sentry plugin requires at least PHP 7.2. You have %s. WordPress Sentry will not be active unless this is resolved!',
 					PHP_VERSION
 				); ?>
-            </p>
-        </div>
+			</p>
+		</div>
 	<?php }
 
 	add_action( 'admin_notices', 'wp_sentry_php_version_notice' );
@@ -66,11 +66,13 @@ define( 'WP_SENTRY_PLUGIN_FILE', call_user_func( static function () {
 
 // Load dependencies
 if ( ! class_exists( WP_Sentry_Version::class ) ) {
-	$scopedAutoloader = __DIR__ . '/build/vendor/scoper-autoload.php';
+	$scopedAutoloaderExists = file_exists(
+		$scopedAutoloaderPath = __DIR__ . '/build/vendor/scoper-autoload.php'
+	);
 
 	// If ther is a scoped autoloader we use that version, otherwise we use the normal autoloader
-	require_once $scopedAutoloaderExists = file_exists( $scopedAutoloader )
-		? $scopedAutoloader
+	require_once $scopedAutoloaderExists
+		? $scopedAutoloaderPath
 		: __DIR__ . '/vendor/autoload.php';
 
 	define( 'WP_SENTRY_SCOPED_AUTOLOADER', $scopedAutoloaderExists );

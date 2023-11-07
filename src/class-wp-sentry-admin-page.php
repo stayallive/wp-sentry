@@ -391,6 +391,10 @@ final class WP_Sentry_Admin_Page {
 					<a href="https://docs.sentry.io/platforms/javascript/" target="_blank" rel="noopener">Sentry SDK for Browser JavaScript Documentation</a>
 				</li>
 			</ul>
+
+			<hr>
+
+			Debug string for the plugin developers: <code>wp-sentry-integration@<?php echo WP_Sentry_Version::SDK_VERSION; ?>-<?php echo $uses_scoped_autoloader ? 'scoped' : 'vendor'; ?>:php@<?php echo PHP_VERSION; ?>:sdk@<?php echo WP_Sentry_Php_Tracker::get_instance()->get_sdk_version(); ?>:js-sdk@<?php echo WP_Sentry_Js_Tracker::get_instance()->get_sdk_version(); ?></code>
 		</div>
 
 		<script>
