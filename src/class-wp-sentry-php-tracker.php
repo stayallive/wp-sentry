@@ -169,6 +169,7 @@ final class WP_Sentry_Php_Tracker {
 	public function get_default_options(): array {
 		$options = [
 			'dsn'              => $this->get_dsn(),
+			'tags'             => $this->get_default_tags(),
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
@@ -221,12 +222,6 @@ final class WP_Sentry_Php_Tracker {
 		$clientBuilder->setSdkVersion( WP_Sentry_Version::SDK_VERSION );
 
 		$hub = new Hub( $this->client = $clientBuilder->getClient() );
-
-		$hub->configureScope( function ( Scope $scope ) {
-			foreach ( $this->get_default_tags() as $tag => $value ) {
-				$scope->setTag( $tag, $value );
-			}
-		} );
 
 		SentrySdk::setCurrentHub( $hub );
 	}
