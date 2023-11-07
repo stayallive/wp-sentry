@@ -188,9 +188,11 @@ final class WP_Sentry_Php_Tracker {
 		];
 
 		if ( $this->is_wp_proxy_enabled() && $this->wp_proxy_enabled_for_us() ) {
-			$options['http_proxy'] = $this->is_wp_proxy_using_authentication()
-				? sprintf( "%s@%s:%s", $this->wp_proxy_authentication(), $this->wp_proxy_host(), $this->wp_proxy_port() )
-				: sprintf( "%s:%s", $this->wp_proxy_host(), $this->wp_proxy_port() );
+			$options['http_proxy'] = sprintf( "%s:%s", $this->wp_proxy_host(), $this->wp_proxy_port() );
+
+			if ( $this->is_wp_proxy_using_authentication() ) {
+				$options['http_proxy_authentication'] = $this->wp_proxy_authentication();
+			}
 		}
 
 		return $options;
