@@ -187,7 +187,7 @@ final class WP_Sentry_Admin_Page {
 		<div class="wrap">
 			<h1>Sentry</h1>
 
-			<p>You are using version <?php echo WP_Sentry_Version::SDK_VERSION ?> of the WordPress Sentry plugin.</p>
+			<p>You are using version <b><?php echo WP_Sentry_Version::SDK_VERSION ?></b> of the WordPress Sentry plugin.</p>
 
 			<h2>Common</h2>
 
@@ -225,6 +225,7 @@ final class WP_Sentry_Admin_Page {
 			<h2>PHP integration</h2>
 
 			<p>Information listed below is only applicable for the PHP integration.</p>
+			<p>The PHP integration uses the official <a href="https://github.com/getsentry/sentry-php" target="_blank" rel="noopener">Sentry SDK for PHP</a> version <b><?php echo WP_Sentry_Php_Tracker::get_instance()->get_sdk_version(); ?></b>.</p>
 
 			<?php if ( $test_event_sent ): ?>
 				<?php if ( $test_event_id !== null ): ?>
@@ -281,6 +282,7 @@ final class WP_Sentry_Admin_Page {
 			<h2>Browser integration (JavaScript)</h2>
 
 			<p>Information listed below is only applicable for the Browser integration.</p>
+			<p>The Browser integration uses the official <a href="https://github.com/getsentry/sentry-javascript/" target="_blank" rel="noopener">Sentry SDK for JavaScript</a> version <b><?php echo WP_Sentry_Js_Tracker::get_instance()->get_sdk_version(); ?></b>.</p>
 
 			<div class="notice notice-success is-dismissible hidden" id="sentry-test-event-js-success">
 				<p><?php echo translate( 'Browser test sent successfully, event ID: <code id="sentry-test-event-js-id"></code>!', 'wp-sentry' ); ?></p>
@@ -377,10 +379,16 @@ final class WP_Sentry_Admin_Page {
 
 			<ul>
 				<li>
-					<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION ?>#configuration" target="_blank">Documentation</a>
+					<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION ?>#configuration" target="_blank" rel="noopener">Plugin Documentation</a>
 				</li>
 				<li>
-					<a href="https://wordpress.org/plugins/wp-sentry-integration/" target="_blank">WordPress plugin repository</a>
+					<a href="https://wordpress.org/plugins/wp-sentry-integration/" target="_blank" rel="noopener">WordPress plugin repository</a>
+				</li>
+				<li>
+					<a href="https://docs.sentry.io/platforms/php/" target="_blank" rel="noopener">Sentry SDK for PHP Documentation</a>
+				</li>
+				<li>
+					<a href="https://docs.sentry.io/platforms/javascript/" target="_blank" rel="noopener">Sentry SDK for Browser JavaScript Documentation</a>
 				</li>
 			</ul>
 		</div>

@@ -280,4 +280,8 @@ final class WP_Sentry_Php_Tracker {
 	private function wp_proxy_enabled_for_us(): bool {
 		return ! defined( 'WP_SENTRY_PROXY_ENABLED' ) || WP_SENTRY_PROXY_ENABLED;
 	}
+
+	public function get_sdk_version(): string {
+		return Sentry\Client::SDK_VERSION;
+	}
 }

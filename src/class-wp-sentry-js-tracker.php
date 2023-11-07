@@ -252,4 +252,31 @@ final class WP_Sentry_Js_Tracker {
 	public function enabled_on_frontend_pages(): bool {
 		return ! defined( 'WP_SENTRY_BROWSER_FRONTEND_ENABLED' ) || WP_SENTRY_BROWSER_FRONTEND_ENABLED;
 	}
+
+	public function get_sdk_version(): string {
+		static $sdk_version = null;
+
+		if ( $sdk_version === null ) {
+			$sdk_version = $this->get_sdk_version_from_js_file() ?? 'unknown';
+		}
+
+		return $sdk_version;
+	}
+
+	private function get_sdk_version_from_js_file(): ?string {
+		$fp = fopen( __DIR__ . '/../public/wp-sentry-browser.min.js', 'rb' );
+
+		// To get the header we read the first 100 bytes of the file which should always include the header and version info
+		$header = fread( $fp, 100 );
+
+		fclose( $fp );
+
+		$matched = preg_match( '/@sentry\/browser (?<version>\d+\.\d+\.\d+)/', $header, $matches );
+
+		if ( ! $matched ) {
+			return null;
+		}
+
+		return $matches['version'] ?? null;
+	}
 }
