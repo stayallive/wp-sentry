@@ -5,6 +5,7 @@ use Sentry\State\Hub;
 use Sentry\State\Scope;
 use Sentry\ClientBuilder;
 use Sentry\State\HubInterface;
+use Sentry\Integration\ModulesIntegration;
 
 /**
  * WordPress Sentry PHP Tracker.
@@ -172,6 +173,16 @@ final class WP_Sentry_Php_Tracker {
 			'tags'             => $this->get_default_tags(),
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
+			'integrations'     => static function ( array $integrations ) {
+				return array_filter( $integrations, static function ( $integration ) {
+					// Disbale the modules integration as it only lists the internal packages from this plugin instead of the packages of the full project
+					if ( $integration instanceof ModulesIntegration ) {
+						return false;
+					}
+
+					return true;
+				} );
+			},
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
 		];
 
