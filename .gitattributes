@@ -9,5 +9,5 @@ docs export-ignore
 scoper.inc.php export-ignore
 release-exclude.txt export-ignore
 
-# Make sure we are not marked as a JavaScript project
-public/*.min.js linguist-vendored
+# Make sure we are not marked as a JavaScript project and that we don't show diffs for these files
+public/*.min.js linguist-vendored -diff
