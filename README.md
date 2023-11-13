@@ -22,7 +22,8 @@ This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not
 
 - Version [`2.x`](https://github.com/stayallive/wp-sentry/tree/2.x) of the wp-sentry plugin uses the [`1.x`](https://github.com/getsentry/sentry-php/tree/1.x) version of the official Sentry PHP SDK.
 - Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/3.x) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/2.x) version of the official Sentry PHP SDK.
-- Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/4.x) & [`5.x`](https://github.com/stayallive/wp-sentry/tree/master) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
+- Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/4.x), [`5.x`](https://github.com/stayallive/wp-sentry/tree/5.x), & [`6.x`](https://github.com/stayallive/wp-sentry/tree/6.x) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
+- Version [`7.x`](https://github.com/stayallive/wp-sentry/tree/master)+ of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
 
 
 ## Usage
