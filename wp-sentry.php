@@ -78,9 +78,23 @@ if ( ! class_exists( WP_Sentry_Version::class ) ) {
 	define( 'WP_SENTRY_SCOPED_AUTOLOADER', $scopedAutoloaderExists );
 }
 
-// Define the default version
-if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'wp_get_theme' ) ) {
-	define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
+// Define the default version if none was set
+if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'add_action' ) ) {
+	// We need to wait until the theme is loaded and setup to get the version
+	add_action( 'after_setup_theme', function () {
+		// It makes no sense to set a version based on the theme version if the plugin is enabled for the network since every site can have a different theme
+		if ( is_plugin_active_for_network( __DIR__ ) ) {
+			return;
+		}
+
+		// The JS client has not been initialized yet so we can just set the `WP_SENTRY_VERSION` constant
+		define( 'WP_SENTRY_VERSION', wp_get_theme()->get( 'Version' ) ?: 'unknown' );
+
+		// The PHP client has probably already been initialized so we need to update the release on the options directly
+		add_filter( 'wp_sentry_options', static function ( Sentry\Options $options ) {
+			$options->setRelease( WP_SENTRY_VERSION );
+		} );
+	}, /* priority: */ 1 );
 }
 
 // Load the PHP tracker if we have a PHP DSN
