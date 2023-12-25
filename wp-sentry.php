@@ -83,7 +83,7 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'add_action' ) ) {
 	// We need to wait until the theme is loaded and setup to get the version
 	add_action( 'after_setup_theme', function () {
 		// It makes no sense to set a version based on the theme version if the plugin is enabled for the network since every site can have a different theme
-		if ( is_plugin_active_for_network( __DIR__ ) ) {
+		if ( function_exists( 'is_plugin_active_for_network' ) && is_plugin_active_for_network( __DIR__ ) ) {
 			return;
 		}
 
