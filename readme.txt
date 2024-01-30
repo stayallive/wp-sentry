@@ -37,22 +37,18 @@ Sentry uses something called a DSN ([read more](https://docs.sentry.io/product/s
 
 To track PHP errors add this snippet to your `wp-config.php` and replace `PHP_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
-```
-define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
-```
+    define( 'WP_SENTRY_PHP_DSN', 'PHP_DSN' );
 
 **Note:** Do not set this constant to disable the PHP tracker.
 
 To track Browser (JavaScript) errors add this snippet to your `wp-config.php` and replace `JS_DSN` with your actual DSN that you find inside Sentry in the project settings under "Client Keys (DSN)":
 
-```
-define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
+    define( 'WP_SENTRY_BROWSER_DSN', 'JS_DSN' );
 
-// You can _optionally_ enable or disable the JavaScript tracker in certain parts of your site with these constants:
-define('WP_SENTRY_BROWSER_ADMIN_ENABLED', true);    // Add the JavaScript tracker to the admin area. Default: true
-define('WP_SENTRY_BROWSER_LOGIN_ENABLED', true);    // Add the JavaScript tracker to the login page. Default: true
-define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracker to the front end. Default: true
-```
+    // You can _optionally_ enable or disable the JavaScript tracker in certain parts of your site with these constants:
+    define('WP_SENTRY_BROWSER_ADMIN_ENABLED', true);    // Add the JavaScript tracker to the admin area. Default: true
+    define('WP_SENTRY_BROWSER_LOGIN_ENABLED', true);    // Add the JavaScript tracker to the login page. Default: true
+    define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracker to the front end.  Default: true
 
 **Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
