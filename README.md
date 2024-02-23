@@ -270,6 +270,25 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action._
 
+---
+
+#### `wp_sentry_before_send`
+
+You can use this filter to select the events to be sent to Sentry / See [doc](https://docs.sentry.io/platforms/php/configuration/filtering/).
+
+Example usage:
+
+```php
+add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\EventHint $hint ) {
+	// Don't send warning for hello dolly plugin
+	if ( (string) $event->getLevel() === 'warning' && str_contains( $hint->exception->getFile(), 'plugins/hello.php' ) ) {
+		return null;
+	}
+
+	return $event;
+} );
+```
+
 ### Specific to Browser
 
 #### `wp_sentry_public_dsn` (string)

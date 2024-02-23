@@ -184,6 +184,9 @@ final class WP_Sentry_Php_Tracker {
 				} );
 			},
 			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
+			'before_send' => function ( \Sentry\Event $event, ?\Sentry\EventHint $hint ): ?\Sentry\Event {
+				return apply_filters( 'wp_sentry_before_send', $event, $hint );
+			},
 		];
 
 		if ( defined( 'WP_SENTRY_VERSION' ) ) {
