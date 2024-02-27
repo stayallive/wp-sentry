@@ -1,5 +1,7 @@
 <?php
 
+use Sentry\Event;
+use Sentry\EventHint;
 use Sentry\SentrySdk;
 use Sentry\State\Hub;
 use Sentry\State\Scope;
@@ -173,9 +175,28 @@ final class WP_Sentry_Php_Tracker {
 			'tags'             => $this->get_default_tags(),
 			'prefixes'         => [ ABSPATH ],
 			'environment'      => $this->get_environment(),
+			'before_send'      => function ( Event $event, ?EventHint $hint ): ?Event {
+				if ( function_exists( 'apply_filters' ) ) {
+					try {
+						/**
+						 * Filter to decide not to send the event to Sentry or to edit it.
+						 *
+						 * @link https://docs.sentry.io/platforms/php/configuration/filtering/#filtering-error-events
+						 *
+						 * @param \Sentry\Event          $event
+						 * @param \Sentry\EventHint|null $hint
+						 */
+						return apply_filters( 'wp_sentry_before_send', $event, $hint );
+					} catch ( Throwable $e ) {
+						// If the filter throws an exception, ignore it and fall through to sending the event
+					}
+				}
+
+				return $event;
+			},
 			'integrations'     => static function ( array $integrations ) {
 				return array_filter( $integrations, static function ( $integration ) {
-					// Disbale the modules integration as it only lists the internal packages from this plugin instead of the packages of the full project
+					// Disable the modules integration as it only lists the internal packages from this plugin instead of the packages of the full project
 					if ( $integration instanceof ModulesIntegration ) {
 						return false;
 					}

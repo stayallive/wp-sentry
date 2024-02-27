@@ -270,6 +270,27 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action._
 
+---
+
+#### `wp_sentry_before_send`
+
+You can use this filter to filter error events sent to Sentry. Read more about [filtering in the docs](https://docs.sentry.io/platforms/php/configuration/filtering/#filtering-error-events).
+
+Example usage:
+
+```php
+add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\EventHint $hint ) {
+    // Don't send error event with level `warning` for the Hello Dolly example plugin
+    if ( $hint->exception !== null && $event->getLevel() === \Sentry\Severity::warning() && strpos( $hint->exception->getFile(), 'plugins/hello.php' ) !== false ) {
+        return null;
+    }
+    
+    return $event;
+} );
+```
+
+**Note:** _Do not forget to return the `$event` if you want to send it to Sentry, returning `null` discards the event._
+
 ### Specific to Browser
 
 #### `wp_sentry_public_dsn` (string)
