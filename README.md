@@ -274,20 +274,22 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 
 #### `wp_sentry_before_send`
 
-You can use this filter to select the events to be sent to Sentry / See [doc](https://docs.sentry.io/platforms/php/configuration/filtering/).
+You can use this filter to filter error events sent to Sentry. Read more about [filtering in the docs](https://docs.sentry.io/platforms/php/configuration/filtering/#filtering-error-events).
 
 Example usage:
 
 ```php
 add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\EventHint $hint ) {
-	// Don't send warning for hello dolly plugin
-	if ( (string) $event->getLevel() === 'warning' && str_contains( $hint->exception->getFile(), 'plugins/hello.php' ) ) {
-		return null;
-	}
-
-	return $event;
+    // Don't send error event with level `warning` for the Hello Dolly example plugin
+    if ( $hint->exception !== null && $event->getLevel() === \Sentry\Severity::warning() && strpos( $hint->exception->getFile(), 'plugins/hello.php' ) !== false ) {
+        return null;
+    }
+    
+    return $event;
 } );
 ```
+
+**Note:** _Do not forget to return the `$event` if you want to send it to Sentry, returning `null` discards the event._
 
 ### Specific to Browser
 
