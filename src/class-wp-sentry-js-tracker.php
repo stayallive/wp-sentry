@@ -153,7 +153,7 @@ final class WP_Sentry_Js_Tracker {
 		if ( defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES ) {
 			wp_enqueue_script(
 				'wp-sentry-polyfill',
-				'https://polyfill.io/v3/polyfill.min.js?features=Promise%2CObject.assign%2CNumber.isNaN%2CArray.prototype.includes%2CString.prototype.startsWith',
+				'https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=Promise%2CObject.assign%2CNumber.isNaN%2CArray.prototype.includes%2CString.prototype.startsWith',
 				[],
 				WP_Sentry_Version::SDK_VERSION
 			);
