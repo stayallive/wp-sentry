@@ -279,14 +279,14 @@ You can use this filter to filter error events sent to Sentry. Read more about [
 Example usage:
 
 ```php
-add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\EventHint $hint ) {
+add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\EventHint $hint = null ) {
     // Don't send error event with level `warning` for the Hello Dolly example plugin
     if ( $hint->exception !== null && $event->getLevel() === \Sentry\Severity::warning() && strpos( $hint->exception->getFile(), 'plugins/hello.php' ) !== false ) {
         return null;
     }
     
     return $event;
-} );
+}, 2 );
 ```
 
 **Note:** _Do not forget to return the `$event` if you want to send it to Sentry, returning `null` discards the event._
