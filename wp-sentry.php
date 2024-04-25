@@ -93,6 +93,8 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'add_action' ) ) {
 		// The PHP client has probably already been initialized so we need to update the release on the options directly
 		add_filter( 'wp_sentry_options', static function ( Sentry\Options $options ) {
 			$options->setRelease( WP_SENTRY_VERSION );
+
+			return $options;
 		} );
 	}, /* priority: */ 1 );
 }
