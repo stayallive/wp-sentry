@@ -2,7 +2,7 @@
 Contributors: stayallive
 Donate link: https://github.com/sponsors/stayallive
 Tags: sentry, log, logging, error-handler, error-monitoring
-Requires at least: 4.4
+Requires at least: 4.5
 Tested up to: 6.5
 Requires PHP: 7.2
 Stable tag: 7.14.0
