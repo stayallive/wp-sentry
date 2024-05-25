@@ -132,12 +132,21 @@ final class WP_Sentry_Php_Tracker {
 	}
 
 	/**
+	 * Retrieve the spotlight enabled status.
+	 *
+	 * @return bool
+	 */
+	public static function get_spotlight_enabled(): bool {
+		return defined( 'WP_SENTRY_SPOTLIGHT' ) && WP_SENTRY_SPOTLIGHT === true;
+	}
+
+	/**
 	 * Get the sentry client.
 	 *
 	 * @return \Sentry\State\HubInterface
 	 */
 	public function get_client(): HubInterface {
-		if ( $this->client === null && $this->get_dsn() !== null ) {
+		if ( $this->client === null && ( $this->get_dsn() !== null || self::get_spotlight_enabled() ) ) {
 			$this->initializeClient();
 		}
 
@@ -171,11 +180,12 @@ final class WP_Sentry_Php_Tracker {
 	 */
 	public function get_default_options(): array {
 		$options = [
-			'dsn'              => $this->get_dsn(),
-			'tags'             => $this->get_default_tags(),
-			'prefixes'         => [ ABSPATH ],
-			'environment'      => $this->get_environment(),
-			'before_send'      => function ( Event $event, ?EventHint $hint ): ?Event {
+			'dsn'                => $this->get_dsn(),
+			'tags'               => $this->get_default_tags(),
+			'prefixes'           => [ ABSPATH ],
+			'spotlight'          => self::get_spotlight_enabled(),
+			'environment'        => $this->get_environment(),
+			'before_send'        => function ( Event $event, ?EventHint $hint ): ?Event {
 				if ( function_exists( 'apply_filters' ) ) {
 					try {
 						/**
@@ -194,7 +204,7 @@ final class WP_Sentry_Php_Tracker {
 
 				return $event;
 			},
-			'integrations'     => static function ( array $integrations ) {
+			'integrations'       => static function ( array $integrations ) {
 				return array_filter( $integrations, static function ( $integration ) {
 					// Disable the modules integration as it only lists the internal packages from this plugin instead of the packages of the full project
 					if ( $integration instanceof ModulesIntegration ) {
@@ -204,7 +214,8 @@ final class WP_Sentry_Php_Tracker {
 					return true;
 				} );
 			},
-			'send_default_pii' => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
+			'send_default_pii'   => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
+			'traces_sample_rate' => defined( 'WP_SENTRY_TRACES_SAMPLE_RATE' ) ? WP_SENTRY_TRACES_SAMPLE_RATE : null,
 		];
 
 		if ( defined( 'WP_SENTRY_VERSION' ) ) {

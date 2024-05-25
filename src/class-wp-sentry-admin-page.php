@@ -2,6 +2,8 @@
 
 /**
  * WordPress Sentry Admin Page.
+ *
+ * @internal This class is not part of the public API and may be removed or changed at any time.
  */
 final class WP_Sentry_Admin_Page {
 	/**

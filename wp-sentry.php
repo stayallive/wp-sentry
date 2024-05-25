@@ -100,13 +100,20 @@ if ( ! defined( 'WP_SENTRY_VERSION' ) && function_exists( 'add_action' ) ) {
 }
 
 // Load the PHP tracker if we have a PHP DSN
-if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) ) {
+if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) || defined( 'WP_SENTRY_SPOTLIGHT' ) ) {
 	$sentry_php_tracker_dsn = defined( 'WP_SENTRY_PHP_DSN' )
 		? WP_SENTRY_PHP_DSN
-		: WP_SENTRY_DSN;
+		: null;
 
-	if ( ! empty( $sentry_php_tracker_dsn ) ) {
+	if ( $sentry_php_tracker_dsn === null ) {
+		$sentry_php_tracker_dsn = defined( 'WP_SENTRY_DSN' )
+			? WP_SENTRY_DSN
+			: null;
+	}
+
+	if ( ! empty( $sentry_php_tracker_dsn ) || WP_Sentry_Php_Tracker::get_spotlight_enabled() ) {
 		WP_Sentry_Php_Tracker::get_instance();
+		WP_Sentry_Php_Tracing::get_instance();
 	}
 }
 
