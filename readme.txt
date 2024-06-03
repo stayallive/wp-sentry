@@ -4,7 +4,7 @@ Donate link: https://github.com/sponsors/stayallive
 Tags: sentry, log, logging, error-handler, error-monitoring
 Requires at least: 4.4
 Tested up to: 6.5
-Requires PHP: 7.2
+Requires PHP: 7.2.5
 Stable tag: 7.14.0
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/v7.14.0/LICENSE.md
