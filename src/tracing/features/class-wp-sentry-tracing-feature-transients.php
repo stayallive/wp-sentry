@@ -1,7 +1,9 @@
 <?php
 
+use Sentry\Breadcrumb;
 use Sentry\SentrySdk;
 use Sentry\Tracing\SpanContext;
+use function Sentry\addBreadcrumb;
 
 /**
  * Creates spans for the following transient API functions:
@@ -14,17 +16,25 @@ use Sentry\Tracing\SpanContext;
  *
  * @internal This class is not part of the public API and may be removed or changed at any time.
  */
-class WP_Sentry_Tracing_Feature_Transients {
+class WP_Sentry_Tracing_Feature_Transients extends WP_Sentry_Tracing_Feature {
 	use WP_Sentry_Tracks_Pushed_Scopes_And_Spans;
 
+	protected const FEATURE_KEY = 'transients';
+
 	public function __construct() {
+		if ( ! $this->span_or_breadcrumb_enabled() ) {
+			return;
+		}
+
 		add_filter( 'all', [ $this, 'handle_all_filter' ], 9999 );
 
-		add_action( 'setted_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
-		add_action( 'setted_site_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
+		if ( $this->span_enabled() ) {
+			add_action( 'setted_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
+			add_action( 'setted_site_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
 
-		add_action( 'deleted_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
-		add_action( 'deleted_site_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
+			add_action( 'deleted_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
+			add_action( 'deleted_site_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
+		}
 	}
 
 	public function handle_all_filter( string $hook_name ): void {
@@ -32,17 +42,17 @@ class WP_Sentry_Tracing_Feature_Transients {
 			// @TODO: This _shouldn't_ be necessary, but it is. Investigate.
 			$this->maybe_finish_current_span();
 
-			$this->maybe_start_new_span( 'cache.put', func_get_args()[2] );
+			$this->record_transient_operation( 'put', func_get_args()[2] );
 		} elseif ( $this->str_starts_with( $hook_name, 'pre_transient_' ) || $this->str_starts_with( $hook_name, 'pre_site_transient_' ) ) {
 			// @TODO: This _shouldn't_ be necessary, but it is. Investigate.
 			$this->maybe_finish_current_span();
 
-			$this->maybe_start_new_span( 'cache.get', func_get_args()[2] );
+			$this->record_transient_operation( 'get', func_get_args()[2] );
 		} elseif ( $this->str_starts_with( $hook_name, 'delete_transient_' ) || $this->str_starts_with( $hook_name, 'delete_site_transient_' ) ) {
 			// @TODO: This _shouldn't_ be necessary, but it is. Investigate.
 			$this->maybe_finish_current_span();
 
-			$this->maybe_start_new_span( 'cache.remove', func_get_args()[1] );
+			$this->record_transient_operation( 'remove', func_get_args()[1] );
 		} elseif ( $this->str_starts_with( $hook_name, 'transient_' ) || $this->str_starts_with( $hook_name, 'site_transient_' ) ) {
 			$span = $this->maybe_pop_span();
 
@@ -57,7 +67,22 @@ class WP_Sentry_Tracing_Feature_Transients {
 		}
 	}
 
-	public function maybe_start_new_span( string $operation, string $key ): void {
+	private function record_transient_operation( string $operation, string $key ): void {
+		if ( $this->span_enabled() ) {
+			$this->maybe_start_span( $operation, $key );
+		}
+
+		if ( $this->breadcrumb_enabled() ) {
+			addBreadcrumb( new Breadcrumb(
+				Breadcrumb::LEVEL_INFO,
+				Breadcrumb::TYPE_DEFAULT,
+				'cache',
+				"{$operation}: {$key}"
+			) );
+		}
+	}
+
+	private function maybe_start_span( string $operation, string $key ): void {
 		$parentSpan = SentrySdk::getCurrentHub()->getSpan();
 
 		// If there is no sampled span there is no need to handle the event
@@ -66,7 +91,7 @@ class WP_Sentry_Tracing_Feature_Transients {
 		}
 
 		$context = new SpanContext;
-		$context->setOp( $operation );
+		$context->setOp( "cache.{$operation}" );
 		$context->setData( [
 			'cache.key' => $key,
 		] );

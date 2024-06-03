@@ -186,6 +186,15 @@ final class WP_Sentry_Php_Tracker {
 			'spotlight'          => self::get_spotlight_enabled(),
 			'environment'        => $this->get_environment(),
 			'before_send'        => function ( Event $event, ?EventHint $hint ): ?Event {
+				// Sync the transaction name with the current transaction if we have detected one
+				if ( $event->getTransaction() === null ) {
+					$transaction_name = WP_Sentry_Php_Tracing::get_instance()->get_transaction_name();
+
+					if ( $transaction_name !== null ) {
+						$event->setTransaction( $transaction_name );
+					}
+				}
+
 				if ( function_exists( 'apply_filters' ) ) {
 					try {
 						/**

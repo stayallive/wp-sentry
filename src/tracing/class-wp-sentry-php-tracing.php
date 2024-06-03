@@ -30,14 +30,17 @@ final class WP_Sentry_Php_Tracing {
 		return self::$instance ?: self::$instance = new self;
 	}
 
+	/** @var string|null */
+	private $transaction_name;
+
 	/** @var \Sentry\Tracing\Transaction|null */
 	private $transaction;
 
 	/** @var \Sentry\Tracing\Span|null */
-	private $bootstrapSpan;
+	private $bootstrap_span;
 
 	/** @var \Sentry\Tracing\Span|null */
-	private $appSpan;
+	private $app_span;
 
 	private function __construct() {
 		$hub = WP_Sentry_Php_Tracker::get_instance()->get_client();
@@ -89,60 +92,33 @@ final class WP_Sentry_Php_Tracing {
 			$initSpanContext->setOp( 'app.bootstrap' );
 			$initSpanContext->setStartTimestamp( $transaction->getStartTimestamp() );
 
-			$this->bootstrapSpan = $transaction->startChild( $initSpanContext );
+			$this->bootstrap_span = $transaction->startChild( $initSpanContext );
 
-			SentrySdk::getCurrentHub()->setSpan( $this->bootstrapSpan );
+			SentrySdk::getCurrentHub()->setSpan( $this->bootstrap_span );
 		}
 
 		return true;
 	}
 
 	private function register_hooks(): void {
+		// Always register the features because they will also collect breadcrumbs
+		foreach ( self::FEATURES as $feature ) {
+			new $feature();
+		}
+
+		add_action( 'parse_request', [ $this, 'handle_parse_request' ] );
+
+		add_filter( 'rest_dispatch_request', [ $this, 'handle_rest_dispatch_request' ], 9999, 4 );
+
 		if ( $this->transaction === null || $this->transaction->getSampled() === false ) {
 			return;
 		}
 
 		add_filter( 'status_header', [ $this, 'handle_status_header' ], 9999, 2 );
 
-		add_filter( 'rest_dispatch_request', [ $this, 'handle_rest_dispatch_request' ], 9999, 4 );
-
 		add_action( 'wp_loaded', [ $this, 'handle_wp_loaded' ] );
 
-		add_action( 'parse_request', [ $this, 'handle_parse_request' ] );
-
 		add_action( 'shutdown', [ $this, 'handle_shutdown' ] );
-
-		foreach ( self::FEATURES as $feature ) {
-			new $feature();
-		}
-	}
-
-	public function handle_wp_loaded(): void {
-		if ( $this->bootstrapSpan !== null ) {
-			$this->bootstrapSpan->finish();
-		}
-
-		$appContextStart = new SpanContext;
-		$appContextStart->setOp( 'wp.handle' );
-		$appContextStart->setStartTimestamp( $this->bootstrapSpan ? $this->bootstrapSpan->getEndTimestamp() : microtime( true ) );
-
-		$this->appSpan = $this->transaction->startChild( $appContextStart );
-
-		SentrySdk::getCurrentHub()->setSpan( $this->appSpan );
-
-		$this->bootstrapSpan = null;
-
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			$this->set_transaction_name( "/wp-admin/admin-ajax.php?action={$_POST['action']}" );
-		}
-	}
-
-	public function handle_status_header( string $status_header, int $code ): string {
-		if ( $this->transaction !== null ) {
-			$this->transaction->setHttpStatus( $code );
-		}
-
-		return $status_header;
 	}
 
 	public function handle_parse_request( WP $request ): void {
@@ -216,6 +192,34 @@ final class WP_Sentry_Php_Tracing {
 		return $dispatch_result;
 	}
 
+	public function handle_status_header( string $status_header, int $code ): string {
+		if ( $this->transaction !== null ) {
+			$this->transaction->setHttpStatus( $code );
+		}
+
+		return $status_header;
+	}
+
+	public function handle_wp_loaded(): void {
+		if ( $this->bootstrap_span !== null ) {
+			$this->bootstrap_span->finish();
+		}
+
+		$appContextStart = new SpanContext;
+		$appContextStart->setOp( 'wp.handle' );
+		$appContextStart->setStartTimestamp( $this->bootstrap_span ? $this->bootstrap_span->getEndTimestamp() : microtime( true ) );
+
+		$this->app_span = $this->transaction->startChild( $appContextStart );
+
+		SentrySdk::getCurrentHub()->setSpan( $this->app_span );
+
+		$this->bootstrap_span = null;
+
+		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+			$this->set_transaction_name( "/wp-admin/admin-ajax.php?action={$_POST['action']}" );
+		}
+	}
+
 	public function handle_shutdown(): void {
 		if ( $this->transaction === null ) {
 			return;
@@ -223,7 +227,7 @@ final class WP_Sentry_Php_Tracing {
 
 		// We should skip sending the transaction if the response code is 404
 		if ( $this->transaction->getStatus() === SpanStatus::notFound() ) {
-			$this->appSpan     = null;
+			$this->app_span    = null;
 			$this->transaction = null;
 
 			return;
@@ -233,9 +237,9 @@ final class WP_Sentry_Php_Tracing {
 			$this->transaction->setHttpStatus( http_response_code() );
 		}
 
-		if ( $this->appSpan !== null ) {
-			$this->appSpan->finish();
-			$this->appSpan = null;
+		if ( $this->app_span !== null ) {
+			$this->app_span->finish();
+			$this->app_span = null;
 		}
 
 		$this->transaction->finish();
@@ -243,7 +247,15 @@ final class WP_Sentry_Php_Tracing {
 	}
 
 	private function set_transaction_name( string $transaction ): void {
-		$this->transaction->setName( $transaction );
-		$this->transaction->getMetadata()->setSource( TransactionSource::route() );
+		$this->transaction_name = $transaction;
+
+		if ( $this->transaction !== null ) {
+			$this->transaction->setName( $transaction );
+			$this->transaction->getMetadata()->setSource( TransactionSource::route() );
+		}
+	}
+
+	public function get_transaction_name(): ?string {
+		return $this->transaction_name;
 	}
 }

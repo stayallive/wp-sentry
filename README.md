@@ -142,6 +142,40 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 ### Performance monitoring
 
+#### `WP_SENTRY_TRACES_SAMPLE_RATE` (PHP)
+
+Set the desired sampling rate for performane tracing. Replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+
+```php
+// https://docs.sentry.io/platforms/php/performance/#configure
+define( 'WP_SENTRY_TRACES_SAMPLE_RATE', 0.3 ); // traces_sample_rate
+```
+
+**Note:** Do not set this constant or set the sample rate to `0.0` to disable the performance monitoring.
+
+#### `WP_SENTRY_TRACING_FEATURES` (PHP)
+
+Enable performance monitoring features by adding this snippet to your `wp-config.php`:
+
+```php
+define( 'WP_SENTRY_TRACING_FEATURES', [
+	'db' => [
+		'spans' => true,
+		'breadcrumbs' => defined( 'SAVEQUERIES' ) && SAVEQUERIES,
+	],
+	'http' => [
+		'spans' => true,
+		'breadcrumbs' => true,
+	],
+	'transients' => [
+		'spans' => true,
+		'breadcrumbs' => true,
+	],
+] );
+```
+
+**Note:** Not configuring this constant will default to the above configuration.
+
 #### `WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE` (Browser)
 
 Enable JavaScript performance tracing by adding this snippet to your `wp-config.php` and replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
