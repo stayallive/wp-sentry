@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @internal This class is not part of the public API and may be removed or changed at any time.
+ */
 trait WP_Sentry_Resolve_Environment {
 	/**
 	 * Retrieve the current environment name from user config or WordPress API.

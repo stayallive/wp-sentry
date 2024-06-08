@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * @internal This class is not part of the public API and may be removed or changed at any time.
+ */
 trait WP_Sentry_Resolve_User {
 	/**
 	 * Retrieve the current user info from WordPress.

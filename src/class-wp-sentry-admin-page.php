@@ -2,6 +2,8 @@
 
 /**
  * WordPress Sentry Admin Page.
+ *
+ * @internal This class is not part of the public API and may be removed or changed at any time.
  */
 final class WP_Sentry_Admin_Page {
 	/**
@@ -177,7 +179,7 @@ final class WP_Sentry_Admin_Page {
 
 		$php_tracker = WP_Sentry_Php_Tracker::get_instance();
 
-		$enabled_for_php = $php_tracker->enabled();
+		$enabled_for_php = $php_tracker->enabled() || WP_Sentry_Php_Tracker::get_spotlight_enabled();
 
 		$options = $php_tracker->get_default_options();
 
