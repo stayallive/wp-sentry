@@ -42,17 +42,37 @@ final class WP_Sentry_Php_Tracing {
 	/** @var \Sentry\Tracing\Span|null */
 	private $app_span;
 
+	/** @var bool */
+	private $tracingEnabled;
+
+	/** @var bool */
+	private $profilingEnabled;
+
 	private function __construct() {
+		$this->tracingEnabled   = false;
+		$this->profilingEnabled = false;
+
 		$hub = WP_Sentry_Php_Tracker::get_instance()->get_client();
 
 		if ( $hub->getClient() !== null ) {
 			$options = $hub->getClient()->getOptions();
 
 			if ( $options->isTracingEnabled() || $options->isSpotlightEnabled() ) {
+				$this->tracingEnabled   = true;
+				$this->profilingEnabled = $options->getProfilesSampleRate() > 0;
+
 				$this->start_transaction( $hub );
 				$this->register_hooks();
 			}
 		}
+	}
+
+	public function is_tracing_enabled(): bool {
+		return $this->tracingEnabled;
+	}
+
+	public function is_profiling_enabled(): bool {
+		return $this->profilingEnabled;
 	}
 
 	private function start_transaction( HubInterface $sentry ): bool {
