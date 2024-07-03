@@ -1,6 +1,5 @@
 <?php
 
-use GuzzleHttp\Psr7\ServerRequest;
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
 use Sentry\Tracing\SpanContext;
@@ -82,7 +81,8 @@ final class WP_Sentry_Php_Tracing {
 
 		$requestStartTime = $_SERVER['REQUEST_TIME_FLOAT'] ?? microtime( true );
 
-		$request = ServerRequest::fromGlobals();
+		/** @var \GuzzleHttp\Psr7\ServerRequest $request */
+		$request = $this->resolve_request_from_globals();
 
 		$context = continueTrace(
 			$request->getHeaderLine( 'sentry-trace' ) ?: $request->getHeaderLine( 'traceparent' ),
@@ -277,5 +277,17 @@ final class WP_Sentry_Php_Tracing {
 
 	public function get_transaction_name(): ?string {
 		return $this->transaction_name;
+	}
+
+	private function resolve_request_from_globals() {
+		if ( class_exists( WPSentry\ScopedVendor\GuzzleHttp\Psr7\ServerRequest::class ) ) {
+			return WPSentry\ScopedVendor\GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+		}
+
+		if ( class_exists( GuzzleHttp\Psr7\ServerRequest::class ) ) {
+			return GuzzleHttp\Psr7\ServerRequest::fromGlobals();
+		}
+
+		throw new RuntimeException( 'Cannot find a PSR-7 implementation to create a request from globals.' );
 	}
 }

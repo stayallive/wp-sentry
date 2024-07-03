@@ -1,7 +1,5 @@
 <?php
 
-use GuzzleHttp\Psr7\Uri;
-use Psr\Http\Message\UriInterface;
 use Sentry\Breadcrumb;
 use Sentry\SentrySdk;
 use Sentry\Tracing\SpanContext;
@@ -121,16 +119,40 @@ class WP_Sentry_Tracing_Feature_HTTP extends WP_Sentry_Tracing_Feature {
 		) );
 	}
 
-	private function get_full_uri( string $url ): UriInterface {
-		return new Uri( $url );
+	/** @return \Psr\Http\Message\UriInterface */
+	private function get_full_uri( string $url ) {
+		if ( class_exists( WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri::class ) ) {
+			/** @noinspection PhpIncompatibleReturnTypeInspection */
+			return new WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri( $url );
+		}
+
+		if ( class_exists( GuzzleHttp\Psr7\Uri::class ) ) {
+			return new GuzzleHttp\Psr7\Uri( $url );
+		}
+
+		throw new RuntimeException( 'No compatible PSR-7 implementation found' );
 	}
 
-	private function get_partial_uri( UriInterface $uri ): string {
-		return (string) Uri::fromParts( [
-			'scheme' => $uri->getScheme(),
-			'host'   => $uri->getHost(),
-			'port'   => $uri->getPort(),
-			'path'   => $uri->getPath(),
-		] );
+	/** @param \Psr\Http\Message\UriInterface $uri */
+	private function get_partial_uri( $uri ): string {
+		if ( class_exists( WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri::class ) ) {
+			return (string) WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri::fromParts( [
+				'scheme' => $uri->getScheme(),
+				'host'   => $uri->getHost(),
+				'port'   => $uri->getPort(),
+				'path'   => $uri->getPath(),
+			] );
+		}
+
+		if ( class_exists( GuzzleHttp\Psr7\Uri::class ) ) {
+			return (string) GuzzleHttp\Psr7\Uri::fromParts( [
+				'scheme' => $uri->getScheme(),
+				'host'   => $uri->getHost(),
+				'port'   => $uri->getPort(),
+				'path'   => $uri->getPath(),
+			] );
+		}
+
+		throw new RuntimeException( 'No compatible PSR-7 implementation found' );
 	}
 }
