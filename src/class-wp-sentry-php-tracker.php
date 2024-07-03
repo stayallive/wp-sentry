@@ -180,12 +180,12 @@ final class WP_Sentry_Php_Tracker {
 	 */
 	public function get_default_options(): array {
 		$options = [
-			'dsn'                => $this->get_dsn(),
-			'tags'               => $this->get_default_tags(),
-			'prefixes'           => [ ABSPATH ],
-			'spotlight'          => self::get_spotlight_enabled(),
-			'environment'        => $this->get_environment(),
-			'before_send'        => function ( Event $event, ?EventHint $hint ): ?Event {
+			'dsn'                  => $this->get_dsn(),
+			'tags'                 => $this->get_default_tags(),
+			'prefixes'             => [ ABSPATH ],
+			'spotlight'            => self::get_spotlight_enabled(),
+			'environment'          => $this->get_environment(),
+			'before_send'          => function ( Event $event, ?EventHint $hint ): ?Event {
 				// Sync the transaction name with the current transaction if we have detected one
 				if ( $event->getTransaction() === null ) {
 					$transaction_name = WP_Sentry_Php_Tracing::get_instance()->get_transaction_name();
@@ -213,7 +213,7 @@ final class WP_Sentry_Php_Tracker {
 
 				return $event;
 			},
-			'integrations'       => static function ( array $integrations ) {
+			'integrations'         => static function ( array $integrations ) {
 				return array_filter( $integrations, static function ( $integration ) {
 					// Disable the modules integration as it only lists the internal packages from this plugin instead of the packages of the full project
 					if ( $integration instanceof ModulesIntegration ) {
@@ -223,8 +223,9 @@ final class WP_Sentry_Php_Tracker {
 					return true;
 				} );
 			},
-			'send_default_pii'   => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
-			'traces_sample_rate' => defined( 'WP_SENTRY_TRACES_SAMPLE_RATE' ) ? WP_SENTRY_TRACES_SAMPLE_RATE : null,
+			'send_default_pii'     => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
+			'traces_sample_rate'   => defined( 'WP_SENTRY_TRACES_SAMPLE_RATE' ) ? WP_SENTRY_TRACES_SAMPLE_RATE : null,
+			'profiles_sample_rate' => defined( 'WP_SENTRY_PROFILES_SAMPLE_RATE' ) ? WP_SENTRY_PROFILES_SAMPLE_RATE : null,
 		];
 
 		if ( defined( 'WP_SENTRY_VERSION' ) ) {
