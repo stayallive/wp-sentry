@@ -2,6 +2,8 @@
 
 /**
  * WordPress Sentry Admin Page.
+ *
+ * @internal This class is not part of the public API and may be removed or changed at any time.
  */
 final class WP_Sentry_Admin_Page {
 	/**
@@ -177,7 +179,10 @@ final class WP_Sentry_Admin_Page {
 
 		$php_tracker = WP_Sentry_Php_Tracker::get_instance();
 
-		$enabled_for_php = $php_tracker->enabled();
+		$enabled_for_php = $php_tracker->enabled() || WP_Sentry_Php_Tracker::get_spotlight_enabled();
+
+		$php_tracing_enabled   = $enabled_for_php && WP_Sentry_Php_Tracing::get_instance()->is_tracing_enabled();
+		$php_profiling_enabled = $enabled_for_php && WP_Sentry_Php_Tracing::get_instance()->is_profiling_enabled();
 
 		$options = $php_tracker->get_default_options();
 
@@ -278,6 +283,38 @@ final class WP_Sentry_Admin_Page {
 						</td>
 					</tr>
 					<tr>
+						<th><?php esc_html_e( 'Tracing', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-php-tracing-enabled" type="checkbox" id="wp-sentry-php-tracing-enabled" value="0" <?php echo $php_tracing_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+								</label>
+							</fieldset>
+							<?php if ( ! ( $php_tracing_enabled ) ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_TRACES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Profiling', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-php-profiling-enabled" type="checkbox" id="wp-sentry-php-profiling-enabled" value="0" <?php echo $php_rofiling_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+								</label>
+							</fieldset>
+							<?php if ( ! ( $php_profiling_enabled ) ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure tracing is enabled and <code>WP_SENTRY_PROFILES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
 						<th>
 							<label><?php esc_html_e( 'Test PHP integration', 'wp-sentry' ); ?></label>
 						</th>
@@ -342,7 +379,7 @@ final class WP_Sentry_Admin_Page {
 						</td>
 					</tr>
 					<tr>
-						<th><?php esc_html_e( 'Performance Monitoring', 'wp-sentry' ); ?></th>
+						<th><?php esc_html_e( 'Tracing', 'wp-sentry' ); ?></th>
 						<td>
 							<fieldset>
 								<label>
@@ -358,7 +395,7 @@ final class WP_Sentry_Admin_Page {
 						</td>
 					</tr>
 					<tr>
-						<th><?php esc_html_e( 'Session Replays', 'wp-sentry' ); ?></th>
+						<th><?php esc_html_e( 'Session Replay', 'wp-sentry' ); ?></th>
 						<td>
 							<fieldset>
 								<label>

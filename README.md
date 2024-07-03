@@ -139,8 +139,43 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 **Note**: You can set any combination of error types you want, see the [PHP documentation](https://www.php.net/manual/en/errorfunc.constants.php) for more information.
 
+### Set Up Tracing
 
-### Performance monitoring
+#### `WP_SENTRY_TRACES_SAMPLE_RATE` (PHP)
+
+Set the desired sampling rate for performane tracing. Replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+
+```php
+// https://docs.sentry.io/platforms/php/performance/#configure
+define( 'WP_SENTRY_TRACES_SAMPLE_RATE', 0.3 ); // traces_sample_rate
+```
+
+Enabling tracing will also set `SAVEQUERIES`, this can use more memory to save all the executed queries in your environment. If this is not desirable you can disable query tracing by configuring `WP_SENTRY_TRACING_FEATURES`.
+
+**Note:** Do not set this constant or set the sample rate to `0.0` to disable the performance monitoring.
+
+#### `WP_SENTRY_TRACING_FEATURES` (PHP)
+
+Enable performance monitoring features by adding this snippet to your `wp-config.php`:
+
+```php
+define( 'WP_SENTRY_TRACING_FEATURES', [
+	'db' => [
+		'spans' => true,
+		'breadcrumbs' => defined( 'SAVEQUERIES' ) && SAVEQUERIES,
+	],
+	'http' => [
+		'spans' => true,
+		'breadcrumbs' => true,
+	],
+	'transients' => [
+		'spans' => true,
+		'breadcrumbs' => true,
+	],
+] );
+```
+
+**Note:** Not configuring this constant will default to the above configuration.
 
 #### `WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE` (Browser)
 
@@ -187,6 +222,24 @@ define( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES', true );
 **Note:** Enabling this also loads a external polyfill resource hosted by [Polyfill.io](https://polyfill.io/v3/) that is required.
 
 **Note:** Enabling this will disable Session Replay if enabled since it has no ES5 compatible bundles.
+
+### Set Up Profiling
+
+#### `WP_SENTRY_PROFILES_SAMPLE_RATE` (PHP)
+
+**Note:** This feature requires the Excimer PHP extension to be installed. See the [Sentry PHP SDK documentation](https://docs.sentry.io/platforms/php/profiling/#configure) for more information.
+
+Sentry's tracing has to be enabled in order for profiling to work. So you also need to configure `WP_SENTRY_TRACES_SAMPLE_RATE` to enable profiling.
+
+Set the desired sampling rate for profiling. Replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+
+```php
+define( 'WP_SENTRY_TRACES_SAMPLE_RATE', 0.3 ); // traces_sample_rate
+// https://docs.sentry.io/platforms/php/profiling/#configure
+define( 'WP_SENTRY_PROFILES_SAMPLE_RATE', 0.3 ); // profiles_sample_rate
+```
+
+**Note:** Do not set this constant or set the sample rate to `0.0` to disable the performance monitoring.
 
 
 ## Filters
