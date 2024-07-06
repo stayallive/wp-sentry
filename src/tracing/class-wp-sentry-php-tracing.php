@@ -236,7 +236,11 @@ final class WP_Sentry_Php_Tracing {
 		$this->bootstrap_span = null;
 
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			$this->set_transaction_name( "/wp-admin/admin-ajax.php?action={$_POST['action']}" );
+			$action = $_POST['action'] ?? $_GET['action'] ?? null;
+
+			if ( $action !== null ) {
+				$this->set_transaction_name( "/wp-admin/admin-ajax.php?action={$action}" );
+			}
 		}
 	}
 
