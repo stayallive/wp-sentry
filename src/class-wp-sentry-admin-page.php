@@ -303,7 +303,7 @@ final class WP_Sentry_Admin_Page {
 						<td>
 							<fieldset>
 								<label>
-									<input name="wp-sentry-php-profiling-enabled" type="checkbox" id="wp-sentry-php-profiling-enabled" value="0" <?php echo $php_rofiling_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<input name="wp-sentry-php-profiling-enabled" type="checkbox" id="wp-sentry-php-profiling-enabled" value="0" <?php echo $php_profiling_enabled ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
 								</label>
 							</fieldset>
