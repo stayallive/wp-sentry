@@ -5,5 +5,5 @@
  */
 final class WP_Sentry_Version {
 	public const SDK_IDENTIFIER = 'sentry.php.wordpress';
-	public const SDK_VERSION    = '7.17.3';
+	public const SDK_VERSION    = '7.17.4';
 }
