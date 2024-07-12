@@ -176,6 +176,9 @@ final class WP_Sentry_Php_Tracing {
 				++ $query_offset;
 			}
 
+			// Normalize the query key to a slug so we can use it as a placeholder in the transaction name
+			$query_key = $this->slugify_string( $query_key );
+
 			$placeholder = "{{$query_key}}";
 
 			$transaction = substr_replace( $transaction, $placeholder, $offset_delta + (int) $query_offset, strlen( $query_value ) );
@@ -301,5 +304,9 @@ final class WP_Sentry_Php_Tracing {
 		}
 
 		throw new RuntimeException( 'Cannot find a PSR-7 implementation to create a request from globals.' );
+	}
+
+	private function slugify_string( string $string ): string {
+		return strtolower( preg_replace( '/[^a-zA-Z0-9]+/', '_', $string ) );
 	}
 }
