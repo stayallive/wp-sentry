@@ -36,3 +36,4 @@ echo ""
 (cd build && composer dump-autoload --classmap-authoritative --no-interaction)
 
 php ./bin/scope-vendor-fix.php
+php ./bin/scope-excimer-fix.php
