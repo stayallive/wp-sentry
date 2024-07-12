@@ -12,19 +12,16 @@ trait WP_Sentry_Resolve_User {
 	protected function get_current_user_info(): ?array {
 		$current_user = wp_get_current_user();
 
-		if ( $current_user === null ) {
+		if ( ! $current_user instanceof WP_User || ! $current_user->exists() ) {
 			return null;
 		}
 
 		// Determine whether the user is logged in assign their details.
-		$user_context = $current_user instanceof WP_User && $current_user->exists() ? [
+		$user_context = [
 			'id'       => $current_user->ID,
 			'name'     => $current_user->display_name,
 			'email'    => $current_user->user_email,
 			'username' => $current_user->user_login,
-		] : [
-			'id'   => 0,
-			'name' => 'anonymous',
 		];
 
 		// Filter the user context so that plugins that manage users on their own
