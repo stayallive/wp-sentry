@@ -168,6 +168,14 @@ final class WP_Sentry_Php_Tracing {
 
 			[ $query_value, $query_offset ] = $matches[ $query_index + 1 ];
 
+			// Check if the query value starts with a slash, if so we want to remove it so it doesn't remove it from the final transaction name
+			if ( strpos( $query_value, '/' ) === 0 ) {
+				$query_value = ltrim( $query_value, '/' );
+
+				// We need to increase the offset by one because we removed the slash
+				++ $query_offset;
+			}
+
 			$placeholder = "{{$query_key}}";
 
 			$transaction = substr_replace( $transaction, $placeholder, $offset_delta + (int) $query_offset, strlen( $query_value ) );
