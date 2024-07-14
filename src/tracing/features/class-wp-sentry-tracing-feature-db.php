@@ -24,15 +24,17 @@ class WP_Sentry_Tracing_Feature_DB extends WP_Sentry_Tracing_Feature {
 	}
 
 	public function handle_log_query_custom_data( array $query_data, string $query, float $query_time, string $query_callstack, float $query_start ): array {
+		$callstack = array_reverse( explode( ', ', $query_callstack ) );
+
 		if ( $this->span_enabled() ) {
 			$this->handle_span( $query, $query_start, $query_start + $query_time, [
-				'callstack' => $query_callstack,
+				'callstack' => $callstack,
 			] );
 		}
 
 		if ( $this->breadcrumb_enabled() ) {
 			$this->handle_breadcrumb( $query, $query_time * 1000, [
-				'callstack' => $query_callstack,
+				'callstack' => $callstack,
 			] );
 		}
 
