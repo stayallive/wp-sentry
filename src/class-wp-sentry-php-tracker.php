@@ -1,6 +1,8 @@
 <?php
 
 use Sentry\Event;
+use Sentry\EventId;
+use Sentry\Severity;
 use Sentry\EventHint;
 use Sentry\SentrySdk;
 use Sentry\State\Hub;
@@ -59,6 +61,10 @@ final class WP_Sentry_Php_Tracker {
 		$this->get_client();
 
 		add_action( 'init', [ $this, 'on_init' ] );
+
+		// Register our helper actions
+		add_action( 'sentry/captureMessage', [ $this, 'on_capture_message_action' ], 10, 3 );
+		add_action( 'sentry/captureException', [ $this, 'on_capture_exception_action' ], 10, 2 );
 	}
 
 	public function on_init(): void {
@@ -117,9 +123,21 @@ final class WP_Sentry_Php_Tracker {
 	}
 
 	/**
+	 * Handle the `sentry/captureMessage` helper action.
+	 */
+	public function on_capture_message_action( string $message, ?Severity $level = null, ?EventHint $hint = null ): void {
+		$this->get_client()->captureMessage( $message, $level, $hint );
+	}
+
+	/**
+	 * Handle the `sentry/captureException` helper action.
+	 */
+	public function on_capture_exception_action( Throwable $e, ?EventHint $hint = null ): void {
+		$this->get_client()->captureException( $e, $hint );
+	}
+
+	/**
 	 * Retrieve the DSN.
-	 *
-	 * @return string|null
 	 */
 	public function get_dsn(): ?string {
 		$dsn = defined( 'WP_SENTRY_PHP_DSN' ) ? WP_SENTRY_PHP_DSN : null;
@@ -137,8 +155,6 @@ final class WP_Sentry_Php_Tracker {
 
 	/**
 	 * Retrieve the spotlight enabled status.
-	 *
-	 * @return bool
 	 */
 	public static function get_spotlight_enabled(): bool {
 		return defined( 'WP_SENTRY_SPOTLIGHT' ) && WP_SENTRY_SPOTLIGHT === true;
@@ -146,8 +162,6 @@ final class WP_Sentry_Php_Tracker {
 
 	/**
 	 * Get the sentry client.
-	 *
-	 * @return \Sentry\State\HubInterface
 	 */
 	public function get_client(): HubInterface {
 		if ( $this->client === null && ( $this->get_dsn() !== null || self::get_spotlight_enabled() ) ) {
@@ -159,8 +173,6 @@ final class WP_Sentry_Php_Tracker {
 
 	/**
 	 * Get the default tags.
-	 *
-	 * @return array
 	 */
 	public function get_default_tags(): array {
 		require WP_SENTRY_WPINC . '/version.php';
@@ -179,8 +191,6 @@ final class WP_Sentry_Php_Tracker {
 
 	/**
 	 * Get the default options.
-	 *
-	 * @return array
 	 */
 	public function get_default_options(): array {
 		$options = [

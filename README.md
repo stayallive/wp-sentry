@@ -417,15 +417,21 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_NOTICE & ~E_USER_NOTICE );
 
 ### Capturing handled exceptions
 
-The best thing to do with an exception is to capture it yourself, however you might still want to know about it.
+The best thing to do with an exception is to capture and handle it, however you might still want to know an exception happened.
 
 The Sentry plugin only captures unhandled exceptions and fatal errors, to capture handled exception you can do the following:
 
 ```php
 try {
 	myMethodThatCanThrowAnException();
-} catch ( \Exception $e ) {
-	// We are using wp_sentry_safe to make sure this code runs even if the Sentry plugin is disabled
+} catch ( \Throwable $e ) {
+    // Option #1: Use the `captureException` or `captureMessage` action
+    // It's safe to call these actions even if the plugin is disabled (it will simply do nothing)
+    do_action( 'sentry/captureException', $e );
+    do_action( 'sentry/captureMessage', $e->getMessage() ); // it is recommended to use `captureException`
+
+    // Option #2: Use the `wp_sentry_safe` function to interact with the Sentry SDK directly
+	// It's advised to wrap this in a function_exists check to prevent errors when the plugin is disabled
 	if ( function_exists( 'wp_sentry_safe' ) ) {
 		wp_sentry_safe( function ( \Sentry\State\HubInterface $client ) use ( $e ) {
 			$client->captureException( $e );
