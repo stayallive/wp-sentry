@@ -2,6 +2,7 @@
 
 use Sentry\SentrySdk;
 use Sentry\Tracing\Span;
+use Sentry\Tracing\SpanStatus;
 
 /**
  * @internal This class is not part of the public API and may be removed or changed at any time.
@@ -64,5 +65,21 @@ trait WP_Sentry_Tracks_Pushed_Scopes_And_Spans {
 		SentrySdk::getCurrentHub()->popScope();
 
 		-- $this->pushed_scope_count;
+	}
+
+	protected function maybe_finish_span( ?SpanStatus $status = null ): ?Span {
+		$span = $this->maybe_pop_span();
+
+		if ( $span === null ) {
+			return null;
+		}
+
+		if ( $status !== null ) {
+			$span->setStatus( $status );
+		}
+
+		$span->finish();
+
+		return $span;
 	}
 }

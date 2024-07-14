@@ -19,6 +19,8 @@ final class WP_Sentry_Php_Tracing {
 	private const FEATURES = [
 		WP_Sentry_Tracing_Feature_DB::class,
 		WP_Sentry_Tracing_Feature_HTTP::class,
+		WP_Sentry_Tracing_Feature_Theme::class,
+		WP_Sentry_Tracing_Feature_Plugins::class,
 		WP_Sentry_Tracing_Feature_Transients::class,
 	];
 

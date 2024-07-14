@@ -107,11 +107,7 @@ class WP_Sentry_Tracing_Feature_Transients extends WP_Sentry_Tracing_Feature {
 	}
 
 	public function maybe_finish_current_span(): void {
-		$span = $this->maybe_pop_span();
-
-		if ( $span !== null ) {
-			$span->finish();
-		}
+		$this->maybe_finish_span();
 	}
 
 	private function str_starts_with( string $haystack, string $needle ): bool {
