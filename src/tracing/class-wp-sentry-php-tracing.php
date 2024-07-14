@@ -130,6 +130,8 @@ final class WP_Sentry_Php_Tracing {
 
 		add_filter( 'rest_dispatch_request', [ $this, 'handle_rest_dispatch_request' ], 9999, 4 );
 
+		add_action( 'parse_query', [ $this, 'handle_parse_query' ] );
+
 		if ( $this->transaction === null || $this->transaction->getSampled() === false ) {
 			return;
 		}
@@ -221,6 +223,18 @@ final class WP_Sentry_Php_Tracing {
 		$this->set_transaction_name( $transaction );
 
 		return $dispatch_result;
+	}
+
+	public function handle_parse_query( WP_Query $query ): void {
+		// The application can do many queries, we are only interested in the main query
+		if ( ! $query->is_main_query() ) {
+			return;
+		}
+
+		// Test if the current page is the search page so we can set the transaction name accordingly
+		if ( $query->is_search && ! ( is_admin() || is_network_admin() ) ) {
+			$this->set_transaction_name( '/?s={search_query}' );
+		}
 	}
 
 	public function handle_status_header( string $status_header, int $code ): string {
