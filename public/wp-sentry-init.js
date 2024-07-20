@@ -27,7 +27,7 @@
             wp_sentry.replaysOnErrorSampleRate = parseFloat(wp_sentry.replaysOnErrorSampleRate);
         }
         if (wp_sentry.replaysSessionSampleRate > 0 || wp_sentry.replaysOnErrorSampleRate > 0) {
-            wp_sentry.integrations.push(new Sentry.Integrations.Replay(wp_sentry.wpSessionReplayOptions));
+            wp_sentry.integrations.push(Sentry.replayIntegration(wp_sentry.wpSessionReplayOptions));
         }
 
         // Enable tracing if a sample rate is set
@@ -35,7 +35,7 @@
             wp_sentry.tracesSampleRate = parseFloat(wp_sentry.tracesSampleRate);
         }
         if (wp_sentry.tracesSampleRate && wp_sentry.tracesSampleRate > 0) {
-            wp_sentry.integrations.push(new Sentry.Integrations.BrowserTracing(wp_sentry.wpBrowserTracingOptions));
+            wp_sentry.integrations.push(Sentry.browserTracingIntegration(wp_sentry.wpBrowserTracingOptions));
         }
 
         // If the hook is defined we call it with the Sentry object so that the user can modify it
@@ -51,27 +51,17 @@
         Sentry.init(wp_sentry);
 
         if (typeof wp_sentry.context === 'object') {
-            Sentry.configureScope(function (scope) {
-                if (typeof wp_sentry.context.user === 'object') {
-                    scope.setUser(wp_sentry.context.user);
-                }
+            if (typeof wp_sentry.context.user === 'object') {
+                Sentry.setUser(wp_sentry.context.user);
+            }
 
-                if (typeof wp_sentry.context.tags === 'object') {
-                    for (var tag in wp_sentry.context.tags) {
-                        if (wp_sentry.context.tags.hasOwnProperty(tag)) {
-                            scope.setTag(tag, wp_sentry.context.tags[tag]);
-                        }
+            if (typeof wp_sentry.context.tags === 'object') {
+                for (var tag in wp_sentry.context.tags) {
+                    if (wp_sentry.context.tags.hasOwnProperty(tag)) {
+                        Sentry.setTag(tag, wp_sentry.context.tags[tag]);
                     }
                 }
-
-                if (typeof wp_sentry.context.extra === 'object') {
-                    for (var extra in wp_sentry.context.extra) {
-                        if (wp_sentry.context.extra.hasOwnProperty(extra)) {
-                            scope.setExtra(extra, wp_sentry.context.extra[extra]);
-                        }
-                    }
-                }
-            });
+            }
         }
     }
 })();

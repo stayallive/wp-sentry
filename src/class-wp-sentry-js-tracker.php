@@ -109,11 +109,10 @@ final class WP_Sentry_Js_Tracker {
 	 */
 	public function get_default_context(): array {
 		$context = [
-			'tags'  => [
+			'tags' => [
 				'wordpress' => get_bloginfo( 'version' ),
 				'language'  => get_bloginfo( 'language' ),
 			],
-			'extra' => [],
 		];
 
 		if ( defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII ) {
@@ -150,49 +149,40 @@ final class WP_Sentry_Js_Tracker {
 			$features[] = 'tracing';
 		}
 
-		if ( defined( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES' ) && WP_SENTRY_BROWSER_USE_ES5_BUNDLES ) {
-			wp_enqueue_script(
-				'wp-sentry-polyfill',
-				'https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=Promise%2CObject.assign%2CNumber.isNaN%2CArray.prototype.includes%2CString.prototype.startsWith',
-				[],
-				WP_Sentry_Version::SDK_VERSION
-			);
+		$replays_session_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
+			: 0.0;
 
-			wp_enqueue_script(
-				'wp-sentry-browser',
-				$traces_sample_rate > 0
-					? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing-es5.min.js'
-					: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-es5.min.js',
-				[ 'wp-sentry-polyfill' ],
-				WP_Sentry_Version::SDK_VERSION
-			);
-		} else {
-			$replays_session_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE' )
-				? (float) WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE
-				: 0.0;
+		$replays_on_error_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
+			? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
+			: 0.0;
 
-			$replays_on_error_sample_rate = defined( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE' )
-				? (float) WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE
-				: 0.0;
+		if ( $replays_session_sample_rate > 0 || $replays_on_error_sample_rate > 0 ) {
+			$options['wpSessionReplayOptions'] = defined( 'WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS' ) ? WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS : new stdClass;
 
-			if ( $replays_session_sample_rate > 0 || $replays_on_error_sample_rate > 0 ) {
-				$options['wpSessionReplayOptions'] = defined( 'WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS' ) ? WP_SENTRY_BROWSER_SESSION_REPLAY_OPTIONS : new stdClass;
+			$options['replaysSessionSampleRate'] = $replays_session_sample_rate;
+			$options['replaysOnErrorSampleRate'] = $replays_on_error_sample_rate;
 
-				$options['replaysSessionSampleRate'] = $replays_session_sample_rate;
-				$options['replaysOnErrorSampleRate'] = $replays_on_error_sample_rate;
-
-				$features[] = 'replay';
-			}
-
-			$featuresString = implode( '.', $features );
-
-			wp_enqueue_script(
-				'wp-sentry-browser',
-				plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . "public/wp-sentry-{$featuresString}.min.js",
-				[],
-				WP_Sentry_Version::SDK_VERSION
-			);
+			$features[] = 'replay';
 		}
+
+		$featuresString = implode( '.', $features );
+
+		wp_enqueue_script(
+			'wp-sentry-browser-bundle',
+			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . "public/wp-sentry-{$featuresString}.min.js",
+			[],
+			WP_Sentry_Version::SDK_VERSION
+		);
+
+		$dependencies = [ 'wp-sentry-browser-bundle' ];
+
+		wp_enqueue_script(
+			'wp-sentry-browser',
+			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . "public/wp-sentry-init.js",
+			$dependencies,
+			WP_Sentry_Version::SDK_VERSION
+		);
 
 		wp_localize_script(
 			'wp-sentry-browser',

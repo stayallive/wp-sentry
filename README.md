@@ -209,20 +209,6 @@ define( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE', 1.0 ); // replaysOnErr
 
 **Note:** Do not set these constants or set the sample rates to `0.0` to disable the JavaScript Session Replay.
 
-**Note:** This feature is not available if the ES5 bundles are enabled with `WP_SENTRY_BROWSER_USE_ES5_BUNDLES`.
-
-#### `WP_SENTRY_BROWSER_USE_ES5_BUNDLES` (Browser)
-
-Enable JavaScript ES5 compatible bundles, required if you need to support older browsers (for example IE11):
-
-```php
-define( 'WP_SENTRY_BROWSER_USE_ES5_BUNDLES', true );
-```
-
-**Note:** Enabling this also loads a external polyfill resource hosted by [Polyfill.io](https://polyfill.io/v3/) that is required.
-
-**Note:** Enabling this will disable Session Replay if enabled since it has no ES5 compatible bundles.
-
 ### Set Up Profiling
 
 #### `WP_SENTRY_PROFILES_SAMPLE_RATE` (PHP)
@@ -384,7 +370,7 @@ add_filter( 'wp_sentry_public_options', function ( array $options ) {
 
 #### `wp_sentry_public_context` (array)
 
-You can use this filter to customize/override the Sentry context, you can modify the `user`, `tags` and `extra` context.
+You can use this filter to customize/override the Sentry context, you can modify the `user` and `tags` context.
 
 > **WARNING:** These values are exposed to the public, so make sure you do not expose anything private !
 
