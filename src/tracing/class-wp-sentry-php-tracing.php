@@ -6,6 +6,9 @@ use Sentry\Tracing\SpanContext;
 use Sentry\Tracing\SpanStatus;
 use Sentry\Tracing\TransactionSource;
 use function Sentry\continueTrace;
+use function Sentry\getBaggage;
+use function Sentry\getTraceparent;
+use function Sentry\getW3CTraceparent;
 
 /**
  * WordPress Sentry PHP Tracing.
@@ -134,6 +137,12 @@ final class WP_Sentry_Php_Tracing {
 
 		add_action( 'parse_query', [ $this, 'handle_parse_query' ] );
 
+		if ( ! defined( 'WP_SENTRY_BROWSER_TRACE_PROPAGATION' ) || WP_SENTRY_BROWSER_TRACE_PROPAGATION ) {
+			// Why are we not using `wp_head`? Because we want to make sure we render the meta tags before the scripts are printed
+			add_action( 'wp_print_scripts', [ $this, 'render_trace_propagation_meta' ] );
+			add_action( 'admin_print_scripts', [ $this, 'render_trace_propagation_meta' ] );
+		}
+
 		if ( $this->transaction === null || $this->transaction->getSampled() === false ) {
 			return;
 		}
@@ -237,6 +246,21 @@ final class WP_Sentry_Php_Tracing {
 		if ( $query->is_search && ! ( is_admin() || is_network_admin() ) ) {
 			$this->set_transaction_name( '/?s={search_query}' );
 		}
+	}
+
+	public function render_trace_propagation_meta(): void {
+		// Little memo to make sure we only print the meta tags once
+		static $printed = false;
+
+		if ( $printed === true ) {
+			return;
+		}
+
+		$printed = true;
+
+		echo sprintf( '<meta name="sentry-trace" content="%s" />' . "\n", getTraceparent() );
+		echo sprintf( '<meta name="traceparent" content="%s" />' . "\n", getW3CTraceparent() );
+		echo sprintf( '<meta name="baggage" content="%s" />' . "\n", getBaggage() );
 	}
 
 	public function handle_status_header( string $status_header, int $code ): string {
