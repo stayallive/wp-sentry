@@ -27,44 +27,23 @@ function writeRemoteToTargetWithExtrasForVersion( string $remote, string $target
 	file_put_contents( $target, $contents );
 }
 
-writeRemoteToTargetWithExtrasForVersion(
-	'https://browser.sentry-cdn.com/%s/bundle.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.wp.js',
-	$version
-);
+$modifiers = [
+	null,
+	'es5',
+	'tracing',
+	'tracing.es5',
+	'replay',
+	'tracing.replay',
+];
 
-writeRemoteToTargetWithExtrasForVersion(
-	'https://browser.sentry-cdn.com/%s/bundle.es5.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.es5.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.wp.js',
-	$version
-);
+foreach ( $modifiers as $bundle ) {
+	$cdnName   = $bundle ? "bundle.{$bundle}.min.js" : 'bundle.min.js';
+	$localName = $bundle ? "wp-sentry-browser.{$bundle}.min.js" : 'wp-sentry-browser.min.js';
 
-writeRemoteToTargetWithExtrasForVersion(
-	'https://browser.sentry-cdn.com/%s/bundle.tracing.min.js',
-	__DIR__ . '/../public/wp-sentry-browser-tracing.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.wp.js',
-	$version
-);
-
-writeRemoteToTargetWithExtrasForVersion(
-	'https://browser.sentry-cdn.com/%s/bundle.tracing.es5.min.js',
-	__DIR__ . '/../public/wp-sentry-browser-tracing.es5.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.wp.js',
-	$version
-);
-
-writeRemoteToTargetWithExtrasForVersion(
-	'https://browser.sentry-cdn.com/%s/bundle.replay.min.js',
-	__DIR__ . '/../public/wp-sentry-browser-replay.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.wp.js',
-	$version
-);
-
-writeRemoteToTargetWithExtrasForVersion(
-	'https://browser.sentry-cdn.com/%s/bundle.tracing.replay.min.js',
-	__DIR__ . '/../public/wp-sentry-browser-tracing-replay.min.js',
-	__DIR__ . '/../public/wp-sentry-browser.wp.js',
-	$version
-);
+	writeRemoteToTargetWithExtrasForVersion(
+		"https://browser.sentry-cdn.com/%s/{$cdnName}",
+		__DIR__ . "/../public/{$localName}",
+		__DIR__ . "/../public/wp-sentry-browser.wp.js",
+		$version
+	);
+}

@@ -161,8 +161,8 @@ final class WP_Sentry_Js_Tracker {
 			wp_enqueue_script(
 				'wp-sentry-browser',
 				$traces_sample_rate > 0
-					? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing.es5.min.js'
-					: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser.es5.min.js',
+					? plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-tracing-es5.min.js'
+					: plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . 'public/wp-sentry-browser-es5.min.js',
 				[ 'wp-sentry-polyfill' ],
 				WP_Sentry_Version::SDK_VERSION
 			);
@@ -184,7 +184,7 @@ final class WP_Sentry_Js_Tracker {
 				$features[] = 'replay';
 			}
 
-			$featuresString = implode( '-', $features );
+			$featuresString = implode( '.', $features );
 
 			wp_enqueue_script(
 				'wp-sentry-browser',
