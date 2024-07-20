@@ -1,7 +1,6 @@
 <?php
 
 use Sentry\Event;
-use Sentry\EventId;
 use Sentry\Severity;
 use Sentry\EventHint;
 use Sentry\SentrySdk;
@@ -51,16 +50,13 @@ final class WP_Sentry_Php_Tracker {
 	 * WP_Sentry_Php_Tracker constructor.
 	 */
 	protected function __construct() {
-		if ( defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII ) {
-			add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
-		}
-
-		add_action( 'after_setup_theme', [ $this, 'on_after_setup_theme' ] );
-
 		// Force the initialization of the client immediately
 		$this->get_client();
 
+		// Register with WordPress hooks
 		add_action( 'init', [ $this, 'on_init' ] );
+		add_action( 'set_current_user', [ $this, 'on_set_current_user' ] );
+		add_action( 'after_setup_theme', [ $this, 'on_after_setup_theme' ] );
 
 		// Register our helper actions
 		add_action( 'sentry/captureMessage', [ $this, 'on_capture_message_action' ], 10, 3 );

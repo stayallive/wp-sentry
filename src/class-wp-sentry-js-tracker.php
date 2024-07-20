@@ -108,18 +108,13 @@ final class WP_Sentry_Js_Tracker {
 	 * @return array
 	 */
 	public function get_default_context(): array {
-		$context = [
+		return [
+			'user' => $this->get_current_user_info(),
 			'tags' => [
 				'wordpress' => get_bloginfo( 'version' ),
 				'language'  => get_bloginfo( 'language' ),
 			],
 		];
-
-		if ( defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII ) {
-			$context['user'] = $this->get_current_user_info();
-		}
-
-		return $context;
 	}
 
 	/**

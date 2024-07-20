@@ -17,11 +17,13 @@ trait WP_Sentry_Resolve_User {
 		}
 
 		// Determine whether the user is logged in assign their details.
-		$user_context = [
+		$user_context = defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII ? [
 			'id'       => $current_user->ID,
 			'name'     => $current_user->display_name,
 			'email'    => $current_user->user_email,
 			'username' => $current_user->user_login,
+		] : [
+			'id' => $current_user->ID,
 		];
 
 		// Filter the user context so that plugins that manage users on their own
