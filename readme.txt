@@ -5,9 +5,9 @@ Tags: sentry, log, logging, error-handler, error-monitoring
 Requires at least: 4.5
 Tested up to: 6.6
 Requires PHP: 7.2.5
-Stable tag: 7.21.0
+Stable tag: 8.0.0
 License: MIT
-License URI: https://github.com/stayallive/wp-sentry/blob/v7.21.0/LICENSE.md
+License URI: https://github.com/stayallive/wp-sentry/blob/v8.0.0/LICENSE.md
 
 A (unofficial) WordPress plugin to report PHP errors and Browser (JavaScript) errors to Sentry.
 
@@ -16,18 +16,18 @@ This plugin can report PHP errors and Browser (JavaScript) errors to Sentry.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v7.21.0#readme)._
+_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v8.0.0#readme)._
 
 == Installation ==
 It is recommended to use the plugins interface in WordPress to install this plugin.
 
 If manual installation is required, please make sure that the plugin files are in a folder named "wp-sentry-integration" in the WordPress plugins folder, usually "wp-content/plugins".
 
-To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v7.21.0#dsn) for either the PHP side or the Browser side or both.
+To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v8.0.0#dsn) for either the PHP side or the Browser side or both.
 
 All other configuration options are optional but it's advised you read through them to see if any are applicable to you or are thing you'd like to configure.
 
-_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v7.21.0#configuration). The following are the basics._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.0.0#configuration). The following are the basics._
 
 **Note:** When configuring constants in your `wp-config.php` do this **before** the `That's all, stop editing! Happy publishing.` line, otherwise they won't work!
 
@@ -52,9 +52,22 @@ To track Browser (JavaScript) errors add this snippet to your `wp-config.php` an
 
 **Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
-_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v7.21.0#configuration). The above are the basics._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.0.0#configuration). The above are the basics._
 
 == Changelog ==
+= 8.0.0 =
+
+Note: This is a *breaking release* for the Browser/JavaScript SDK
+
+We are now shipping version 8 of the browser SDK. If you don't have any custom integration with Sentry on the browser side there is nothing for you to do. But if you do please see the Browser SDK [v8 migration guide](https://docs.sentry.io/platforms/javascript/migration/v7-to-v8/) and test this release.
+
+Since this version of the plugin we no longer bundle ES5 versions of the Browser SDK, which means that if you still need to support older browsers (Internet Explorer 11 mainly) you need to stay on 7.x or bring your own ES5 compatible bundles.
+
+* Update Sentry Browser to version 8.21.0
+* Add support for the [User Feedback Widget](https://docs.sentry.io/platforms/javascript/user-feedback/#user-feedback-widget). Read more about how to enable it [here](https://github.com/stayallive/wp-sentry/tree/v8.0.0#set-up-user-feedback)
+* Update PHP SDK to version 4.8.1
+* Add [trace propagation](https://docs.sentry.io/platforms/php/tracing/trace-propagation/) meta tags to the HTML output (when tracing is enabled) to allow traces from the browser to be linked to PHP traces
+
 = 7.21.0 =
 
 * Add actions to safely capture exceptions and messages, read more about how to use [here](https://github.com/stayallive/wp-sentry/tree/v7.21.0#capturing-handled-exceptions)
