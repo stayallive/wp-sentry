@@ -38,6 +38,11 @@
             wp_sentry.integrations.push(Sentry.browserTracingIntegration(wp_sentry.wpBrowserTracingOptions));
         }
 
+        // Enable feedback integration if options were provided
+        if (wp_sentry.wpBrowserFeedbackOptions && wp_sentry.wpBrowserFeedbackOptions.enabled === true) {
+            wp_sentry.integrations.push(Sentry.feedbackIntegration(wp_sentry.wpBrowserFeedbackOptions));
+        }
+
         // If the hook is defined we call it with the Sentry object so that the user can modify it
         if (typeof wp_sentry_hook === 'function') {
             var hookResult = wp_sentry_hook(wp_sentry);

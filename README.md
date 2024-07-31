@@ -227,6 +227,17 @@ define( 'WP_SENTRY_PROFILES_SAMPLE_RATE', 0.3 ); // profiles_sample_rate
 
 **Note:** Do not set this constant or set the sample rate to `0.0` to disable the performance monitoring.
 
+### Set Up User Feedback
+
+#### `WP_SENTRY_BROWSER_FEEDBACK_OPTIONS` (Browser)
+
+You can enable the User Feedback Widget ([official documentation](https://docs.sentry.io/platforms/javascript/user-feedback/#user-feedback-widget)) by adding this snippet to your `wp-config.php`:
+
+```php
+define( 'WP_SENTRY_BROWSER_FEEDBACK_OPTIONS', [ 'enabled' => true ] );
+```
+
+All option are passed directly to `feedbackIntegration()`, you can read about all the available options in the [official documentation](https://docs.sentry.io/platforms/javascript/user-feedback/configuration/#user-feedback-widget).
 
 ## Filters
 
