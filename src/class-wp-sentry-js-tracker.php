@@ -246,6 +246,12 @@ final class WP_Sentry_Js_Tracker {
 		return $sample_rate > 0 || $sample_rate_on_errors > 0;
 	}
 
+	public function feedback_enabled(): bool {
+		$feedback_options = defined( 'WP_SENTRY_BROWSER_FEEDBACK_OPTIONS' ) ? WP_SENTRY_BROWSER_FEEDBACK_OPTIONS : null;
+
+		return $feedback_options && ( $feedback_options['enabled'] ?? false ) === true;
+	}
+
 	public function enabled_on_login_page(): bool {
 		return ! defined( 'WP_SENTRY_BROWSER_LOGIN_ENABLED' ) || WP_SENTRY_BROWSER_LOGIN_ENABLED;
 	}

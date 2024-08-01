@@ -173,6 +173,7 @@ final class WP_Sentry_Admin_Page {
 		$enabled_for_js      = $js_tracker->enabled();
 		$js_tracing_enabled  = $enabled_for_js && $js_tracker->tracing_enabled();
 		$js_replays_enabled  = $enabled_for_js && $js_tracker->replays_enabled();
+		$js_feedback_enabled = $enabled_for_js && $js_tracker->feedback_enabled();
 		$js_enabled_on_admin = $js_tracker->enabled_on_admin_pages();
 		$js_enabled_on_login = $js_tracker->enabled_on_login_page();
 		$js_enabled_on_front = $js_tracker->enabled_on_frontend_pages();
@@ -406,6 +407,23 @@ final class WP_Sentry_Admin_Page {
 							<?php if ( ! ( $js_replays_enabled ) ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE</code> or <code>WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'User Feedback Widget', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-js-user-feedback-widget-enabled" type="checkbox" id="wp-sentry-js-user-feedback-widget-enabled" value="0" <?php echo $js_feedback_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#set-up-user-feedback" target="_blank" rel="noopener">documentation</a>)
+								</label>
+							</fieldset>
+							<?php if ( ! $js_feedback_enabled ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_FEEDBACK_OPTIONS</code> is set.', 'wp-sentry' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>
