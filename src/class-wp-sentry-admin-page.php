@@ -184,6 +184,7 @@ final class WP_Sentry_Admin_Page {
 
 		$php_tracing_enabled   = $enabled_for_php && WP_Sentry_Php_Tracing::get_instance()->is_tracing_enabled();
 		$php_profiling_enabled = $enabled_for_php && WP_Sentry_Php_Tracing::get_instance()->is_profiling_enabled();
+		$php_profiling_excimer = extension_loaded( 'excimer' );
 
 		$options = $php_tracker->get_default_options();
 
@@ -308,7 +309,11 @@ final class WP_Sentry_Admin_Page {
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
 								</label>
 							</fieldset>
-							<?php if ( ! ( $php_profiling_enabled ) ): ?>
+							<?php if ( ! $php_profiling_excimer ): ?>
+								<p class="description">
+									<?php echo translate( 'This functionality needs the <code>excimer</code> PHP extension to work, please make sure you have <code>excimer</code> installed and enabled.', 'wp-sentry' ); ?>
+								</p>
+							<?php elseif ( ! $php_profiling_enabled ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure tracing is enabled and <code>WP_SENTRY_PROFILES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
 								</p>
