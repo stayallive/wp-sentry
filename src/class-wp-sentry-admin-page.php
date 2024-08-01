@@ -211,7 +211,7 @@ final class WP_Sentry_Admin_Page {
 						<td>
 							<input id="wp-sentry-release" type="text" class="regular-text code" readonly name="wp-sentry-release" value="<?php echo esc_html( $options['release'] ?? '' ); ?>" placeholder="[no value set]"/>
 							<p class="description">
-								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>, when possible this value defaults to the active theme version.', 'wp-sentry' ); ?>
+								<?php echo translate( 'Change this value by defining <code>WP_SENTRY_VERSION</code>, when possible this value defaults version of the active theme.', 'wp-sentry' ); ?>
 							</p>
 						</td>
 					</tr>
@@ -233,6 +233,7 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-identify-users-enabled" type="checkbox" id="wp-sentry-identify-users-enabled" value="0" <?php echo $sends_default_pii ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#privacy" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
 							<?php if ( ! $sends_default_pii ): ?>
@@ -274,13 +275,13 @@ final class WP_Sentry_Admin_Page {
 								<label title="<?php echo $uses_scoped_autoloader ? 'Using scoped vendor (plugin build)' : 'Using regular vendor (composer)'; ?>">
 									<input name="wp-sentry-php-enabled" type="checkbox" id="wp-sentry-php-enabled" value="0" <?php echo $enabled_for_php ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#wp_sentry_php_dsn-php" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
 							<?php if ( ! $enabled_for_php ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure <code>WP_SENTRY_PHP_DSN</code> contains a valid DSN.', 'wp-sentry' ); ?>
 								</p>
-								<br>
 							<?php endif; ?>
 						</td>
 					</tr>
@@ -291,9 +292,10 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-php-tracing-enabled" type="checkbox" id="wp-sentry-php-tracing-enabled" value="0" <?php echo $php_tracing_enabled ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#set-up-tracing" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
-							<?php if ( ! ( $php_tracing_enabled ) ): ?>
+							<?php if ( ! $php_tracing_enabled ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure <code>WP_SENTRY_TRACES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
 								</p>
@@ -307,6 +309,7 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-php-profiling-enabled" type="checkbox" id="wp-sentry-php-profiling-enabled" value="0" <?php echo $php_profiling_enabled ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#set-up-profiling" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
 							<?php if ( ! $php_profiling_excimer ): ?>
@@ -363,6 +366,7 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-js-enabled" type="checkbox" id="wp-sentry-js-enabled" value="0" <?php echo $enabled_for_js ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#wp_sentry_browser_dsn-browser" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
 							<p class="description">
@@ -391,9 +395,10 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-js-tracing-enabled" type="checkbox" id="wp-sentry-js-tracing-enabled" value="0" <?php echo $js_tracing_enabled ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#set-up-tracing" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
-							<?php if ( ! ( $js_tracing_enabled ) ): ?>
+							<?php if ( ! $js_tracing_enabled ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
 								</p>
@@ -407,9 +412,10 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-js-session-replays-enabled" type="checkbox" id="wp-sentry-js-session-replays-enabled" value="0" <?php echo $js_replays_enabled ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#wp_sentry_browser_replays_session_sample_rate-browser" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
-							<?php if ( ! ( $js_replays_enabled ) ): ?>
+							<?php if ( ! $js_replays_enabled ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE</code> or <code>WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE</code> is set.', 'wp-sentry' ); ?>
 								</p>
