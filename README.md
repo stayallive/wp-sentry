@@ -116,7 +116,7 @@ Define a version of your site. By default the active theme version will be used 
 This is used for tracking at which version of your site the error occurred. When combined with release tracking this is a very powerful feature.
 
 ```php
-define( 'WP_SENTRY_VERSION', 'v8.1.0' );
+define( 'WP_SENTRY_VERSION', 'v8.2.0' );
 ```
 
 #### `WP_SENTRY_ENV`
