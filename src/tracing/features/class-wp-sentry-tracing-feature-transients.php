@@ -29,7 +29,7 @@ class WP_Sentry_Tracing_Feature_Transients extends WP_Sentry_Tracing_Feature {
 		add_filter( 'all', [ $this, 'handle_all_filter' ], 9999 );
 
 		if ( $this->span_enabled() ) {
-			if ( isset( $GLOBALS['wp_version'] ) && version_compare( $GLOBALS['wp_version'], '6.8.0', '>=' ) ) {
+			if ( array_key_exists( 'wp_version', $GLOBALS ) && version_compare( $GLOBALS['wp_version'], '6.8.0', '>=' ) ) {
 				add_action( 'set_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
 				add_action( 'set_site_transient', [ $this, 'maybe_finish_current_span' ], 10, 0 );
 			} else {
