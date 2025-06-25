@@ -5,9 +5,9 @@ Tags: sentry, log, logging, error-handler, error-monitoring
 Requires at least: 4.5
 Tested up to: 6.7
 Requires PHP: 7.2.5
-Stable tag: 8.4.0
+Stable tag: 8.5.0
 License: MIT
-License URI: https://github.com/stayallive/wp-sentry/blob/v8.4.0/LICENSE.md
+License URI: https://github.com/stayallive/wp-sentry/blob/v8.5.0/LICENSE.md
 
 A (unofficial) WordPress plugin to report PHP errors and Browser (JavaScript) errors to Sentry.
 
@@ -16,18 +16,18 @@ This plugin can report PHP errors and Browser (JavaScript) errors to Sentry.
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted/expanded using filters.
 
-_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v8.4.0#readme)._
+_For more information and documentation have a look at the [full documentation](https://github.com/stayallive/wp-sentry/tree/v8.5.0#readme)._
 
 == Installation ==
 It is recommended to use the plugins interface in WordPress to install this plugin.
 
 If manual installation is required, please make sure that the plugin files are in a folder named "wp-sentry-integration" in the WordPress plugins folder, usually "wp-content/plugins".
 
-To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v8.4.0#dsn) for either the PHP side or the Browser side or both.
+To start using the plugin first setup the [DSN](https://github.com/stayallive/wp-sentry/tree/v8.5.0#dsn) for either the PHP side or the Browser side or both.
 
 All other configuration options are optional but it's advised you read through them to see if any are applicable to you or are thing you'd like to configure.
 
-_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.4.0#configuration). The following are the basics._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.5.0#configuration). The following are the basics._
 
 **Note:** When configuring constants in your `wp-config.php` do this **before** the `That's all, stop editing! Happy publishing.` line, otherwise they won't work!
 
@@ -52,9 +52,14 @@ To track Browser (JavaScript) errors add this snippet to your `wp-config.php` an
 
 **Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
-_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.4.0#configuration). The above are the basics._
+_You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.5.0#configuration). The above are the basics._
 
 == Changelog ==
+= 8.5.0 =
+
+* Fix warning when tracing is active and the WordPress plugin is loaded before WordPress is loaded ([53526ec](https://github.com/stayallive/wp-sentry/commit/53526ec2559d07f47da8471003a2ab5c0db73e00))
+* Update PHP SDK to version 4.14.1
+
 = 8.4.0 =
 
 * Fix deprecation notices on WordPress 6.8+ when transient tracing is enabled ([#214](https://github.com/stayallive/wp-sentry/issues/214), thanks @slaFFik)
