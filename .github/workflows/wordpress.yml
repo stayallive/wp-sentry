@@ -4,6 +4,11 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Version to release (format X.Y.Z)
+        required: true
 
 jobs:
   release:
@@ -18,7 +23,13 @@ jobs:
           php-version: '7.3'
           tools: composer:v1
       - name: Extract release version
+        if: ${{ github.event.inputs.version == '' }}
         run: echo "RELEASE_VERSION=${GITHUB_REF##*/v}" >> $GITHUB_ENV
+      - name: Extract release version
+        if: ${{ github.event.inputs.version != '' }}
+        run: echo "RELEASE_VERSION=$INPUT_RELEASE_VERSION" >> $GITHUB_ENV
+        env:
+          INPUT_RELEASE_VERSION: ${{ github.event.inputs.version }}
       - name: Create WP release
         run: |
           # Run the release script which builds the vendor folder and uploads a new tag to SVN
@@ -49,8 +60,8 @@ jobs:
         id: create_gh_release
         uses: actions/create-release@v1
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          tag_name: v${{ env.RELEASE_VERSION }}
+          release_name: v${{ env.RELEASE_VERSION }}
           body: ${{ steps.changelog.outputs.CHANGELOG }}
           draft: false
           prerelease: false
