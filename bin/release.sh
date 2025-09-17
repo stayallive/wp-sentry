@@ -64,12 +64,6 @@ echo " > Creating release tag"
 mkdir ${TMP_DIR}/tags/${RELEASE_VERSION}
 svn add ${TMP_DIR}/tags/${RELEASE_VERSION}
 
-if [[ -z "${SVN_USERNAME}" ]]; then
-    svn commit -m "Creating tag for v${RELEASE_VERSION}"
-else
-    svn commit --username ${SVN_USERNAME} --password ${SVN_PASSWORD} --non-interactive --no-auth-cache -m "Creating tag for v${RELEASE_VERSION}"
-fi
-
 echo " > Copying versioned files to v${RELEASE_VERSION} tag"
 
 svn cp --parents trunk/* tags/${RELEASE_VERSION}
