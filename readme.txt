@@ -1,4 +1,4 @@
-=== WordPress Sentry ===
+=== Sentry for WordPress ===
 Contributors: stayallive
 Donate link: https://github.com/sponsors/stayallive
 Tags: sentry, log, logging, error-handler, error-monitoring

@@ -11,7 +11,7 @@ use Sentry\State\HubInterface;
 use Sentry\Integration\ModulesIntegration;
 
 /**
- * WordPress Sentry PHP Tracker.
+ * Sentry for WordPress PHP Tracker.
  */
 final class WP_Sentry_Php_Tracker {
 	use WP_Sentry_Resolve_User, WP_Sentry_Resolve_Environment;

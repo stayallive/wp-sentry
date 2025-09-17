@@ -1,7 +1,7 @@
 <?php
 
 /**
- * WordPress Sentry Admin Page.
+ * Sentry for WordPress Admin Page.
  *
  * @internal This class is not part of the public API and may be removed or changed at any time.
  */
@@ -196,7 +196,7 @@ final class WP_Sentry_Admin_Page {
 		<div class="wrap">
 			<h1>Sentry</h1>
 
-			<p>You are using version <b><?php echo WP_Sentry_Version::SDK_VERSION ?></b> of the WordPress Sentry plugin.</p>
+			<p>You are using version <b><?php echo WP_Sentry_Version::SDK_VERSION ?></b> of the Sentry for WordPress plugin.</p>
 
 			<h2>Common</h2>
 

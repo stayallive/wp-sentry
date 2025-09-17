@@ -11,7 +11,7 @@ use function Sentry\getTraceparent;
 use function Sentry\getW3CTraceparent;
 
 /**
- * WordPress Sentry PHP Tracing.
+ * Sentry for WordPress PHP Tracing.
  *
  * @internal This class is not part of the public API and may be removed or changed at any time.
  */

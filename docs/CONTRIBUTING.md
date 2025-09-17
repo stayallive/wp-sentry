@@ -1,6 +1,6 @@
 ## Contributing
 
-First off, thank you for considering contributing to WordPress Sentry. 
+First off, thank you for considering contributing to Sentry for WordPress. 
 
 ### 1. Where do I go from here?
 
@@ -12,7 +12,7 @@ If not, go ahead and [make one](https://github.com/stayallive/wp-sentry/issues/n
 ### 2. Fork & create a branch and submit a PR
 
 If this is something you think you can fix, then
-[fork WordPress Sentry](https://help.github.com/articles/fork-a-repo)
+[fork Sentry for WordPress](https://help.github.com/articles/fork-a-repo)
 and create a branch with a descriptive name.
 
 A good branch name would be (where issue #64 is the ticket you're working on):
