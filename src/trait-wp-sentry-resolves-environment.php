@@ -14,6 +14,19 @@ trait WP_Sentry_Resolve_Environment {
 
 		if ( $environment === null && function_exists( 'wp_get_environment_type' ) ) {
 			$environment = wp_get_environment_type();
+		} elseif ( $environment === null && defined( 'WP_ENVIRONMENT_TYPE' ) ) {
+			$wp_environments = [
+				'local',
+				'development',
+				'staging',
+				'production',
+			];
+
+			// Make sure the environment is an allowed one, and not accidentally set to an invalid value.
+			// This mimicks the behavior of wp_get_environment_type().
+			if ( in_array( WP_ENVIRONMENT_TYPE, $wp_environments, true ) ) {
+				$environment = WP_ENVIRONMENT_TYPE;
+			}
 		}
 
 		return $environment ?? 'unspecified';
