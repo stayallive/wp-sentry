@@ -1,7 +1,8 @@
-# [WordPress Sentry](https://wordpress.org/plugins/wp-sentry-integration/) (wp-sentry)
+# [Sentry for WordPress](https://wordpress.org/plugins/wp-sentry-integration/) (wp-sentry)
 
 A (unofficial) [WordPress plugin](https://wordpress.org/plugins/wp-sentry-integration/) to report PHP and JavaScript errors to [Sentry](https://sentry.io).
 
+_This plugin was called "WordPress Sentry" before 2025-09-17 but was renamed to "Sentry for WordPress" to comply with trademark claims from The WordPress Foundation. Same plugin, slightly different name._
 
 ## What?
 
@@ -475,13 +476,13 @@ Also make sure that any configuration options like `WP_SENTRY_PHP_DSN` are set b
 
 Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occuring in plugins that load before it.
 
-You can remedy this by loading WordPress Sentry as a must-use plugin by creating the file `wp-content/mu-plugins/wp-sentry-integration.php` (if the `mu-plugins` directory does not exist you must create that too).
+You can remedy this by loading Sentry for WordPress as a must-use plugin by creating the file `wp-content/mu-plugins/wp-sentry-integration.php` (if the `mu-plugins` directory does not exist you must create that too).
 
 ```php
 <?php
 
 /**
- * Plugin Name: WordPress Sentry
+ * Plugin Name: Sentry for WordPress
  * Plugin URI: https://github.com/stayallive/wp-sentry
  * Description: A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
  * Version: must-use-proxy
@@ -604,9 +605,9 @@ There is one caveat, if you are using an HTTP proxy in WordPress but don't want 
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within WordPress Sentry (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
+If you discover a security vulnerability within Sentry for WordPress (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
 
 
 ## License
 
-The WordPress Sentry (wp-sentry) plugin is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+The Sentry for WordPress (wp-sentry) plugin is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name:       WordPress Sentry
+ * Plugin Name:       Sentry for WordPress
  * Plugin URI:        https://github.com/stayallive/wp-sentry
  * Description:       A (unofficial) WordPress plugin to report PHP and JavaScript errors to Sentry.
  * Version:           8.6.0
@@ -37,7 +37,7 @@ if ( ! defined( 'PHP_VERSION_ID' ) || PHP_VERSION_ID < 70200 ) {
 		<div class="error below-h2">
 			<p>
 				<?php printf(
-					'The WordPress Sentry plugin requires at least PHP 7.2. You have %s. WordPress Sentry will not be active unless this is resolved!',
+					'The Sentry for WordPress plugin requires at least PHP 7.2. You have %s. Sentry for WordPress will not be active unless this is resolved!',
 					PHP_VERSION
 				); ?>
 			</p>
