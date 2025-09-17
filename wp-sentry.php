@@ -161,3 +161,6 @@ if ( ! function_exists( 'wp_sentry_safe' ) ) {
 		}
 	}
 }
+
+// Initialize plugin specific integrations
+WP_Sentry_Action_Scheduler_Integration::get_instance();
