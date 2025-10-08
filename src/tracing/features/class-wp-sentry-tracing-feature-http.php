@@ -23,7 +23,12 @@ class WP_Sentry_Tracing_Feature_HTTP extends WP_Sentry_Tracing_Feature {
 	}
 
 	/** @param false|array|WP_Error $response */
-	public function handle_pre_http_request( $response, array $parsed_args, string $url ) {
+	public function handle_pre_http_request( $response, array $parsed_args, ?string $url ) {
+		// Fixes: https://github.com/stayallive/wp-sentry/issues/225
+		if ( $url === null ) {
+			return $response;
+		}
+
 		// We expect the response to be `false` otherwise it was filtered and we should not process it since it was filtered
 		if ( $response !== false ) {
 			return $response;
@@ -46,7 +51,12 @@ class WP_Sentry_Tracing_Feature_HTTP extends WP_Sentry_Tracing_Feature {
 	}
 
 	/** @param array|WP_Error $response */
-	public function handle_http_api_debug( $response, string $context, string $class, array $parsed_args, string $url ): void {
+	public function handle_http_api_debug( $response, string $context, string $class, array $parsed_args, ?string $url ): void {
+		// Fixes: https://github.com/stayallive/wp-sentry/issues/225
+		if ( $url === null ) {
+			return;
+		}
+
 		$method     = strtoupper( $parsed_args['method'] );
 		$fullUri    = $this->get_full_uri( $url );
 		$partialUri = $this->get_partial_uri( $fullUri );
