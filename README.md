@@ -10,7 +10,6 @@ This plugin can report PHP errors (optionally) and JavaScript errors (optionally
 
 It will auto detect authenticated users and add context where possible. All context/tags can be adjusted using filters mentioned below.
 
-
 ## Requirements
 
 This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not end of life (EOL) and no longer supported. For an up-to-date list of PHP versions that are still supported see: http://php.net/supported-versions.php.
@@ -25,7 +24,6 @@ This plugin requires PHP `7.2`+ but urges users to use a PHP version that is not
 - Version [`3.x`](https://github.com/stayallive/wp-sentry/tree/3.x) of the wp-sentry plugin uses the [`2.x`](https://github.com/getsentry/sentry-php/tree/2.x) version of the official Sentry PHP SDK.
 - Version [`4.x`](https://github.com/stayallive/wp-sentry/tree/4.x), [`5.x`](https://github.com/stayallive/wp-sentry/tree/5.x), & [`6.x`](https://github.com/stayallive/wp-sentry/tree/6.x) of the wp-sentry plugin uses the [`3.x`](https://github.com/getsentry/sentry-php/tree/3.x) version of the official Sentry PHP SDK.
 - Version [`7.x`](https://github.com/stayallive/wp-sentry/tree/master)+ of the wp-sentry plugin uses the [`4.x`](https://github.com/getsentry/sentry-php/tree/master) version of the official Sentry PHP SDK.
-
 
 ## Usage
 
@@ -51,7 +49,6 @@ There are a couple of options to start using the plugin.
 1. Run `composer require stayallive/wp-sentry` in your project
 2. Configure your DSN as explained in the [configuration](#configuration) section
 3. Activate the plugin through the WordPress admin interface or wp-cli
-
 
 ## Configuration
 
@@ -140,7 +137,7 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 **Note**: You can set any combination of error types you want, see the [PHP documentation](https://www.php.net/manual/en/errorfunc.constants.php) for more information.
 
-### Set Up Tracing
+### Tracing
 
 #### `WP_SENTRY_TRACES_SAMPLE_RATE` (PHP)
 
@@ -210,7 +207,7 @@ define( 'WP_SENTRY_BROWSER_REPLAYS_ON_ERROR_SAMPLE_RATE', 1.0 ); // replaysOnErr
 
 **Note:** Do not set these constants or set the sample rates to `0.0` to disable the JavaScript Session Replay.
 
-### Set Up Profiling
+### Profiling
 
 #### `WP_SENTRY_PROFILES_SAMPLE_RATE` (PHP)
 
@@ -228,7 +225,7 @@ define( 'WP_SENTRY_PROFILES_SAMPLE_RATE', 0.3 ); // profiles_sample_rate
 
 **Note:** Do not set this constant or set the sample rate to `0.0` to disable the performance monitoring.
 
-### Set Up User Feedback
+### User Feedback
 
 #### `WP_SENTRY_BROWSER_FEEDBACK_OPTIONS` (Browser)
 
@@ -239,6 +236,18 @@ define( 'WP_SENTRY_BROWSER_FEEDBACK_OPTIONS', [ 'enabled' => true ] );
 ```
 
 All option are passed directly to `feedbackIntegration()`, you can read about all the available options in the [official documentation](https://docs.sentry.io/platforms/javascript/user-feedback/configuration/#user-feedback-widget).
+
+### Logs
+
+#### `WP_SENTRY_ENABLE_LOGS` (PHP)
+
+You can enable sending Logs ([official documentation](https://docs.sentry.io/platforms/php/logs/)) by adding this snippet to your `wp-config.php`:
+
+```php
+define( 'WP_SENTRY_ENABLE_LOGS', true );
+```
+
+When enabled you can use the `\Sentry\logger()` function to log messages to Sentry: https://docs.sentry.io/platforms/php/logs/#usage
 
 ## Filters
 
@@ -395,7 +404,6 @@ add_filter( 'wp_sentry_public_context', function ( array $context ) {
 	return $context;
 } );
 ```
-
 
 ## Advanced usages
 
@@ -602,11 +610,9 @@ Read more about how to setup the WordPress Proxy constants here: https://develop
 
 There is one caveat, if you are using an HTTP proxy in WordPress but don't want Sentry to use it you should set `WP_SENTRY_PROXY_ENABLED` to `false` in your `wp-config.php`. Setting `WP_PROXY_BYPASS_HOSTS` will not work!
 
-
 ## Security Vulnerabilities
 
 If you discover a security vulnerability within Sentry for WordPress (wp-sentry), please send an e-mail to Alex Bouma at `alex+security@bouma.me`. All security vulnerabilities will be swiftly addressed.
-
 
 ## License
 

@@ -9,6 +9,7 @@ use Sentry\State\Scope;
 use Sentry\ClientBuilder;
 use Sentry\State\HubInterface;
 use Sentry\Integration\ModulesIntegration;
+use function Sentry\logger;
 
 /**
  * Sentry for WordPress PHP Tracker.
@@ -61,6 +62,12 @@ final class WP_Sentry_Php_Tracker {
 		// Register our helper actions
 		add_action( 'sentry/captureMessage', [ $this, 'on_capture_message_action' ], 10, 3 );
 		add_action( 'sentry/captureException', [ $this, 'on_capture_exception_action' ], 10, 2 );
+
+		if ( self::get_logs_enabled() ) {
+			add_action( 'shutdown', function () {
+				logger()->flush();
+			} );
+		}
 	}
 
 	public function on_init(): void {
@@ -150,6 +157,13 @@ final class WP_Sentry_Php_Tracker {
 	}
 
 	/**
+	 * Retrieve the logs enabled status.
+	 */
+	public static function get_logs_enabled(): bool {
+		return defined( 'WP_SENTRY_ENABLE_LOGS' ) && WP_SENTRY_ENABLE_LOGS === true;
+	}
+
+	/**
 	 * Retrieve the spotlight enabled status.
 	 */
 	public static function get_spotlight_enabled(): bool {
@@ -195,6 +209,7 @@ final class WP_Sentry_Php_Tracker {
 			'prefixes'             => [ ABSPATH ],
 			'spotlight'            => self::get_spotlight_enabled(),
 			'environment'          => $this->get_environment(),
+			'enable_logs'          => self::get_logs_enabled(),
 			'before_send'          => function ( Event $event, ?EventHint $hint ): ?Event {
 				// Sync the transaction name with the current transaction if we have detected one
 				if ( $event->getTransaction() === null ) {
