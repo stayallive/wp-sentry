@@ -111,7 +111,7 @@ final class WP_Sentry_Admin_Page {
 	private function send_test_event(): ?string {
 		$tracker = WP_Sentry_Php_Tracker::get_instance();
 
-		if ( ! empty( $tracker->get_dsn() ) ) {
+		if ( ! empty( $tracker->get_dsn() ) || WP_Sentry_Php_Tracker::get_spotlight_enabled() ) {
 			return $tracker->get_client()->captureMessage( 'This is a test message sent from the Sentry WP PHP integration.' );
 		}
 
@@ -128,7 +128,7 @@ final class WP_Sentry_Admin_Page {
 
 		$tracker = WP_Sentry_Php_Tracker::get_instance();
 
-		if ( ! empty( $tracker->get_dsn() ) ) {
+		if ( ! empty( $tracker->get_dsn() ) || WP_Sentry_Php_Tracker::get_spotlight_enabled() ) {
 			return $tracker->get_client()->captureException( $exception );
 		}
 
