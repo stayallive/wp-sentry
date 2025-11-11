@@ -250,6 +250,15 @@ final class WP_Sentry_Php_Tracker {
 
 				$integrations[] = new WP_Sentry_Active_Plugins_Integration();
 
+				if ( function_exists( 'apply_filters' ) ) {
+					/**
+					 * Filter to customize the integrations registered with the Sentry PHP SDK.
+					 *
+					 * @param array $integrations
+					 */
+					$integrations = (array) apply_filters( 'wp_sentry_integrations', $integrations );
+				}
+
 				return $integrations;
 			},
 			'send_default_pii'     => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
