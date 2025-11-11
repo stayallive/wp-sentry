@@ -344,6 +344,24 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 
 ---
 
+#### `wp_sentry_integrations`
+
+You can use this filter to customize the array of integrations that are registered with the Sentry PHP SDK before the client is initialized. The filter receives the current array of integration instances and should return the final array that Sentry should bootstrap with.
+
+Example usage:
+
+```php
+add_filter( 'wp_sentry_integrations', static function ( array $integrations ): array {
+	return array_filter( $integrations, static function ( $integration ) {
+		return ! $integration instanceof WP_Sentry_Active_Plugins_Integration;
+	} );
+} );
+```
+
+**Note:** _This filter runs when the PHP tracker constructs the Sentry client (during plugin bootstrap, before `after_setup_theme`). Make sure it is added before WP Sentry initializes, for example in a mu-plugin or an early-loading plugin._
+
+---
+
 #### `wp_sentry_before_send`
 
 You can use this filter to filter error events sent to Sentry. Read more about [filtering in the docs](https://docs.sentry.io/platforms/php/configuration/filtering/#filtering-error-events).
