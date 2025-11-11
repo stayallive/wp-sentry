@@ -5,7 +5,7 @@ use Sentry\Integration\IntegrationInterface;
 use Sentry\State\Scope;
 
 /**
- * Adds the list of active WordPress plugins (slug, name, version) to each event.
+ * Adds the list of active WordPress plugins (name + version) to each event.
  */
 final class WP_Sentry_Active_Plugins_Integration implements IntegrationInterface {
 	/**
