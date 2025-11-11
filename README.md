@@ -261,6 +261,7 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 				unset( $integrations[ $index ] );
 			}
 		}
+		return $integrations;
 	} );
 
 	return $options;
