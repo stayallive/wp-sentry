@@ -249,6 +249,24 @@ define( 'WP_SENTRY_ENABLE_LOGS', true );
 
 When enabled you can use the `\Sentry\logger()` function to log messages to Sentry: https://docs.sentry.io/platforms/php/logs/#usage
 
+### Active Plugins Context
+
+The PHP tracker automatically attaches a `wp_active_plugins` context block that maps each active plugin name to its version so issues can be correlated with the runtime stack. If you prefer to disable this, use the `wp_sentry_options` filter to remove the `WP_Sentry_Active_Plugins_Integration` from the integration list before the client is initialized:
+
+```php
+add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
+	$options->setIntegrations( static function ( array $integrations ): array {
+		foreach ( $integrations as $index => $integration ) {
+			if ( $integration instanceof WP_Sentry_Active_Plugins_Integration ) {
+				unset( $integrations[ $index ] );
+			}
+		}
+	} );
+
+	return $options;
+} );
+```
+
 ## Filters
 
 This plugin provides the following filters to plugin/theme developers.

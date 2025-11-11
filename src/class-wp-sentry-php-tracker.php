@@ -239,7 +239,7 @@ final class WP_Sentry_Php_Tracker {
 				return $event;
 			},
 			'integrations'         => static function ( array $integrations ) {
-				return array_filter( $integrations, static function ( $integration ) {
+				$integrations = array_filter( $integrations, static function ( $integration ) {
 					// Disable the modules integration as it only lists the internal packages from this plugin instead of the packages of the full project
 					if ( $integration instanceof ModulesIntegration ) {
 						return false;
@@ -247,6 +247,10 @@ final class WP_Sentry_Php_Tracker {
 
 					return true;
 				} );
+
+				$integrations[] = new WP_Sentry_Active_Plugins_Integration();
+
+				return $integrations;
 			},
 			'send_default_pii'     => defined( 'WP_SENTRY_SEND_DEFAULT_PII' ) && WP_SENTRY_SEND_DEFAULT_PII,
 			'traces_sample_rate'   => defined( 'WP_SENTRY_TRACES_SAMPLE_RATE' ) ? WP_SENTRY_TRACES_SAMPLE_RATE : null,
