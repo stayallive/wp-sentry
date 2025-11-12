@@ -30,7 +30,7 @@
   },
   "require": {
     "php": "^7.2.5 || ^8.0",
-    "sentry/sentry": "^4.8",
+    "sentry/sentry": "^4.18.1",
     "composer/installers": "^1.0 || ^2.0",
     "jean85/pretty-package-versions": "^1.5"
   },
