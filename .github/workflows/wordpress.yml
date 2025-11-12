@@ -21,7 +21,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '7.3'
-          tools: composer:v1
+          tools: composer:v2
       - name: Extract release version
         if: ${{ github.event.inputs.version == '' }}
         run: echo "RELEASE_VERSION=${GITHUB_REF##*/v}" >> $GITHUB_ENV
