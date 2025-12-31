@@ -52,6 +52,18 @@ To track Browser (JavaScript) errors add this snippet to your `wp-config.php` an
 
 **Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
+**Using Sentry's Loader Script (Recommended for Sentry.io or self-hosted with loader support):**
+
+Instead of loading the bundled SDK, you can use Sentry's Loader Script which provides lazy loading capabilities. The loader is a small (~1KB) script that buffers errors and only loads the full SDK when needed:
+
+    define( 'WP_SENTRY_BROWSER_LOADER_URL', 'https://js.sentry-cdn.com/YOUR_PUBLIC_KEY.min.js' );
+
+For self-hosted Sentry instances, use your loader URL:
+
+    define( 'WP_SENTRY_BROWSER_LOADER_URL', 'https://your-sentry.example.com/js-sdk-loader/YOUR_PUBLIC_KEY.min.js' );
+
+When using the loader, `data-lazy="no"` is automatically added if tracing or session replay is enabled (since these features require immediate SDK loading).
+
 _You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.10.0#configuration). The above are the basics._
 
 == Changelog ==

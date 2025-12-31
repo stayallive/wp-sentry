@@ -171,6 +171,7 @@ final class WP_Sentry_Admin_Page {
 		$js_tracker = WP_Sentry_Js_Tracker::get_instance();
 
 		$enabled_for_js      = $js_tracker->enabled();
+		$js_loader_enabled   = $js_tracker->loader_enabled();
 		$js_tracing_enabled  = $enabled_for_js && $js_tracker->tracing_enabled();
 		$js_replays_enabled  = $enabled_for_js && $js_tracker->replays_enabled();
 		$js_feedback_enabled = $enabled_for_js && $js_tracker->feedback_enabled();
@@ -388,6 +389,23 @@ final class WP_Sentry_Admin_Page {
 							</p>
 						</td>
 					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Loader', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-js-loader-enabled" type="checkbox" id="wp-sentry-js-loader-enabled" value="0" <?php echo $js_loader_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#set-up-loader" target="_blank" rel="noopener">documentation</a>)
+								</label>
+							</fieldset>
+							<?php if ( ! $js_loader_enabled ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_LOADER_URL</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>					
 					<tr>
 						<th><?php esc_html_e( 'Tracing', 'wp-sentry' ); ?></th>
 						<td>
