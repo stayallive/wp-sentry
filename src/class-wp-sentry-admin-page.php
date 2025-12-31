@@ -396,7 +396,7 @@ final class WP_Sentry_Admin_Page {
 								<label>
 									<input name="wp-sentry-js-loader-enabled" type="checkbox" id="wp-sentry-js-loader-enabled" value="0" <?php echo $js_loader_enabled ? 'checked="checked"' : '' ?> readonly disabled>
 									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
-									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#set-up-loader" target="_blank" rel="noopener">documentation</a>)
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#wp_sentry_browser_loader_url-browser" target="_blank" rel="noopener">documentation</a>)
 								</label>
 							</fieldset>
 							<?php if ( ! $js_loader_enabled ): ?>
