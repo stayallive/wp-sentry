@@ -77,7 +77,7 @@ final class WP_Sentry_Admin_Page {
 
 		global $submenu;
 
-		// Network admin has no tools section so we add it ourselfs
+		// Network admin has no tools section so we add it ourselves
 		add_menu_page(
 			'',
 			'Tools',

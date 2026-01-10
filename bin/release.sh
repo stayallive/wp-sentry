@@ -17,7 +17,7 @@ else
     echo "!> Using release version from environment variable"
 fi
 
-# For CI builds get the credentials sotred
+# For CI builds get the credentials sorted
 if [[ -z "${SVN_USERNAME}" ]]; then
     echo "!> Using SVN credentials stored on system or supplied interactive"
 else

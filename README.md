@@ -141,7 +141,7 @@ define( 'WP_SENTRY_ERROR_TYPES', E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_USER_DEP
 
 #### `WP_SENTRY_TRACES_SAMPLE_RATE` (PHP)
 
-Set the desired sampling rate for performane tracing. Replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
+Set the desired sampling rate for performance tracing. Replace `0.3` with your desired sampling rate (`0.3` means sample ~30% of your traffic):
 
 ```php
 // https://docs.sentry.io/platforms/php/performance/#configure
@@ -482,7 +482,7 @@ Also make sure that any configuration options like `WP_SENTRY_PHP_DSN` are set b
 
 ### Capturing plugin errors
 
-Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occuring in plugins that load before it.
+Since this plugin is called `wp-sentry-integration` it loads a bit late which could miss errors or notices occurring in plugins that load before it.
 
 You can remedy this by loading Sentry for WordPress as a must-use plugin by creating the file `wp-content/mu-plugins/wp-sentry-integration.php` (if the `mu-plugins` directory does not exist you must create that too).
 
@@ -515,7 +515,7 @@ Now `wp-sentry-integration` will load always and before all other plugins.
 
 ### Capturing errors only from certain theme and/or plugin
 
-This is an example on how to use the `before_send` callback of the Sentry SDK to only capture errors occuring in a certain theme or plugin.
+This is an example on how to use the `before_send` callback of the Sentry SDK to only capture errors occurring in a certain theme or plugin.
 
 See also the filter docs: [wp_sentry_option](#wp_sentry_options).
 
@@ -579,7 +579,7 @@ add_action( 'wp_enqueue_scripts', function () {
 } );
 ```
 
-When the `wp_sentry_hook` function returns `false` the initialization of the Sentry Brower SDK will be stopped. Any other return value will be ignored.
+When the `wp_sentry_hook` function returns `false` the initialization of the Sentry Browser SDK will be stopped. Any other return value will be ignored.
 
 To modify the options you can modify the object passed as the first argument of the `wp_sentry_hook`, this object will later be passed to `Sentry.init` to initialize the Browser SDK.
 

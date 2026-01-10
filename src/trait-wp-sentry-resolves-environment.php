@@ -23,7 +23,7 @@ trait WP_Sentry_Resolve_Environment {
 			];
 
 			// Make sure the environment is an allowed one, and not accidentally set to an invalid value.
-			// This mimicks the behavior of wp_get_environment_type().
+			// This mimics the behavior of wp_get_environment_type().
 			if ( in_array( WP_ENVIRONMENT_TYPE, $wp_environments, true ) ) {
 				$environment = WP_ENVIRONMENT_TYPE;
 			}

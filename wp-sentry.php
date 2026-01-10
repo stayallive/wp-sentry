@@ -73,7 +73,7 @@ if ( ! class_exists( WP_Sentry_Version::class ) ) {
 		$scopedAutoloaderPath = __DIR__ . '/build/vendor/scoper-autoload.php'
 	);
 
-	// If ther is a scoped autoloader we use that version, otherwise we use the normal autoloader
+	// If there is a scoped autoloader we use that version, otherwise we use the normal autoloader
 	require_once $scopedAutoloaderExists
 		? $scopedAutoloaderPath
 		: __DIR__ . '/vendor/autoload.php';
