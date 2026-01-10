@@ -567,7 +567,7 @@ If you are doing anything more than just have this plugin installed and a DSN de
 
 - PHP SDK: https://github.com/getsentry/sentry-php/blob/master/UPGRADE-3.0.md
 
-Becasue of the upgrade to the 3.x version of the PHP SDK this plugin now has the requirement that it runs on at least PHP 7.2, for older PHP versions stick to version 3.x.
+Because of the upgrade to the 3.x version of the PHP SDK this plugin now has the requirement that it runs on at least PHP 7.2, for older PHP versions stick to version 3.x.
 
 * Drop PHP 7.1 support and add PHP 8.0 support
 * Update PHP SDK to version 3.1.3
@@ -695,7 +695,7 @@ If you are doing anything more than just have this plugin installed and a DSN de
 - PHP SDK: https://github.com/getsentry/sentry-php/blob/master/UPGRADE-2.0.md
 - Browser SDK: https://github.com/getsentry/sentry-javascript/blob/master/MIGRATION.md#upgrading-from-4x-to-5x
 
-Becasue of the upgrade to the 2.x version of the PHP SDK this plugin now has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
+Because of the upgrade to the 2.x version of the PHP SDK this plugin now has the requirement that it runs on at least PHP 7.1, for older PHP versions stick to version 2.x.
 
 * Update PHP SDK to version 2.2.1
 * Update Sentry Browser to version 5.6.3
@@ -850,7 +850,7 @@ This version allows the usage of the new private key-less DSN introduced in Sent
 
 = 1.0.0 =
 
-* Initital release
+* Initial release
 
 == Contributors ==
 
