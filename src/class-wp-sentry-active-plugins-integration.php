@@ -26,7 +26,7 @@ final class WP_Sentry_Active_Plugins_Integration implements IntegrationInterface
 				return $event;
 			}
 
-			$event->setModules( self::get_active_plugins() );
+			$event->setModules( array_merge( $event->getModules() ?? [], self::get_active_plugins() ) );
 
 			return $event;
 		} );
