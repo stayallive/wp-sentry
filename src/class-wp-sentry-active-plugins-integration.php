@@ -2,14 +2,15 @@
 
 use Sentry\Event;
 use Sentry\Integration\IntegrationInterface;
+use Sentry\SentrySdk;
 use Sentry\State\Scope;
 
 /**
- * Adds the list of active WordPress plugins (name + version) to each event.
+ * Adds the list of active WordPress plugins (name + version) to each event as modules.
  */
 final class WP_Sentry_Active_Plugins_Integration implements IntegrationInterface {
 	/**
-	 * Cached context for the duration of the request.
+	 * Cached modules for the duration of the request.
 	 *
 	 * @var array|null
 	 */
@@ -17,17 +18,15 @@ final class WP_Sentry_Active_Plugins_Integration implements IntegrationInterface
 
 	public function setupOnce(): void {
 		Scope::addGlobalEventProcessor( static function ( Event $event ): Event {
-			$contexts = $event->getContexts();
+			$integration = SentrySdk::getCurrentHub()->getIntegration( self::class );
 
-			if ( isset( $contexts['wp_active_plugins'] ) ) {
+			// The integration could be bound to a client that is not the one
+			// attached to the current hub. If this is the case, bail out
+			if ( $integration === null ) {
 				return $event;
 			}
 
-			$plugins = self::get_active_plugins();
-
-			if ( ! empty( $plugins ) ) {
-				$event->setContext( 'wp_active_plugins', $plugins );
-			}
+			$event->setModules( self::get_active_plugins() );
 
 			return $event;
 		} );
@@ -35,6 +34,8 @@ final class WP_Sentry_Active_Plugins_Integration implements IntegrationInterface
 
 	/**
 	 * Gather the active plugins plus their version.
+	 *
+	 * @return array<string, string>
 	 */
 	private static function get_active_plugins(): array {
 		if ( self::$active_plugins !== null ) {
@@ -57,19 +58,19 @@ final class WP_Sentry_Active_Plugins_Integration implements IntegrationInterface
 			$active_plugins = array_unique( array_merge( $active_plugins, $network_active ) );
 		}
 
-		$context = [];
+		$modules = [];
 
 		foreach ( $active_plugins as $plugin_file ) {
 			$plugin_data = $all_plugins[ $plugin_file ] ?? null;
 
 			$name    = is_array( $plugin_data ) && isset( $plugin_data['Name'] ) ? (string) $plugin_data['Name'] : (string) $plugin_file;
-			$version = is_array( $plugin_data ) && isset( $plugin_data['Version'] ) ? (string) $plugin_data['Version'] : null;
+			$version = is_array( $plugin_data ) && isset( $plugin_data['Version'] ) ? (string) $plugin_data['Version'] : 'unknown';
 
-			$context[ $name ] = $version;
+			$modules[ $name ] = $version;
 		}
 
-		ksort( $context );
+		ksort( $modules );
 
-		return self::$active_plugins = $context;
+		return self::$active_plugins = $modules;
 	}
 }
