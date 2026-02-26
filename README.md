@@ -249,6 +249,18 @@ define( 'WP_SENTRY_ENABLE_LOGS', true );
 
 When enabled you can use the `\Sentry\logger()` function to log messages to Sentry: https://docs.sentry.io/platforms/php/logs/#usage
 
+### Active Plugins
+
+The PHP tracker automatically adds active WordPress plugins and their versions to the **Modules** section of each Sentry event. If you prefer to disable this, use the `wp_sentry_integrations` filter to remove the `WP_Sentry_Active_Plugins_Integration` before the client is initialized:
+
+```php
+add_filter( 'wp_sentry_integrations', static function ( array $integrations ): array {
+	return array_filter( $integrations, static function ( $integration ) {
+		return ! $integration instanceof WP_Sentry_Active_Plugins_Integration;
+	} );
+} );
+```
+
 ## Filters
 
 This plugin provides the following filters to plugin/theme developers.
@@ -329,6 +341,24 @@ add_filter( 'wp_sentry_options', function ( \Sentry\Options $options ) {
 ```
 
 **Note:** _This filter fires on the WordPress `after_setup_theme` action._
+
+---
+
+#### `wp_sentry_integrations`
+
+You can use this filter to customize the array of integrations that are registered with the Sentry PHP SDK before the client is initialized. The filter receives the current array of integration instances and should return the final array that Sentry should bootstrap with.
+
+Example usage:
+
+```php
+add_filter( 'wp_sentry_integrations', static function ( array $integrations ): array {
+	return array_filter( $integrations, static function ( $integration ) {
+		return ! $integration instanceof WP_Sentry_Active_Plugins_Integration;
+	} );
+} );
+```
+
+**Note:** _This filter runs when the PHP tracker constructs the Sentry client (during plugin bootstrap, before `after_setup_theme`). Make sure it is added before WP Sentry initializes, for example in a mu-plugin or an early-loading plugin._
 
 ---
 
