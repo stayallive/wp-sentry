@@ -341,10 +341,14 @@ Example usage:
 ```php
 add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\EventHint $hint = null ) {
     // Don't send error event with level `warning` for the Hello Dolly example plugin
-    if ( $hint->exception !== null && $event->getLevel() === \Sentry\Severity::warning() && strpos( $hint->exception->getFile(), 'plugins/hello.php' ) !== false ) {
+    if (
+        ( $hint->exception !== null )
+        && $event->getLevel()->isEqualTo( \Sentry\Severity::warning() )
+        && ( strpos( $hint->exception->getFile(), 'plugins/hello.php' ) !== false )
+    ) {
         return null;
     }
-    
+
     return $event;
 }, 2 );
 ```
