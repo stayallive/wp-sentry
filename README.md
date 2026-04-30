@@ -344,9 +344,9 @@ add_filter( 'wp_sentry_before_send', function ( \Sentry\Event $event, ?\Sentry\E
     if ( $hint->exception !== null && $event->getLevel() === \Sentry\Severity::warning() && strpos( $hint->exception->getFile(), 'plugins/hello.php' ) !== false ) {
         return null;
     }
-    
+
     return $event;
-}, 2 );
+}, 10, 2 );
 ```
 
 **Note:** _Do not forget to return the `$event` if you want to send it to Sentry, returning `null` discards the event._
