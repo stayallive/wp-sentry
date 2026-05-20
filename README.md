@@ -261,6 +261,12 @@ add_filter( 'wp_sentry_integrations', static function ( array $integrations ): a
 } );
 ```
 
+Alternatively set the `WP_SENTRY_DISABLE_MODULES_INTEGRATION` constant to `true` in your `wp-config.php` to disable the `WP_Sentry_Active_Plugins_Integration` without using the filter:
+
+```php
+define( 'WP_SENTRY_DISABLE_MODULES_INTEGRATION', true );
+```
+
 ## Filters
 
 This plugin provides the following filters to plugin/theme developers.
