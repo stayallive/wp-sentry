@@ -91,6 +91,42 @@ define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracke
 
 **Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
 
+### `WP_SENTRY_BROWSER_LOADER_URL` (Browser)
+
+Instead of loading the bundled Sentry SDK, you can use [Sentry's Loader Script](https://docs.sentry.io/platforms/javascript/install/loader/) which provides lazy loading capabilities. The loader is a small (~1KB) script that buffers errors and only loads the full SDK when an error occurs (when true lazy loading is possible) or on page load (when tracing or replay is enabled).
+
+**Using with Sentry.io:**
+
+Get your loader URL from your Sentry project settings under "Client Keys (DSN)" → "Configure" → "Loader Script URL":
+
+```php
+define( 'WP_SENTRY_BROWSER_LOADER_URL', 'https://js.sentry-cdn.com/YOUR_PUBLIC_KEY.min.js' );
+```
+
+**Using with self-hosted Sentry:**
+
+Self-hosted Sentry instances (v21.9+) can serve loader scripts. Use your instance's loader URL:
+
+```php
+define( 'WP_SENTRY_BROWSER_LOADER_URL', 'https://your-sentry.example.com/js-sdk-loader/YOUR_PUBLIC_KEY.min.js' );
+```
+
+**How it works:**
+
+- When `WP_SENTRY_BROWSER_LOADER_URL` is set, the plugin uses the loader instead of the bundled SDK
+- The loader is configured using `window.sentryOnLoad` callback with your WordPress settings (DSN, environment, release, tracing options, etc.)
+- If tracing (`WP_SENTRY_BROWSER_TRACES_SAMPLE_RATE`) or session replay (`WP_SENTRY_BROWSER_REPLAYS_SESSION_SAMPLE_RATE`) is enabled, `data-lazy="no"` is automatically added to load the SDK immediately
+- All other configuration options (`WP_SENTRY_VERSION`, `WP_SENTRY_ENV`, filters, etc.) work the same as with the bundled SDK
+
+**Benefits:**
+
+- **Smaller initial payload**: The loader is ~1KB vs ~30KB+ for the full SDK
+- **Lazy loading**: SDK only loads when an error occurs (if tracing/replay is disabled)
+- **CDN caching**: The SDK loaded by the loader is cached across all sites using Sentry
+- **Automatic updates**: Sentry manages the SDK version served by the loader (configurable in your project settings)
+
+**Note:** The loader URL must be a valid URL. If not set or invalid, the plugin falls back to loading the bundled SDK.
+
 ### Privacy
 
 #### `WP_SENTRY_SEND_DEFAULT_PII`

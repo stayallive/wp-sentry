@@ -172,6 +172,29 @@ final class WP_Sentry_Js_Tracker {
 
 		$featuresString = implode( '.', $features );
 
+		// Check if loader script mode is enabled
+		if ( $this->loader_enabled() ) {
+			$loader_url   = WP_SENTRY_BROWSER_LOADER_URL;
+			$init_options = array_merge( $options, $this->get_options(), [ 'dsn' => $this->get_dsn() ] );
+			// Enqueue the loader script
+			wp_enqueue_script( 'wp-sentry-browser', $loader_url, [], null );
+			// Add sentryOnLoad callback before the loader script
+			wp_add_inline_script(
+				'wp-sentry-browser',
+				'window.sentryOnLoad = function() { Sentry.init(' . wp_json_encode( $init_options ) . '); };',
+				'before'
+			);
+			// Add crossorigin and data-lazy attributes to the script tag
+			add_filter( 'script_loader_tag', function ( $tag, $handle ) {
+				if ( $handle === 'wp-sentry-browser' ) {
+					$lazy_attr = ( $this->tracing_enabled() || $this->replays_enabled() ) ? 'data-lazy="no"' : '';
+					return str_replace( ' src=', ' crossorigin="anonymous" ' . $lazy_attr . ' src=', $tag );
+				}
+				return $tag;
+			}, 10, 2 );
+			return;
+		}
+
 		wp_enqueue_script(
 			'wp-sentry-browser-bundle',
 			plugin_dir_url( WP_SENTRY_PLUGIN_FILE ) . "public/wp-sentry-{$featuresString}.min.js",
@@ -224,6 +247,10 @@ final class WP_Sentry_Js_Tracker {
 
 	public function enabled(): bool {
 		return ! empty( $this->get_dsn() );
+	}
+	
+	public function loader_enabled(): bool {
+		return defined( 'WP_SENTRY_BROWSER_LOADER_URL' ) && filter_var( WP_SENTRY_BROWSER_LOADER_URL , FILTER_VALIDATE_URL );
 	}
 
 	public function tracing_enabled(): bool {
