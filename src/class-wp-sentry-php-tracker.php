@@ -248,7 +248,10 @@ final class WP_Sentry_Php_Tracker {
 					return true;
 				} ) );
 
-				$integrations[] = new WP_Sentry_Active_Plugins_Integration();
+				if ( ! defined( 'WP_SENTRY_DISABLE_MODULES_INTEGRATION' ) || ! WP_SENTRY_DISABLE_MODULES_INTEGRATION ) {
+					// We add our custom integration to list the active plugins as modules in Sentry
+					$integrations[] = new WP_Sentry_Active_Plugins_Integration;
+				}
 
 				/**
 				 * Filter to customize the integrations registered with the Sentry PHP SDK.
