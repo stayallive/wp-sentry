@@ -124,8 +124,8 @@ if ( defined( 'WP_SENTRY_PHP_DSN' ) || defined( 'WP_SENTRY_DSN' ) || defined( 'W
 		// Action Scheduler integration
 		WP_Sentry_Action_Scheduler_Integration::get_instance();
 
-        // Redis Object Cache integration
-        WP_Sentry_Redis_Object_Cache_Integration::get_instance();
+		// Redis Object Cache integration
+		WP_Sentry_Redis_Object_Cache_Integration::get_instance();
 	}
 }
 
