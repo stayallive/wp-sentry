@@ -35,8 +35,13 @@ class WP_Sentry_Tracing_Feature_HTTP extends WP_Sentry_Tracing_Feature {
 		}
 
 		if ( $this->span_enabled() ) {
-			$method     = strtoupper( $parsed_args['method'] );
-			$fullUri    = $this->get_full_uri( $url );
+			$method  = strtoupper( $parsed_args['method'] );
+			$fullUri = $this->get_full_uri( $url );
+
+			if ( $fullUri === null ) {
+				return $response;
+			}
+
 			$partialUri = $this->get_partial_uri( $fullUri );
 
 			$this->handle_span_start( $method . ' ' . $partialUri, [
@@ -57,8 +62,13 @@ class WP_Sentry_Tracing_Feature_HTTP extends WP_Sentry_Tracing_Feature {
 			return;
 		}
 
-		$method     = strtoupper( $parsed_args['method'] );
-		$fullUri    = $this->get_full_uri( $url );
+		$method  = strtoupper( $parsed_args['method'] );
+		$fullUri = $this->get_full_uri( $url );
+
+		if ( $fullUri === null ) {
+			return;
+		}
+
 		$partialUri = $this->get_partial_uri( $fullUri );
 
 		$http_status = 0;
@@ -129,15 +139,23 @@ class WP_Sentry_Tracing_Feature_HTTP extends WP_Sentry_Tracing_Feature {
 		) );
 	}
 
-	/** @return \Psr\Http\Message\UriInterface */
+	/** @return \Psr\Http\Message\UriInterface|null */
 	private function get_full_uri( string $url ) {
 		if ( class_exists( WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri::class ) ) {
-			/** @noinspection PhpIncompatibleReturnTypeInspection */
-			return new WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri( $url );
+			try {
+				/** @noinspection PhpIncompatibleReturnTypeInspection */
+				return new WPSentry\ScopedVendor\GuzzleHttp\Psr7\Uri( $url );
+			} catch ( InvalidArgumentException $exception ) {
+				return null;
+			}
 		}
 
 		if ( class_exists( GuzzleHttp\Psr7\Uri::class ) ) {
-			return new GuzzleHttp\Psr7\Uri( $url );
+			try {
+				return new GuzzleHttp\Psr7\Uri( $url );
+			} catch ( InvalidArgumentException $exception ) {
+				return null;
+			}
 		}
 
 		throw new RuntimeException( 'No compatible PSR-7 implementation found' );
