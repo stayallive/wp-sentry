@@ -34,6 +34,10 @@ final class WP_Sentry_Js_Tracker {
 
 		if ( $this->enabled_on_frontend_pages() ) {
 			add_action( 'wp_enqueue_scripts', [ $this, 'on_enqueue_scripts' ], 0 );
+
+			// Preconnect to the Sentry ingest origin via core's resource-hints
+			// filter (wp_head prio 2, before our scripts) for the LCP win
+			add_filter( 'wp_resource_hints', [ $this, 'add_resource_hints' ], 10, 2 );
 		}
 	}
 
@@ -54,6 +58,37 @@ final class WP_Sentry_Js_Tracker {
 		}
 
 		return $dsn;
+	}
+
+	/**
+	 * Get the origin (scheme://host[:port]) of the browser DSN.
+	 *
+	 * Used for the preconnect resource hint. Null when there is no usable DSN
+	 * or it can't be parsed into a scheme + host.
+	 *
+	 * @return string|null
+	 */
+	public function get_dsn_origin(): ?string {
+		$dsn = $this->get_dsn();
+
+		if ( empty( $dsn ) ) {
+			return null;
+		}
+
+		$parts = wp_parse_url( $dsn );
+
+		if ( empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
+			return null;
+		}
+
+		$origin = "{$parts['scheme']}://{$parts['host']}";
+
+		// keep an explicit non-standard port if the DSN carries one
+		if ( ! empty( $parts['port'] ) ) {
+			$origin .= ":{$parts['port']}";
+		}
+
+		return $origin;
 	}
 
 	/**
@@ -222,6 +257,41 @@ final class WP_Sentry_Js_Tracker {
 		$this->on_enqueue_scripts();
 	}
 
+	/**
+	 * Add a preconnect resource hint for the Sentry ingest origin.
+	 *
+	 * Hooked onto core's wp_resource_hints so the hint prints at wp_head
+	 * priority 2, earlier than the enqueued SDK scripts. That early placement
+	 * is where the LCP win comes from.
+	 *
+	 * @access private
+	 *
+	 * @param array  $urls          Resource hint URLs for the given relation.
+	 * @param string $relation_type The relation type (e.g. preconnect).
+	 *
+	 * @return array
+	 */
+	public function add_resource_hints( array $urls, string $relation_type ): array {
+		if ( $relation_type !== 'preconnect' || ! $this->preconnect_enabled() ) {
+			return $urls;
+		}
+
+		$origin = $this->get_dsn_origin();
+
+		if ( $origin === null ) {
+			return $urls;
+		}
+
+		// crossorigin is required: the SDK sends envelopes as anonymous CORS
+		// fetch() POSTs, which only reuse a connection warmed as anonymous
+		$urls[] = [
+			'href'        => $origin,
+			'crossorigin' => 'anonymous',
+		];
+
+		return $urls;
+	}
+
 	public function enabled(): bool {
 		return ! empty( $this->get_dsn() );
 	}
@@ -262,6 +332,16 @@ final class WP_Sentry_Js_Tracker {
 
 	public function enabled_on_frontend_pages(): bool {
 		return ! defined( 'WP_SENTRY_BROWSER_FRONTEND_ENABLED' ) || WP_SENTRY_BROWSER_FRONTEND_ENABLED;
+	}
+
+	public function preconnect_enabled(): bool {
+		$enabled = defined( 'WP_SENTRY_BROWSER_PRECONNECT' ) && WP_SENTRY_BROWSER_PRECONNECT;
+
+		if ( has_filter( 'wp_sentry_browser_preconnect' ) ) {
+			$enabled = (bool) apply_filters( 'wp_sentry_browser_preconnect', $enabled );
+		}
+
+		return $enabled;
 	}
 
 	public function get_sdk_version(): string {
