@@ -178,6 +178,8 @@ final class WP_Sentry_Admin_Page {
 		$js_enabled_on_login = $js_tracker->enabled_on_login_page();
 		$js_enabled_on_front = $js_tracker->enabled_on_frontend_pages();
 
+		$js_preconnect_enabled = $enabled_for_js && $js_tracker->preconnect_enabled();
+
 		$php_tracker = WP_Sentry_Php_Tracker::get_instance();
 
 		$enabled_for_php = $php_tracker->enabled() || WP_Sentry_Php_Tracker::get_spotlight_enabled();
@@ -435,6 +437,23 @@ final class WP_Sentry_Admin_Page {
 							<?php if ( ! $js_feedback_enabled ): ?>
 								<p class="description">
 									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_FEEDBACK_OPTIONS</code> is set.', 'wp-sentry' ); ?>
+								</p>
+							<?php endif; ?>
+						</td>
+					</tr>
+					<tr>
+						<th><?php esc_html_e( 'Preconnect Resource Hint', 'wp-sentry' ); ?></th>
+						<td>
+							<fieldset>
+								<label>
+									<input name="wp-sentry-js-preconnect-enabled" type="checkbox" id="wp-sentry-js-preconnect-enabled" value="0" <?php echo $js_preconnect_enabled ? 'checked="checked"' : '' ?> readonly disabled>
+									<?php esc_html_e( 'Enabled', 'wp-sentry' ); ?>
+									(<a href="https://github.com/stayallive/wp-sentry/tree/v<?php echo WP_Sentry_Version::SDK_VERSION; ?>#wp_sentry_browser_preconnect-browser" target="_blank" rel="noopener">documentation</a>)
+								</label>
+							</fieldset>
+							<?php if ( ! $js_preconnect_enabled ): ?>
+								<p class="description">
+									<?php echo translate( 'To enable make sure <code>WP_SENTRY_BROWSER_PRECONNECT</code> is set to true.', 'wp-sentry' ); ?>
 								</p>
 							<?php endif; ?>
 						</td>

@@ -5,7 +5,7 @@ Tags: sentry, log, logging, error-handler, error-monitoring
 Requires at least: 4.5
 Tested up to: 7.0
 Requires PHP: 7.2.5
-Stable tag: 8.11.1
+Stable tag: 8.12.0
 License: MIT
 License URI: https://github.com/stayallive/wp-sentry/blob/v8.11.1/LICENSE.md
 
@@ -50,11 +50,18 @@ To track Browser (JavaScript) errors add this snippet to your `wp-config.php` an
     define('WP_SENTRY_BROWSER_LOGIN_ENABLED', true);    // Add the JavaScript tracker to the login page. Default: true
     define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracker to the front end.  Default: true
 
+    // Optionally emit a preconnect resource hint to the Sentry ingest origin (front end only):
+    define('WP_SENTRY_BROWSER_PRECONNECT', true);       // Speeds up the first event send. Default: false
+
 **Note:** Do not set this constant to disable the Browser (JavaScript) tracker.
 
 _You can find more information and the full documentation: [here](https://github.com/stayallive/wp-sentry/tree/v8.11.1#configuration). The above are the basics._
 
 == Changelog ==
+= 8.12.0 =
+
+* Add `WP_SENTRY_BROWSER_PRECONNECT` to emit a `<link rel="preconnect">` resource hint for the Sentry ingest origin, improving LCP / fixing the Lighthouse "Preconnect candidates" audit
+
 = 8.11.1 =
 
 * Fix fatal error in HTTP tracing when WordPress passes a malformed URL

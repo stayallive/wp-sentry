@@ -91,6 +91,16 @@ define('WP_SENTRY_BROWSER_FRONTEND_ENABLED', true); // Add the JavaScript tracke
 
 **Note:** This constant was previously called `WP_SENTRY_PUBLIC_DSN` and is still supported.
 
+#### `WP_SENTRY_BROWSER_PRECONNECT` (Browser)
+
+Emit a `<link rel="preconnect">` resource hint for the Sentry ingest origin (the scheme + host of your browser DSN). This warms the DNS/TLS connection early in `<head>` so the SDK's first event sends faster, and resolves the Lighthouse "Preconnect candidates" audit. Off by default, front end only.
+
+```php
+define( 'WP_SENTRY_BROWSER_PRECONNECT', true );
+```
+
+The hint includes `crossorigin` because the SDK sends events as anonymous cross-origin `fetch` requests; without it the warmed connection would not be reused.
+
 ### Privacy
 
 #### `WP_SENTRY_SEND_DEFAULT_PII`
@@ -401,6 +411,16 @@ Example usage:
 add_filter( 'wp_sentry_public_dsn', function ( $dsn ) {
 	return 'https://<key>@sentry.io/<project>';
 } );
+```
+
+#### `wp_sentry_browser_preconnect` (bool)
+
+Override whether the preconnect resource hint is emitted (defaults to the value of the `WP_SENTRY_BROWSER_PRECONNECT` constant).
+
+Example usage:
+
+```php
+add_filter( 'wp_sentry_browser_preconnect', '__return_true' );
 ```
 
 #### `wp_sentry_public_options` (array)
